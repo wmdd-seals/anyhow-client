@@ -1,9 +1,8 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 
-// Will update the following when API's GraphQL endpoint is ready
 const httpLink = createHttpLink({
-    uri: 'http://'
+    uri: import.meta.env.VITE_API_URL + import.meta.env.VITE_API_ENDPOINT
 })
 
 const authLink = setContext((_, { headers }) => {
