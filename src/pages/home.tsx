@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 export function HomePage(): ReactNode {
     return <div>Home page</div>
