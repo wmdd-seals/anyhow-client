@@ -1,9 +1,7 @@
 import { Button as HeadlessButton } from '@headlessui/react'
 import type { ComponentPropsWithRef, PropsWithChildren, ReactNode } from 'react'
 
-type ButtonProps = {
-    buttonType?: 'default' | 'dark' | 'light'
-} & ComponentPropsWithRef<'button'>
+type ButtonProps = {} & ComponentPropsWithRef<'button'>
 
 export function Button(props: PropsWithChildren<ButtonProps>): ReactNode {
     const { children, ...rest } = props
