@@ -3,12 +3,15 @@ import { createRoot } from 'react-dom/client'
 import { Router } from './router'
 import './index.css'
 import { ApolloProvider } from '@apollo/client'
-import { apolloClient } from 'src/shared/api'
+import { apolloClient } from '../shared/api'
+import { AuthProvider } from '../shared/context/useAuth'
 
 function App(): ReactNode {
     return (
         <ApolloProvider client={apolloClient}>
-            <Router />
+            <AuthProvider>
+                <Router />
+            </AuthProvider>
         </ApolloProvider>
     )
 }
