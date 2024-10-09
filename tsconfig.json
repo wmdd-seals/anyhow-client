@@ -22,6 +22,11 @@
             "vite/client",
             "vitest/globals"
         ],
+        "paths": {
+            "@shared/*": [
+                "./src/shared/*"
+            ]
+        },
         "baseUrl": ".",
         /* Linting */
         "strict": true,
