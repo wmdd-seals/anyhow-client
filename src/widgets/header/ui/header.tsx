@@ -26,13 +26,13 @@ function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }): ReactNode {
                         </button>
                         {isLoggedIn ? (
                             <>
-                                <Button buttonType="light">About us</Button>
-                                <Button buttonType="default">Logout</Button>
+                                <Button>About us</Button>
+                                <Button>Logout</Button>
                             </>
                         ) : (
                             <>
-                                <Button buttonType="light">Login</Button>
-                                <Button buttonType="default">Sign Up</Button>
+                                <Button>Login</Button>
+                                <Button>Sign Up</Button>
                             </>
                         )}
                     </div>
@@ -57,13 +57,13 @@ function Header(): ReactNode {
                 <div className="hidden lg:flex lg:space-x-4">
                     {isLoggedIn ? (
                         <>
-                            <Button buttonType="light">About us</Button>
-                            <Button buttonType="default">Logout</Button>
+                            <Button>About us</Button>
+                            <Button>Logout</Button>
                         </>
                     ) : (
                         <>
-                            <Button buttonType="light">Login</Button>
-                            <Button buttonType="default">Sign Up</Button>
+                            <Button>Login</Button>
+                            <Button>Sign Up</Button>
                         </>
                     )}
                 </div>
