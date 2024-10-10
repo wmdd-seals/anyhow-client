@@ -1,1 +1,1 @@
-export { HeroCarousel } from './ui/hero-carousel'
+export { Slider } from './ui/slider'
