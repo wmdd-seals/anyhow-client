@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Button } from '../../../shared/ui'
 
-const MobileMenu: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
-    const [isOpen, setIsOpen] = React.useState(false)
+function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }): ReactNode {
+    const [isOpen, setIsOpen] = useState(false)
 
     return (
         <>
@@ -42,7 +42,7 @@ const MobileMenu: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
     )
 }
 
-const Header: React.FC = () => {
+function Header(): ReactNode {
     const [isLoggedIn] = useState(false)
 
     return (
