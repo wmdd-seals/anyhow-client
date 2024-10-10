@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { Button } from '../../../shared/ui'
-import { mediaQuery, useMediaQuery } from 'src/shared/lib/mediaQuery'
 
 const MobileMenu: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
     const [isOpen, setIsOpen] = React.useState(false)
 
     return (
-        <div className="lg:hidden">
+        <>
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-slate-800 focus:outline-none"
@@ -27,7 +26,7 @@ const MobileMenu: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
                         </button>
                         {isLoggedIn ? (
                             <>
-                                <Button buttonType="light">Profile</Button>
+                                <Button buttonType="light">About us</Button>
                                 <Button buttonType="default">Logout</Button>
                             </>
                         ) : (
@@ -39,37 +38,35 @@ const MobileMenu: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
                     </div>
                 </div>
             )}
-        </div>
+        </>
     )
 }
 
 const Header: React.FC = () => {
-    const isMobile = useMediaQuery(mediaQuery.sp)
     const [isLoggedIn] = useState(false)
 
     return (
         <header className="bg-white text-white p-4">
-            <div className=" container mx-auto w-full flex justify-between items-center">
+            <div className="container mx-auto w-full flex justify-between items-center">
                 <div className="flex items-center">
                     <p className="text-2xl font-bold text-slate-800">Logo</p>
                 </div>
-                {isMobile ? (
+                <div className="lg:hidden">
                     <MobileMenu isLoggedIn={isLoggedIn} />
-                ) : (
-                    <div className="flex space-x-4">
-                        {isLoggedIn ? (
-                            <>
-                                <Button buttonType="light">Profile</Button>
-                                <Button buttonType="default">Logout</Button>
-                            </>
-                        ) : (
-                            <>
-                                <Button buttonType="light">Login</Button>
-                                <Button buttonType="default">Sign Up</Button>
-                            </>
-                        )}
-                    </div>
-                )}
+                </div>
+                <div className="hidden lg:flex lg:space-x-4">
+                    {isLoggedIn ? (
+                        <>
+                            <Button buttonType="light">About us</Button>
+                            <Button buttonType="default">Logout</Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button buttonType="light">Login</Button>
+                            <Button buttonType="default">Sign Up</Button>
+                        </>
+                    )}
+                </div>
             </div>
         </header>
     )
