@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { Button } from '../../../shared/ui'
+import { Button } from 'src/shared/ui'
 
 function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }): ReactNode {
     const [isOpen, setIsOpen] = useState(false)
