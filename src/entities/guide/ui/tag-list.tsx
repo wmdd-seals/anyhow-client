@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tag } from 'src/shared/ui'
+import { Tag } from './tag'
 
 interface TagListProps {
     tags: string[]
