@@ -1,5 +1,6 @@
 import React from 'react'
-import { TagList } from 'src/widgets/tag-list'
+import { TagList } from './tag-list'
+
 interface CardComponentProps {
     imageUrl: string
     title: string
