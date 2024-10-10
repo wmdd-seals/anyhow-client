@@ -1,1 +1,1 @@
-export { default as HeroCarousel } from './ui/hero-carousel'
+export { HeroCarousel } from './ui/hero-carousel'
