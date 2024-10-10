@@ -2,22 +2,33 @@ import React from 'react'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 
-const responsive = {
-    desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 1
-    },
-    tablet: {
-        breakpoint: { max: 1024, min: 464 },
-        items: 1
-    },
-    mobile: {
-        breakpoint: { max: 464, min: 0 },
-        items: 1
-    }
+type SliderProps = {
+    children: React.ReactNode
+    desktopItems?: number
+    tabletItems?: number
+    mobileItems?: number
 }
 
-function Slider({ children }: { children: React.ReactNode }): React.ReactNode {
+function Slider({
+    children,
+    desktopItems = 1,
+    tabletItems = 1,
+    mobileItems = 1
+}: SliderProps): React.ReactNode {
+    const responsive = {
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: desktopItems
+        },
+        tablet: {
+            breakpoint: { max: 1024, min: 464 },
+            items: tabletItems
+        },
+        mobile: {
+            breakpoint: { max: 464, min: 0 },
+            items: mobileItems
+        }
+    }
     return (
         <div className="relative flex justify-center">
             <Carousel
