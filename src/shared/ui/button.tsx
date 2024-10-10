@@ -1,25 +1,20 @@
 import { Button as HeadlessButton } from '@headlessui/react'
 import type { ComponentPropsWithRef, PropsWithChildren, ReactNode } from 'react'
 
-type ButtonProps = {
-    buttonType?: 'default' | 'dark' | 'light'
-} & ComponentPropsWithRef<'button'>
+type ButtonProps = {} & ComponentPropsWithRef<'button'>
 
 export function Button(props: PropsWithChildren<ButtonProps>): ReactNode {
-    const { children, buttonType = 'default', ...rest } = props
-
-    console.log(buttonType)
+    const { children, ...rest } = props
 
     const buttonStyles = {
         default: {
             backgroundColor: 'bg-slate-800',
             textColor: 'text-white'
-        },
-        dark: { backgroundColor: 'bg-slate-800', textColor: 'text-white' },
-        light: { backgroundColor: 'bg-white', textColor: 'text-black' }
+        }
     }
 
-    const { backgroundColor, textColor } = buttonStyles[buttonType]
+    // TODO: Dynamically change the button's style
+    const { backgroundColor, textColor } = buttonStyles['default']
 
     return (
         <HeadlessButton
