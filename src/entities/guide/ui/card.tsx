@@ -17,7 +17,7 @@ const Card: React.FC<CardComponentProps> = ({
     cardType = 'default'
 }) => {
     return (
-        <article className="flex overflow-hidden flex-col bg-white rounded-lg border-2 border-gray-700 border-solid max-w-[402px] min-w-[304px]">
+        <article className="flex overflow-hidden flex-col bg-white rounded-lg border-2 border-gray-700 border-solid w-ful">
             <div className="flex overflow-hidden flex-col justify-center items-center px-20 py-24 w-full rounded-lg border-2 border-gray-700 border-solid bg-slate-100">
                 <img
                     loading="lazy"
