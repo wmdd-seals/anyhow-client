@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Slider } from 'src/shared/ui'
 import { Header } from 'src/widgets/header'
 import { Footer } from 'src/widgets/footer/ui/footer'
-import { Card } from 'src/widgets/card'
+import { Card } from 'src/entities/guide/ui'
 
 const carouselItems = [
     {
