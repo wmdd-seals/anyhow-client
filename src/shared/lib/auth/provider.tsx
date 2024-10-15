@@ -1,5 +1,4 @@
-import React from 'react'
-import { createContext, useState, useContext } from 'react'
+import { createContext, useState } from 'react'
 import { gql, useLazyQuery } from '@apollo/client'
 
 type signIn = {
@@ -20,7 +19,7 @@ type input = {
     input: UserSignInInput
 }
 
-type UserContextType = {
+export type UserContextType = {
     authToken: string | null
     //registerUser: (email: string, password: string) => void
     loginUser: (userInput: UserSignInInput) => void
@@ -30,7 +29,7 @@ type UserContextType = {
 
 type Props = { children: React.ReactNode }
 
-const UserContext = createContext<UserContextType>({} as UserContextType)
+export const UserContext = createContext<UserContextType>({} as UserContextType)
 
 const USER_SIGNIN = gql`
     query SignIn($input: UserSignInInput) {
@@ -90,10 +89,4 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
             {children}
         </UserContext.Provider>
     )
-}
-
-export const useAuth = (): UserContextType => {
-    const context = useContext(UserContext)
-    console.log(context)
-    return context
 }

@@ -1,9 +1,8 @@
 import { useState, type ReactNode } from 'react'
-import { TextInput } from '../shared/ui/text-input'
-import { Button } from '../shared/ui/button'
-import { useAuth, type UserSignInInput } from '../shared/context/useAuth'
+import { TextInput, Button } from '../shared/ui'
+import { useAuth, type UserSignInInput } from '../shared/lib/auth'
 
-const LoginPage = (): ReactNode => {
+export const LoginPage = (): ReactNode => {
     const { loginUser } = useAuth()
 
     const [values, setValues] = useState<UserSignInInput>({
@@ -21,25 +20,33 @@ const LoginPage = (): ReactNode => {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <TextInput
-                    type="email"
-                    label="Email"
-                    name="email"
-                    onChange={handleChange}
-                    required
-                />
-                <TextInput
-                    type="password"
-                    label="Password"
-                    name="password"
-                    onChange={handleChange}
-                    required
-                />
-                <Button type="submit"> Login </Button>
-            </form>
+            <div className="container text-center sm:text-left">
+                <div>
+                    <div className="flex flex-col">
+                        <h1>Welcome to AnyHow</h1>
+                        <span className="text-xs">
+                            Your bite-sized learning app
+                        </span>
+                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <TextInput
+                            type="email"
+                            placeholder="Email address"
+                            name="email"
+                            onChange={handleChange}
+                            required
+                        />
+                        <TextInput
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                            onChange={handleChange}
+                            required
+                        />
+                        <Button type="submit"> Login </Button>
+                    </form>
+                </div>
+            </div>
         </>
     )
 }
-
-export default LoginPage

@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
-import { useAuth } from '../shared/context/useAuth'
+import { useAuth } from '../shared/lib'
 
 const ProtectedRoute = (): ReactElement => {
     const { isAuthenticated } = useAuth()

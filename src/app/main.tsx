@@ -4,7 +4,7 @@ import { Router } from './router'
 import './index.css'
 import { ApolloProvider } from '@apollo/client'
 import { apolloClient } from '../shared/api'
-import { AuthProvider } from '../shared/context/useAuth'
+import { AuthProvider } from '../shared/lib'
 
 function App(): ReactNode {
     return (

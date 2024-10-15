@@ -5,8 +5,7 @@ import {
     Route,
     RouterProvider
 } from 'react-router-dom'
-import { HomePage, GuidePage, AccountPage, QuizPage } from '../pages'
-import LoginPage from '../pages/login'
+import { HomePage, GuidePage, AccountPage, QuizPage, LoginPage } from '../pages'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
