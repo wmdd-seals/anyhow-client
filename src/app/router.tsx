@@ -11,7 +11,8 @@ import {
     AccountPage,
     QuizPage,
     LoginPage,
-    CreateGuidePage
+    CreateGuidePage,
+    Dashboard
 } from '../pages'
 
 const router = createBrowserRouter(
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
                 </Route>
                 <Route path="account" element={<AccountPage />} />
                 <Route path="create" element={<CreateGuidePage />} />
+                <Route path="dashboard" element={<Dashboard />} />
             </Route>
         </>
     )
