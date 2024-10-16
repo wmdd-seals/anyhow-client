@@ -1,14 +1,16 @@
 import type { ComponentPropsWithRef, ReactNode } from 'react'
 import { Field, Input, Label } from '@headlessui/react'
 
-type InputProps = {} & ComponentPropsWithRef<'input'>
+type InputProps = {
+    label?: string | JSX.Element
+} & ComponentPropsWithRef<'input'>
 
 export function TextInput(props: InputProps): ReactNode {
-    const { ...rest } = props
+    const { label, ...rest } = props
 
     return (
         <Field>
-            <Label></Label>
+            {Boolean(label) && <Label>{label}</Label>}
             <Input {...rest} />
         </Field>
     )

@@ -5,18 +5,21 @@ import {
     Route,
     RouterProvider
 } from 'react-router-dom'
-import { HomePage, GuidePage, AccountPage, QuizPage } from '../pages'
+import { HomePage, GuidePage, AccountPage, QuizPage, LoginPage } from '../pages'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route path="/">
-            <Route index element={<HomePage />} />
-            <Route path="/:id">
-                <Route index element={<GuidePage />} />
-                <Route path="quiz/:id" element={<QuizPage />} />
+        <>
+            <Route path="/">
+                <Route path="login" element={<LoginPage />} />
+                <Route index element={<HomePage />} />
+                <Route path="/:id">
+                    <Route index element={<GuidePage />} />
+                    <Route path="quiz/:id" element={<QuizPage />} />
+                </Route>
+                <Route path="account" element={<AccountPage />} />
             </Route>
-            <Route path="account" element={<AccountPage />} />
-        </Route>
+        </>
     )
 )
 
