@@ -22,6 +22,7 @@
         "@apollo/client": "^3.11.8",
         "@headlessui/react": "^2.1.8",
         "@nivo/bar": "^0.87.0",
+        "@nivo/calendar": "^0.87.0",
         "classnames": "^2.5.1",
         "graphql": "^16.9.0",
         "react": "^18.3.1",
