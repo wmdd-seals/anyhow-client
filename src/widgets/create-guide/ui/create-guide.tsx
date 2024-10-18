@@ -7,13 +7,13 @@ import cn from 'clsx'
 
 type UseCreateGuideForm = {
     title: string
-    tags: string[]
+    tags: string
     body: string
 }
 
 const defaultValues = {
     title: '',
-    tags: [],
+    tags: '',
     body: ''
 }
 
