@@ -1,17 +1,23 @@
-import type { ComponentPropsWithRef, ReactNode } from 'react'
+import { forwardRef, type ComponentPropsWithRef, type ReactNode } from 'react'
 import { Field, Input, Label } from '@headlessui/react'
 
 type InputProps = {
     label?: string | JSX.Element
 } & ComponentPropsWithRef<'input'>
 
-export function TextInput(props: InputProps): ReactNode {
-    const { label, ...rest } = props
+export const TextInput = forwardRef<HTMLInputElement, InputProps>(
+    function TextInput(props, ref): ReactNode {
+        const { label, ...rest } = props
 
-    return (
-        <Field>
-            {Boolean(label) && <Label>{label}</Label>}
-            <Input {...rest} />
-        </Field>
-    )
-}
+        return (
+            <Field className={'flex flex-col gap-2'}>
+                {Boolean(label) && <Label>{label}</Label>}
+                <Input
+                    ref={ref}
+                    className={'border border-gray-300 rounded-lg'}
+                    {...rest}
+                />
+            </Field>
+        )
+    }
+)

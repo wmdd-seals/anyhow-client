@@ -10,7 +10,7 @@ const authLink = setContext((_, { headers }) => {
     return {
         headers: {
             ...(headers as Record<string, string>),
-            Authorization: token ? `Bearer ${token}` : ''
+            Authorization: token ?? ''
         }
     }
 })
