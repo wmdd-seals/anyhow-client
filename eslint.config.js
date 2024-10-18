@@ -4,9 +4,6 @@ import tseslint from 'typescript-eslint'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default [
-    {
-        ignores: ['**/*.js']
-    },
     { languageOptions: { globals: globals.browser } },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
@@ -51,5 +48,8 @@ export default [
             '@typescript-eslint/no-duplicate-enum-values': 'error'
         }
     }),
-    eslintPluginPrettierRecommended
+    eslintPluginPrettierRecommended,
+    {
+        ignores: ['**/*.js', './src/_gqlgen/*']
+    }
 ]
