@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 import { Slider } from 'src/shared/ui'
 import { Header } from 'src/widgets/header'
 import { Footer } from 'src/widgets/footer/ui/footer'
-import { Card } from 'src/entities/guide/ui'
-
+import { SliderGuideList } from 'src/widgets/guide-list'
+import { PanelGuideList } from '@widgets/guide-list/panel/panel-guide-list'
 const carouselItems = [
     {
         title: "Explore Nature's Beauty",
@@ -76,34 +76,9 @@ export function HomePage(): ReactNode {
                 <p className="text-center text-base text-slate-500">
                     Collection of the top featured guides of the week
                 </p>
-                <Slider desktopItems={4} tabletItems={2} mobileItems={1}>
-                    {Array.from({ length: 16 }, (_, index) => (
-                        <div
-                            key={index}
-                            className="my-16 flex justify-items-center justify-center mx-auto w-[250px]"
-                        >
-                            <Card
-                                imageUrl={`https://example.com/${index}.jpg`}
-                                title={`Card Title ${index + 1}`}
-                                description={`This is a description for card ${index + 1}.`}
-                                tags={['tag1', 'tag2', 'tag3']}
-                                cardType="simple"
-                            />
-                        </div>
-                    ))}
-                </Slider>
+                <SliderGuideList />
                 <div className="my-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-                    {Array.from({ length: 16 }, (_, index) => (
-                        <div key={index}>
-                            <Card
-                                key={index}
-                                imageUrl={`https://example.com/${index}.jpg`}
-                                title={`Card Title ${index + 1}`}
-                                description={`This is a description for card ${index + 1}.`}
-                                tags={['tag1', 'tag2', 'tag3']}
-                            />
-                        </div>
-                    ))}
+                    <PanelGuideList />
                 </div>
             </section>
             <Footer />

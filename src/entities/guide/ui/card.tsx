@@ -5,7 +5,7 @@ interface CardComponentProps {
     imageUrl: string
     title: string
     description: string
-    tags: string[]
+    tags?: string[]
     cardType?: 'default' | 'simple'
 }
 
@@ -42,7 +42,9 @@ const Card: React.FC<CardComponentProps> = ({
                 <p className="mt-6 text-base tracking-normal leading-6 text-slate-500">
                     {description}
                 </p>
-                {cardType === 'default' && <TagList tags={tags} />}
+                {cardType === 'default' && tags && tags.length > 0 && (
+                    <TagList tags={tags} />
+                )}
             </div>
         </article>
     )
