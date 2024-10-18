@@ -30,7 +30,7 @@ export function CreateGuide(props: CreateGuideProps): ReactNode {
         reValidateMode: 'onChange'
     })
 
-    const { create, data, loading } = useCreateGuide()
+    const { create } = useCreateGuide()
 
     const body = form.watch('body')
     const progress =

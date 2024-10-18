@@ -30,6 +30,7 @@ export default [
             '@typescript-eslint/no-unsafe-member-access': 'off',
             '@typescript-eslint/no-unnecessary-condition': 'error',
             '@typescript-eslint/strict-boolean-expressions': ['off'],
+            '@typescript-eslint/unbound-method': 'off',
 
             '@typescript-eslint/return-await': ['error', 'in-try-catch'],
             '@typescript-eslint/prefer-optional-chain': 'error',
