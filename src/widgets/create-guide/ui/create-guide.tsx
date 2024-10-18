@@ -2,6 +2,8 @@ import { Button, TextEditor, TextInput } from '@shared/ui'
 import type { ReactElement, ReactNode } from 'react'
 import { Controller, FormProvider } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
+import { useCreateGuide } from '../api/use-create-guide'
+import cn from 'clsx'
 
 type UseCreateGuideForm = {
     title: string
@@ -15,19 +17,47 @@ const defaultValues = {
     body: ''
 }
 
-export function CreateGuide(): ReactNode {
+type CreateGuideProps = {
+    className?: string
+}
+
+export function CreateGuide(props: CreateGuideProps): ReactNode {
+    const { className } = props
+
     const form = useForm<UseCreateGuideForm>({
         defaultValues,
         mode: 'all',
         reValidateMode: 'onChange'
     })
 
+    const { create, data, loading } = useCreateGuide()
+
+    const body = form.watch('body')
+    const progress =
+        ((body.replaceAll('\n', '').length * 0.95) / (1500 * 6)) * 100
+
     return (
         <FormProvider {...form}>
-            <div className="flex flex-col">
+            <div
+                className={cn(
+                    'flex flex-col max-w-[50rem] mx-auto w-full',
+                    className
+                )}
+            >
                 <h1 className="text-5xl font-bold text-center">
                     Create your guide
                 </h1>
+
+                <div className="flex flex-col">
+                    <span>Progress</span>
+
+                    <div
+                        className="h-4 rounded-lg border border-grey-200"
+                        style={{
+                            background: `linear-gradient(to right, #000 0% ${progress}%, #fff ${progress}%)`
+                        }}
+                    />
+                </div>
 
                 <Controller<UseCreateGuideForm, 'title'>
                     name="title"
@@ -106,7 +136,18 @@ export function CreateGuide(): ReactNode {
                     }}
                 />
 
-                <Button>Complete</Button>
+                <Button
+                    onClick={form.handleSubmit(data => {
+                        create({
+                            body: data.body,
+                            title: data.title,
+                            tags: data.tags.split(','),
+                            description: 'description'
+                        })
+                    })}
+                >
+                    Complete
+                </Button>
             </div>
         </FormProvider>
     )

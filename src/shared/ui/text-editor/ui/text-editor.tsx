@@ -7,6 +7,10 @@ import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 import { AutoLinkNode, LinkNode } from '@lexical/link'
 import { ListItemNode, ListNode } from '@lexical/list'
+import {
+    $convertToMarkdownString,
+    $convertFromMarkdownString
+} from '@lexical/markdown'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
@@ -15,7 +19,7 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { ToolbarPlugin } from './toolbar'
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
-import type { SerializedEditorState, SerializedRootNode } from 'lexical'
+import cn from 'clsx'
 
 type TextEditorProps = EditableTextEditorProps | ReadonlyTextEditorProps
 
@@ -70,33 +74,18 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                 LinkNode
             ],
             editable,
-            editorState(editor): void {
+            editorState(): void {
                 if (editable) {
-                    const { initialValue, onChange } = props
+                    const { initialValue } = props
+
+                    if (initialValue !== undefined) {
+                        $convertFromMarkdownString(initialValue)
+                    }
                 } else {
                     const { value } = props
-                    try {
-                        const parsedJSON = JSON.parse(
-                            value
-                        ) as SerializedEditorState<SerializedRootNode> | null
 
-                        // it should be an object value
-                        if (
-                            typeof parsedJSON !== 'object' ||
-                            parsedJSON === null ||
-                            Array.isArray(parsedJSON) ||
-                            !Object.hasOwn(parsedJSON, 'root') ||
-                            parsedJSON.root.type !== 'root'
-                        ) {
-                            throw new Error()
-                        }
-
-                        editor.setEditorState(
-                            editor.parseEditorState(parsedJSON)
-                        )
-                    } catch {
-                        console.error('Invalid text editor value!')
-                    }
+                    $convertFromMarkdownString(value)
+                    return
                 }
             }
         }
@@ -104,7 +93,12 @@ export function TextEditor(props: TextEditorProps): ReactNode {
 
     return (
         <LexicalComposer initialConfig={config}>
-            <div className="flex flex-col border-2 border-gray-300 rounded-lg focus-within:border-blue-700">
+            <div
+                className={cn('flex flex-col ', {
+                    'border-2 border-gray-300 rounded-lg focus-within:border-blue-700':
+                        editable
+                })}
+            >
                 {editable && (
                     <ToolbarPlugin
                         className="border-b border-gray-300"
@@ -125,11 +119,11 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                     <>
                         <HistoryPlugin />
                         <OnChangePlugin
-                            onChange={(editorState, editor, tags): void => {
-                                const stringState = JSON.stringify(
-                                    editorState.toJSON()
-                                )
-                                props.onChange(stringState)
+                            onChange={(_, editor): void => {
+                                editor.read(() => {
+                                    const state = $convertToMarkdownString()
+                                    props.onChange(state)
+                                })
                             }}
                             ignoreSelectionChange
                         />

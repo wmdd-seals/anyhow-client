@@ -5,6 +5,7 @@ export const CREATE_GUIDE_MUTATION = graphql(`
         res: createGuide(input: $input) {
             id
             title
+            tags
             description
             body
         }
