@@ -27,10 +27,11 @@ export function SliderGuideList(): ReactNode {
                     className="my-16 flex justify-items-center justify-center mx-auto w-[250px]"
                 >
                     <Card
+                        id={guide!.id}
                         key={guide!.id}
                         imageUrl={'https://example.com/${index}.jpg'}
-                        title={guide!.title!}
-                        description={guide!.description!}
+                        title={guide!.title}
+                        description={guide!.description}
                         tags={guide!.tags as string[]}
                     />
                 </div>

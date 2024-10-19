@@ -24,10 +24,11 @@ export function PanelGuideList(): ReactNode {
             {data?.res.map((guide, index) => (
                 <div key={index}>
                     <Card
+                        id={guide!.id}
                         key={index}
                         imageUrl={'https://example.com/${index}.jpg'}
-                        title={guide!.title!}
-                        description={guide!.description!}
+                        title={guide!.title}
+                        description={guide!.description}
                         tags={guide!.tags as string[]} // TODO: fix the type
                     />
                 </div>
