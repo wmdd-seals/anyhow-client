@@ -15,15 +15,8 @@ const GET_GUIDES = graphql(`
     }
 `)
 
-type Guide = {
-    description: string
-    title: string
-    id: string
-    tags: string[]
-}
-
 export function SliderGuideList(): ReactNode {
-    const { data } = useQuery<{ res: Guide[] }>(GET_GUIDES)
+    const { data } = useQuery(GET_GUIDES)
 
     if (data?.res.length === 0) return <div>No guides found</div>
     return (
@@ -34,11 +27,11 @@ export function SliderGuideList(): ReactNode {
                     className="my-16 flex justify-items-center justify-center mx-auto w-[250px]"
                 >
                     <Card
-                        key={guide.id}
+                        key={guide!.id}
                         imageUrl={'https://example.com/${index}.jpg'}
-                        title={guide.title}
-                        description={guide.description}
-                        tags={guide.tags}
+                        title={guide!.title!}
+                        description={guide!.description!}
+                        tags={guide!.tags as string[]}
                     />
                 </div>
             ))}
