@@ -1,8 +1,32 @@
 import { useState, type ReactNode } from 'react'
-import { BarChart } from '@widgets/statistics/chart/bar-chart'
 import { adjustDateRange } from 'src/shared/lib'
+import { ResponsiveBar } from '@nivo/bar'
 
 import { barChartData } from '../sample-data'
+
+type BarChartProps = {
+    data: {
+        day: string
+        value: number
+    }[]
+    keys: string[]
+    indexBy: string
+}
+
+function BarChart({ data, keys, indexBy }: BarChartProps): ReactNode {
+    return (
+        <ResponsiveBar
+            colors={['grey']}
+            keys={keys}
+            data={data}
+            indexBy={indexBy}
+            enableGridX={false}
+            enableGridY={false}
+            axisLeft={null}
+            margin={{ top: 90, right: 10, bottom: 30, left: 30 }}
+        />
+    )
+}
 
 function TimeSpentBarChart(): ReactNode {
     const today = new Date()
@@ -21,13 +45,13 @@ function TimeSpentBarChart(): ReactNode {
     )
 
     const handlePrev = (): void => {
-        const { from: newFrom, to: newTo } = adjustDateRange(from, to, -7)
+        const [newFrom, newTo] = adjustDateRange(from, to, -7)
         setTo(newTo)
         setFrom(newFrom)
     }
 
     const handleNext = (): void => {
-        const { from: newFrom, to: newTo } = adjustDateRange(from, to, 7)
+        const [newFrom, newTo] = adjustDateRange(from, to, 7)
         setTo(newTo)
         setFrom(newFrom)
     }
