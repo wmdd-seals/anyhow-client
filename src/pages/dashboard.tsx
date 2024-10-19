@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react'
-import { TimeSpentBarChart } from 'src/entities/statistics/time-spent-bar-chart'
-import { ContributionCalendarChart } from 'src/entities/statistics/contribution-calendar-chart'
+import { TimeSpentBarChart } from 'src/widgets/statistics/time-spent-bar-chart'
+import { ContributionCalendarChart } from 'src/widgets/statistics/contribution-calendar-chart'
 import { ScoreCard } from 'src/entities/guide/ui/score-card'
 import { Card } from 'src/entities/guide/ui/card'
 import { Header } from 'src/widgets/header'
