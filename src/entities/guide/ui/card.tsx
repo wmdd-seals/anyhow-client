@@ -1,12 +1,14 @@
 import React from 'react'
 import { TagList } from './tag-list'
+import { Link } from 'react-router-dom'
 
 interface CardComponentProps {
     imageUrl: string
     title: string
     description: string
-    tags: string[]
+    tags?: string[]
     cardType?: 'default' | 'simple'
+    id: string
 }
 
 const Card: React.FC<CardComponentProps> = ({
@@ -14,10 +16,14 @@ const Card: React.FC<CardComponentProps> = ({
     title,
     description,
     tags,
-    cardType = 'default'
+    cardType = 'default',
+    id
 }) => {
     return (
-        <article className="flex overflow-hidden flex-col bg-white rounded-lg border-2 border-gray-700 border-solid w-ful">
+        <Link
+            className="flex overflow-hidden flex-col bg-white rounded-lg border-2 border-gray-700 border-solid w-ful"
+            to={id}
+        >
             <div className="flex overflow-hidden flex-col justify-center items-center px-20 py-24 w-full rounded-lg border-2 border-gray-700 border-solid bg-slate-100">
                 <img
                     loading="lazy"
@@ -42,9 +48,11 @@ const Card: React.FC<CardComponentProps> = ({
                 <p className="mt-6 text-base tracking-normal leading-6 text-slate-500">
                     {description}
                 </p>
-                {cardType === 'default' && <TagList tags={tags} />}
+                {cardType === 'default' && tags && tags.length > 0 && (
+                    <TagList tags={tags} />
+                )}
             </div>
-        </article>
+        </Link>
     )
 }
 
