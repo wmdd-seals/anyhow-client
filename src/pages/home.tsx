@@ -2,8 +2,9 @@ import type { ReactNode } from 'react'
 import { Slider } from 'src/shared/ui'
 import { Header } from 'src/widgets/header'
 import { Footer } from 'src/widgets/footer/ui/footer'
-import { SliderGuideList } from 'src/widgets/guide-list'
-import { PanelGuideList } from '@widgets/guide-list/panel/panel-guide-list'
+import { SliderGuideList } from '@widgets/guide-list'
+import { PanelGuideList } from '@widgets/guide-list'
+
 const carouselItems = [
     {
         title: "Explore Nature's Beauty",

@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import type { ReactNode } from 'react'
-import { Card } from 'src/entities/guide/ui'
+import { Card } from 'src/entities/guide'
 
 const GET_GUIDES = graphql(`
     query Guides {

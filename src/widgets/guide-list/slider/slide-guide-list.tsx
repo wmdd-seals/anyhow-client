@@ -1,4 +1,4 @@
-import { Card } from 'src/entities/guide/ui'
+import { Card } from 'src/entities/guide'
 import type { ReactNode } from 'react'
 import { useQuery } from '@apollo/client'
 import { Slider } from 'src/shared/ui'

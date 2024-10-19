@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { BarChart } from '@widgets/statistics/chart/bar-chart'
-import { adjustDateRange } from '@shared/lib'
+import { adjustDateRange } from 'src/shared/lib'
 
 import { barChartData } from '../sample-data'
 
