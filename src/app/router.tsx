@@ -14,6 +14,7 @@ import {
     EditGuidePage,
     Dashboard
 } from '../pages'
+import ProtectedRoute from './protectedroute'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -21,17 +22,18 @@ const router = createBrowserRouter(
             <Route path="/">
                 <Route path="login" element={<LoginPage />} />
                 <Route index element={<HomePage />} />
-                <Route path="/:id">
-                    <Route index element={<GuidePage />} />
-
-                    <Route path="edit">
-                        <Route index element={<EditGuidePage />} />
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/:id">
+                        <Route index element={<GuidePage />} />
+                        <Route path="edit">
+                            <Route index element={<EditGuidePage />} />
+                        </Route>
+                        <Route path="quiz/:id" element={<QuizPage />} />
+                        <Route path="account" element={<AccountPage />} />
+                        <Route path="create" element={<CreateGuidePage />} />
+                        <Route path="dashboard" element={<Dashboard />} />
                     </Route>
-
-                    <Route path="quiz/:id" element={<QuizPage />} />
                 </Route>
-                <Route path="account" element={<AccountPage />} />
-                <Route path="dashboard" element={<Dashboard />} />
             </Route>
         </>
     )
