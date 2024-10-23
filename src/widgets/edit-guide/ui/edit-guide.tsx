@@ -1,8 +1,12 @@
 import { Button, TextEditor, TextInput } from '@shared/ui'
-import type { ReactElement, ReactNode } from 'react'
+import {
+    useEffect,
+    useLayoutEffect,
+    type ReactElement,
+    type ReactNode
+} from 'react'
 import { Controller, FormProvider } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-import { useCreateGuide } from '../api/use-create-guide'
 import cn from 'clsx'
 import { GET_GUIDE_QUERY } from '../api/get-guide'
 import { useQuery } from '@apollo/client'
@@ -41,8 +45,6 @@ export function EditGuide(props: EditGuideProps): ReactNode {
         mode: 'all',
         reValidateMode: 'onChange'
     })
-
-    const { create } = useCreateGuide()
 
     const body = form.watch('body')
     const progress =
@@ -140,6 +142,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                                 <span>Content</span>
                                 <TextEditor
                                     editable
+                                    initialValue={data.res.body!}
                                     onChange={field.onChange}
                                 />
                                 {error?.message && (
@@ -154,12 +157,8 @@ export function EditGuide(props: EditGuideProps): ReactNode {
 
                 <Button
                     onClick={form.handleSubmit(data => {
-                        create({
-                            body: data.body,
-                            title: data.title,
-                            tags: data.tags.split(','),
-                            description: 'description'
-                        })
+                        console.log(data)
+                        //
                     })}
                 >
                     Complete
