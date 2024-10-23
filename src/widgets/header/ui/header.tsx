@@ -1,9 +1,11 @@
 import { useState, type ReactNode } from 'react'
 import { CreateGuideButton } from 'src/features/create-guide'
+import { useNavigate } from 'react-router-dom'
 import { Button } from 'src/shared/ui'
 
 function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }): ReactNode {
     const [isOpen, setIsOpen] = useState(false)
+    const navigate = useNavigate()
 
     return (
         <>
@@ -32,8 +34,12 @@ function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }): ReactNode {
                             </>
                         ) : (
                             <>
-                                <Button>Login</Button>
-                                <Button>Sign Up</Button>
+                                <Button onClick={() => navigate('/login')}>
+                                    Login
+                                </Button>
+                                <Button onClick={() => navigate('/signup')}>
+                                    Sign Up
+                                </Button>
                             </>
                         )}
                     </div>
@@ -45,6 +51,7 @@ function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }): ReactNode {
 
 function Header(): ReactNode {
     const [isLoggedIn] = useState(false)
+    const navigate = useNavigate()
 
     return (
         <header className="bg-white text-white p-4 sticky top-0">
@@ -64,8 +71,12 @@ function Header(): ReactNode {
                         </>
                     ) : (
                         <>
-                            <Button>Login</Button>
-                            <Button>Sign Up</Button>
+                            <Button onClick={() => navigate('/login')}>
+                                Login
+                            </Button>
+                            <Button onClick={() => navigate('/signup')}>
+                                Sign Up
+                            </Button>
                             <CreateGuideButton />
                         </>
                     )}
