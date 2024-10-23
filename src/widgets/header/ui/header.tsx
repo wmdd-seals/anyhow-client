@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react'
+import { CreateGuideButton } from 'src/features/create-guide'
 import { Button } from 'src/shared/ui'
 
 function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }): ReactNode {
@@ -59,11 +60,13 @@ function Header(): ReactNode {
                         <>
                             <Button>About us</Button>
                             <Button>Logout</Button>
+                            <CreateGuideButton />
                         </>
                     ) : (
                         <>
                             <Button>Login</Button>
                             <Button>Sign Up</Button>
+                            <CreateGuideButton />
                         </>
                     )}
                 </div>
