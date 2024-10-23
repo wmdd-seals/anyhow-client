@@ -46,7 +46,7 @@ function Header(): ReactNode {
     const [isLoggedIn] = useState(false)
 
     return (
-        <header className="bg-white text-white p-4">
+        <header className="bg-white text-white p-4 sticky top-0">
             <div className="container mx-auto w-full flex justify-between items-center">
                 <div className="flex items-center">
                     <p className="text-2xl font-bold text-slate-800">Logo</p>
