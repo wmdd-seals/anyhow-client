@@ -4,6 +4,8 @@ import { Controller, FormProvider } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { useCreateGuide } from '../api/use-create-guide'
 import cn from 'clsx'
+import { GET_GUIDE_QUERY } from '../api/get-guide'
+import { useQuery } from '@apollo/client'
 
 type UseCreateGuideForm = {
     title: string
@@ -17,15 +19,25 @@ const defaultValues = {
     body: ''
 }
 
-type CreateGuideProps = {
+type EditGuideProps = {
     className?: string
+    id: string
 }
 
-export function CreateGuide(props: CreateGuideProps): ReactNode {
-    const { className } = props
+export function EditGuide(props: EditGuideProps): ReactNode {
+    const { className, id } = props
+
+    const { data, loading } = useQuery(GET_GUIDE_QUERY, {
+        variables: { id }
+    })
 
     const form = useForm<UseCreateGuideForm>({
         defaultValues,
+        values: {
+            body: data?.res.body || '',
+            title: data?.res.title || '',
+            tags: (data?.res.tags as string) || ''
+        },
         mode: 'all',
         reValidateMode: 'onChange'
     })
@@ -35,6 +47,10 @@ export function CreateGuide(props: CreateGuideProps): ReactNode {
     const body = form.watch('body')
     const progress =
         ((body.replaceAll('\n', '').length * 0.95) / (1500 * 6)) * 100
+
+    if (loading) return 'Loading...'
+
+    if (!data?.res) return 'Something went wrong...'
 
     return (
         <FormProvider {...form}>
