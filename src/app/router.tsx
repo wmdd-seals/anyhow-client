@@ -15,11 +15,13 @@ import {
     Dashboard
 } from '../pages'
 import ProtectedRoute from './protectedroute'
+import { PublicRoute } from './public-route'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
-        <>
-            <Route path="/">
+        <Route path="/">
+            <Route index element={<HomePage />} />
+            <Route element={<PublicRoute />}>
                 <Route path="login" element={<LoginPage />} />
                 <Route index element={<HomePage />} />
                 <Route element={<ProtectedRoute />}>
@@ -29,13 +31,13 @@ const router = createBrowserRouter(
                             <Route index element={<EditGuidePage />} />
                         </Route>
                         <Route path="quiz/:id" element={<QuizPage />} />
-                        <Route path="account" element={<AccountPage />} />
-                        <Route path="create" element={<CreateGuidePage />} />
-                        <Route path="dashboard" element={<Dashboard />} />
                     </Route>
+                    <Route path="account" element={<AccountPage />} />
+                    <Route path="create" element={<CreateGuidePage />} />
+                    <Route path="dashboard" element={<Dashboard />} />
                 </Route>
             </Route>
-        </>
+        </Route>
     )
 )
 
