@@ -9,7 +9,7 @@ import {
     HomePage,
     GuidePage,
     AccountPage,
-    QuizPage,
+    QuizCreationPage,
     LoginPage,
     OnboardingPage,
     EditGuidePage,
@@ -34,8 +34,8 @@ const router = createBrowserRouter(
                 <Route element={<ProtectedRoute />}>
                     <Route path="edit">
                         <Route index element={<EditGuidePage />} />
+                        <Route path="quiz" element={<QuizCreationPage />} />                 
                     </Route>
-                    <Route path="quiz/:id" element={<QuizPage />} />
                 </Route>
                 <Route path="account" element={<AccountPage />} />
                 <Route path="dashboard" element={<Dashboard />} />
