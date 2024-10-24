@@ -44,6 +44,7 @@ const Dashboard = (): ReactNode => {
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                         {Array.from({ length: 10 }).map((_, index) => (
                             <Card
+                                id={index.toString()}
                                 key={index}
                                 imageUrl="https://via.placeholder.com/150"
                                 title="Total Time Spent"

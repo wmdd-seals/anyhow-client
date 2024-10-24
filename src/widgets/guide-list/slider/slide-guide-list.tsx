@@ -30,8 +30,8 @@ export function SliderGuideList(): ReactNode {
                         id={guide!.id}
                         key={guide!.id}
                         imageUrl={'https://example.com/${index}.jpg'}
-                        title={guide!.title}
-                        description={guide!.description}
+                        title={guide!.title!}
+                        description={guide!.description!}
                         tags={guide!.tags as string[]}
                     />
                 </div>
