@@ -4,7 +4,7 @@ import type { CreateGuideMutation, GuideCreationInput } from '@gqlgen/graphql'
 import type { Maybe } from '@shared/types'
 
 interface UseCreateGuide {
-    create(payload: GuideCreationInput): void
+    create(payload: GuideCreationInput): Promise<Maybe<string>>
     data: Maybe<CreateGuideMutation['res']>
     loading: boolean
 }
@@ -15,8 +15,10 @@ export function useCreateGuide(): UseCreateGuide {
     return {
         data: data?.res,
         loading,
-        create: (payload): void => {
-            void mutation({ variables: { input: payload } })
+        create: async (payload): Promise<Maybe<string>> => {
+            const res = await mutation({ variables: { input: payload } })
+
+            return res.data?.res.id
         }
     }
 }

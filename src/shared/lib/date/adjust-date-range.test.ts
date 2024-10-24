@@ -7,8 +7,8 @@ describe('adjustDateRange', () => {
         const to = new Date('2022-01-31').getTime()
         const daysDiff = 7
         const result = adjustDateRange(from, to, daysDiff)
-        expect(result.from).toBe(new Date('2022-01-08').getTime())
-        expect(result.to).toBe(new Date('2022-02-07').getTime())
+        expect(result[0]).toBe(new Date('2022-01-08').getTime())
+        expect(result[1]).toBe(new Date('2022-02-07').getTime())
     })
 
     it('should handle negative daysDiff correctly', () => {
@@ -16,8 +16,8 @@ describe('adjustDateRange', () => {
         const to = new Date('2022-01-31').getTime()
         const daysDiff = -7
         const result = adjustDateRange(from, to, daysDiff)
-        expect(result.from).toBe(new Date('2021-12-25').getTime())
-        expect(result.to).toBe(new Date('2022-01-24').getTime())
+        expect(result[0]).toBe(new Date('2021-12-25').getTime())
+        expect(result[1]).toBe(new Date('2022-01-24').getTime())
     })
 
     it('should handle zero daysDiff correctly', () => {
@@ -25,7 +25,7 @@ describe('adjustDateRange', () => {
         const to = new Date('2022-01-31').getTime()
         const daysDiff = 0
         const result = adjustDateRange(from, to, daysDiff)
-        expect(result.from).toBe(from)
-        expect(result.to).toBe(to)
+        expect(result[0]).toBe(from)
+        expect(result[1]).toBe(to)
     })
 })

@@ -1,9 +1,15 @@
 import { Button, TextEditor, TextInput } from '@shared/ui'
-import type { ReactElement, ReactNode } from 'react'
+import {
+    useEffect,
+    useLayoutEffect,
+    type ReactElement,
+    type ReactNode
+} from 'react'
 import { Controller, FormProvider } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-import { useCreateGuide } from '../api/use-create-guide'
 import cn from 'clsx'
+import { GET_GUIDE_QUERY } from '../api/get-guide'
+import { useQuery } from '@apollo/client'
 
 type UseCreateGuideForm = {
     title: string
@@ -17,24 +23,36 @@ const defaultValues = {
     body: ''
 }
 
-type CreateGuideProps = {
+type EditGuideProps = {
     className?: string
+    id: string
 }
 
-export function CreateGuide(props: CreateGuideProps): ReactNode {
-    const { className } = props
+export function EditGuide(props: EditGuideProps): ReactNode {
+    const { className, id } = props
+
+    const { data, loading } = useQuery(GET_GUIDE_QUERY, {
+        variables: { id }
+    })
 
     const form = useForm<UseCreateGuideForm>({
         defaultValues,
+        values: {
+            body: data?.res.body || '',
+            title: data?.res.title || '',
+            tags: (data?.res.tags as string) || ''
+        },
         mode: 'all',
         reValidateMode: 'onChange'
     })
 
-    const { create } = useCreateGuide()
-
     const body = form.watch('body')
     const progress =
         ((body.replaceAll('\n', '').length * 0.95) / (1500 * 6)) * 100
+
+    if (loading) return 'Loading...'
+
+    if (!data?.res) return 'Something went wrong...'
 
     return (
         <FormProvider {...form}>
@@ -124,6 +142,7 @@ export function CreateGuide(props: CreateGuideProps): ReactNode {
                                 <span>Content</span>
                                 <TextEditor
                                     editable
+                                    initialValue={data.res.body!}
                                     onChange={field.onChange}
                                 />
                                 {error?.message && (
@@ -138,12 +157,8 @@ export function CreateGuide(props: CreateGuideProps): ReactNode {
 
                 <Button
                     onClick={form.handleSubmit(data => {
-                        create({
-                            body: data.body,
-                            title: data.title,
-                            tags: data.tags.split(','),
-                            description: 'description'
-                        })
+                        console.log(data)
+                        //
                     })}
                 >
                     Complete

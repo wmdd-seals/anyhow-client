@@ -1,8 +1,16 @@
+import { useAuth } from '@shared/lib'
 import { useState, type ReactNode } from 'react'
+import { CreateGuideButton } from 'src/features/create-guide'
+import { useNavigate } from 'react-router-dom'
 import { Button } from 'src/shared/ui'
 
-function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }): ReactNode {
+function MobileMenu({
+    isAuthenticated
+}: {
+    isAuthenticated: boolean
+}): ReactNode {
     const [isOpen, setIsOpen] = useState(false)
+    const navigate = useNavigate()
 
     return (
         <>
@@ -24,15 +32,20 @@ function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }): ReactNode {
                         >
                             CloseIcon
                         </button>
-                        {isLoggedIn ? (
+                        {isAuthenticated ? (
                             <>
                                 <Button>About us</Button>
                                 <Button>Logout</Button>
+                                <CreateGuideButton />
                             </>
                         ) : (
                             <>
-                                <Button>Login</Button>
-                                <Button>Sign Up</Button>
+                                <Button onClick={() => navigate('/login')}>
+                                    Login
+                                </Button>
+                                <Button onClick={() => navigate('/signup')}>
+                                    Sign Up
+                                </Button>
                             </>
                         )}
                     </div>
@@ -43,27 +56,33 @@ function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }): ReactNode {
 }
 
 function Header(): ReactNode {
-    const [isLoggedIn] = useState(false)
+    const { isAuthenticated } = useAuth()
+    const navigate = useNavigate()
 
     return (
         <header className="bg-white text-white p-4 sticky top-0">
-            <div className="container mx-auto w-full flex justify-between items-center">
+            <div className="container box-border mx-auto w-full flex justify-between items-center">
                 <div className="flex items-center">
                     <p className="text-2xl font-bold text-slate-800">Logo</p>
                 </div>
                 <div className="lg:hidden">
-                    <MobileMenu isLoggedIn={isLoggedIn} />
+                    <MobileMenu isAuthenticated={isAuthenticated} />
                 </div>
                 <div className="hidden lg:flex lg:space-x-4">
-                    {isLoggedIn ? (
+                    {isAuthenticated ? (
                         <>
                             <Button>About us</Button>
                             <Button>Logout</Button>
+                            <CreateGuideButton />
                         </>
                     ) : (
                         <>
-                            <Button>Login</Button>
-                            <Button>Sign Up</Button>
+                            <Button onClick={() => navigate('/login')}>
+                                Login
+                            </Button>
+                            <Button onClick={() => navigate('/signup')}>
+                                Sign Up
+                            </Button>
                         </>
                     )}
                 </div>
