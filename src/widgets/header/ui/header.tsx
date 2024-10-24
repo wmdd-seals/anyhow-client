@@ -36,6 +36,7 @@ function MobileMenu({
                             <>
                                 <Button>About us</Button>
                                 <Button>Logout</Button>
+                                <CreateGuideButton />
                             </>
                         ) : (
                             <>
@@ -82,7 +83,6 @@ function Header(): ReactNode {
                             <Button onClick={() => navigate('/signup')}>
                                 Sign Up
                             </Button>
-                            <CreateGuideButton />
                         </>
                     )}
                 </div>
