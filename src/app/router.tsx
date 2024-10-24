@@ -7,11 +7,11 @@ import {
 } from 'react-router-dom'
 import {
     HomePage,
+    OnboardingPage,
     GuidePage,
     AccountPage,
     QuizCreationPage,
     LoginPage,
-    OnboardingPage,
     EditGuidePage,
     Dashboard
 } from '../pages'
