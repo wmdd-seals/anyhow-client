@@ -11,6 +11,7 @@ import {
     AccountPage,
     QuizPage,
     LoginPage,
+    OnboardingPage
     EditGuidePage,
     Dashboard
 } from '../pages'
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
             <Route index element={<HomePage />} />
             <Route element={<PublicRoute />}>
                 <Route path="login" element={<LoginPage />} />
+                <Route path="onboarding" element={<OnboardingPage />} />
                 <Route index element={<HomePage />} />
                 <Route element={<ProtectedRoute />}>
                     <Route path="/:id">

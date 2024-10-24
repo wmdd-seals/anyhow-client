@@ -19,6 +19,7 @@ const documents = {
     "\n    query SignIn($input: UserSignInInput) {\n        signIn(input: $input) {\n            message\n            token\n        }\n    }\n": types.SignInDocument,
     "\n    query GetGuide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n        }\n    }\n": types.GetGuideDocument,
     "\n    query Guides {\n        res: guides {\n            description\n            title\n            id\n            tags\n        }\n    }\n": types.GuidesDocument,
+    "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n": types.SaveFavoriteTopicsDocument,
 };
 
 /**
@@ -55,6 +56,10 @@ export function graphql(source: "\n    query GetGuide($id: ID!) {\n        res: 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    query Guides {\n        res: guides {\n            description\n            title\n            id\n            tags\n        }\n    }\n"): (typeof documents)["\n    query Guides {\n        res: guides {\n            description\n            title\n            id\n            tags\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n"): (typeof documents)["\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
