@@ -6,6 +6,7 @@ import cn from 'clsx'
 import { GET_GUIDE_QUERY } from '../api/get-guide'
 import { useMutation, useQuery } from '@apollo/client'
 import { UPDATE_GUIDE_MUTATION } from '../api/update-guide'
+import { useGenerateQuiz } from '../../quiz-creation/api/use-generate-quiz'
 import { useNavigate } from 'react-router-dom'
 
 type UseCreateGuideForm = {
@@ -30,8 +31,6 @@ export function EditGuide(props: EditGuideProps): ReactNode {
 
     const { data, loading } = useQuery(GET_GUIDE_QUERY, { variables: { id } })
 
-    const navigate = useNavigate()
-
     const [updateGuide] = useMutation(UPDATE_GUIDE_MUTATION)
 
     const form = useForm<UseCreateGuideForm>({
@@ -45,6 +44,10 @@ export function EditGuide(props: EditGuideProps): ReactNode {
         reValidateMode: 'onChange'
     })
 
+    const { generate: generateQuiz } = useGenerateQuiz()
+
+    const navigate = useNavigate()
+
     const body = form.watch('body')
     const progress =
         ((body.replaceAll('\n', '').length * 0.95) / (1500 * 6)) * 100
@@ -57,7 +60,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
         <FormProvider {...form}>
             <div
                 className={cn(
-                    'flex flex-col max-w-[50rem] mx-auto w-full',
+                    'flex flex-col gap-3 max-w-[50rem] mx-auto w-full',
                     className
                 )}
             >
@@ -153,28 +156,75 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                         )
                     }}
                 />
+                <div className="flex gap-3 justify-center">
+                    <Button
+                        onClick={form.handleSubmit(async data => {
+                            const guide = await updateGuide({
+                                variables: {
+                                    input: {
+                                        id,
+                                        title: data.title,
+                                        body: data.body,
+                                        tags: data.tags.trim().split(','),
+                                        published: true
+                                    }
+                                }
+                            })
 
-                <Button
-                    onClick={form.handleSubmit(async data => {
-                        const guide = await updateGuide({
-                            variables: {
-                                input: {
-                                    id,
-                                    title: data.title,
-                                    body: data.body,
-                                    tags: data.tags.trim().split(','),
-                                    published: true
+                            if (!guide.data?.res) return
+
+                            navigate(`/${guide.data.res.id}`)
+                        })}
+                    >
+                        Publish
+                    </Button>
+
+                    <Button
+                        onClick={form.handleSubmit(async data => {
+                            const guide = await updateGuide({
+                                variables: {
+                                    input: {
+                                        id,
+                                        title: data.title,
+                                        body: data.body,
+                                        tags: data.tags.trim().split(','),
+                                        published: true
+                                    }
+                                }
+                            })
+
+                            if (!guide.data?.res) return
+
+                            navigate(`/${guide.data.res.id}`)
+
+                            if (id) {
+                                try {
+                                    const result = await generateQuiz({
+                                        guideId: id
+                                    })
+                                    if (result) {
+                                        console.log(
+                                            'Quiz generated successfully',
+                                            id
+                                        )
+                                        navigate(`/${id}/edit/quiz`)
+                                    } else {
+                                        console.error(
+                                            'An error occurred during quiz generation.'
+                                        )
+                                    }
+                                } catch (error) {
+                                    console.error(
+                                        'An error occurred during quiz generation:',
+                                        error
+                                    )
                                 }
                             }
-                        })
-
-                        if (!guide.data?.res) return
-
-                        navigate(`/${guide.data.res.id}`)
-                    })}
-                >
-                    Publish
-                </Button>
+                        })}
+                    >
+                        Generate Quiz
+                    </Button>
+                </div>
             </div>
         </FormProvider>
     )
