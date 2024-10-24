@@ -33,7 +33,7 @@ const router = createBrowserRouter(
                         <Route path="quiz/:id" element={<QuizPage />} />
                     </Route>
                     <Route path="account" element={<AccountPage />} />
-                    <Route path="create" element={<CreateGuidePage />} />
+                    {/* <Route path="create" element={<CreateGuidePage />} /> */}
                     <Route path="dashboard" element={<Dashboard />} />
                 </Route>
             </Route>
