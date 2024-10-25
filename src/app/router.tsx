@@ -11,7 +11,7 @@ import {
     AccountPage,
     QuizPage,
     LoginPage,
-    OnboardingPage
+    OnboardingPage,
     EditGuidePage,
     Dashboard
 } from '../pages'
