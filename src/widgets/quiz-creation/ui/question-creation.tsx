@@ -1,5 +1,5 @@
 import { type ReactNode, useState, useEffect } from 'react'
-import { Button } from '../../../shared/ui/button'
+import { Button } from '@shared/ui'
 import type { QuestionInput, InputMaybe } from '@gqlgen/graphql'
 
 type QuestionCreationProps = {
