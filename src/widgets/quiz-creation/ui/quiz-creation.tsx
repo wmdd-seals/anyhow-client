@@ -32,10 +32,10 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
     const { className, guideId } = props
 
     const { data, loading } = useQuery(GET_QUIZ_QUERY, {
-        variables: { guideId: guideId as string }
+        variables: { guideId: guideId }
     })
     const quizId = data?.res.quiz?.id
-    
+
     const [quizData, setQuizData] = useState<QuestionInput[] | null>(null)
     const [visibleQuestions, setVisibleQuestions] = useState(3)
 
@@ -53,29 +53,28 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
 
     const remainingQuestions = quizData ? quizData.length - visibleQuestions : 0
 
-const debouncedUpdateQuiz = useCallback(
-    debounce(async (updatedQuizData: QuestionInput[]) => {
-        if (!quizId) return
+    const debouncedUpdateQuiz = useCallback(
+        debounce(async (updatedQuizData: QuestionInput[]) => {
+            if (!quizId) return
 
-        const payload = {
-            id: quizId,
-            body: {
-                quiz: {
-                    questions: updatedQuizData.map(question => ({
-                        questionTitle: question.questionTitle,
-                        options: question.options,
-                        correctAnswerIndex: question.correctAnswerIndex
-                    }))
+            const payload = {
+                id: quizId,
+                body: {
+                    quiz: {
+                        questions: updatedQuizData.map(question => ({
+                            questionTitle: question.questionTitle,
+                            options: question.options,
+                            correctAnswerIndex: question.correctAnswerIndex
+                        }))
+                    }
                 }
             }
-        };
 
-        const result = await updateQuiz(payload)
-        if (!result) return
-    }, 1500),
-    [quizId, updateQuiz]
-);
-
+            const result = await updateQuiz(payload)
+            if (!result) return
+        }, 1500),
+        [quizId, updateQuiz]
+    )
 
     const updateQuizDataOnServer = (updatedQuizData: QuestionInput[]): void => {
         debouncedUpdateQuiz(updatedQuizData)
@@ -192,7 +191,7 @@ const debouncedUpdateQuiz = useCallback(
         const visibleQuizData = quizData.slice(0, visibleQuestions)
 
         const guideInput = {
-            id: guideId!,
+            id: guideId,
             published: true
         }
 
@@ -221,8 +220,12 @@ const debouncedUpdateQuiz = useCallback(
     }
 
     return (
-        <div className={cn('flex flex-col gap-1 max-w-3xl mx-auto px-6', className)}
-            >
+        <div
+            className={cn(
+                'flex flex-col gap-1 max-w-3xl mx-auto px-6',
+                className
+            )}
+        >
             <h1 className="text-center text-5xl font-bold">Generated Quiz</h1>
 
             <div className="grow">
