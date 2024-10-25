@@ -22,22 +22,23 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/">
             <Route index element={<HomePage />} />
+
             <Route element={<PublicRoute />}>
                 <Route path="login" element={<LoginPage />} />
-                <Route path="onboarding" element={<OnboardingPage />} />
-                <Route index element={<HomePage />} />
+            </Route>
+            <Route path="onboarding" element={<OnboardingPage />} />
+
+            <Route path="/:id">
+                <Route index element={<GuidePage />} />
+
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/:id">
-                        <Route index element={<GuidePage />} />
-                        <Route path="edit">
-                            <Route index element={<EditGuidePage />} />
-                        </Route>
-                        <Route path="quiz/:id" element={<QuizPage />} />
+                    <Route path="edit">
+                        <Route index element={<EditGuidePage />} />
                     </Route>
-                    <Route path="account" element={<AccountPage />} />
-                    {/* <Route path="create" element={<CreateGuidePage />} /> */}
-                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="quiz/:id" element={<QuizPage />} />
                 </Route>
+                <Route path="account" element={<AccountPage />} />
+                <Route path="dashboard" element={<Dashboard />} />
             </Route>
         </Route>
     )
