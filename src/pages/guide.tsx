@@ -1,7 +1,9 @@
 import { useState, type ReactNode } from 'react'
 import { Icon, TextEditor } from '@shared/ui'
+import { useEffect, type ReactNode } from 'react'
+import { TextEditor } from '@shared/ui'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import { Header } from '@widgets/header'
 import { Footer } from '@widgets/footer/ui/footer'
@@ -86,9 +88,9 @@ export function GuidePage(): ReactNode {
 
                     <TransitionChild>
                         <div
-                            className={`transition bg-white h-screen fixed 
-                                max-w-[30rem] w-full rounded-l-3xl top-0 right-0 z-[2] 
-                                data-[closed]:translate-x-full py-8 px-5 
+                            className={`transition bg-white h-screen fixed
+                                max-w-[30rem] w-full rounded-l-3xl top-0 right-0 z-[2]
+                                data-[closed]:translate-x-full py-8 px-5
                                 flex flex-col`}
                         >
                             <button

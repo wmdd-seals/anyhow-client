@@ -2,8 +2,8 @@ import { useState, type ReactNode } from 'react'
 import { adjustDateRange } from 'src/shared/lib'
 import { ResponsiveBar } from '@nivo/bar'
 
-import { barChartData } from '../sample-data'
-
+import { useQuery } from '@apollo/client'
+import { graphql } from '@gqlgen'
 type BarChartProps = {
     data: {
         day: string
@@ -12,6 +12,15 @@ type BarChartProps = {
     keys: string[]
     indexBy: string
 }
+
+const GET_GUIDE_TAKEN_COUNTS = graphql(`
+    query GuideTakenCounts {
+        res: guideTakenCounts {
+            date
+            guideCount
+        }
+    }
+`)
 
 function BarChart({ data, keys, indexBy }: BarChartProps): ReactNode {
     return (
@@ -29,18 +38,25 @@ function BarChart({ data, keys, indexBy }: BarChartProps): ReactNode {
 }
 
 function TimeSpentBarChart(): ReactNode {
+    const { data: counts } = useQuery(GET_GUIDE_TAKEN_COUNTS, {
+        fetchPolicy: 'network-only'
+    })
+
     const today = new Date()
     const [to, setTo] = useState<number>(today.getTime())
     const [from, setFrom] = useState<number>(
         new Date(today.setDate(today.getDate() - 7)).getTime()
     )
-    const filteredData = barChartData.filter(data => {
-        const dataDate = new Date(data.day).getTime()
+
+    if (!counts) return null
+
+    const filteredData = counts.res.filter(data => {
+        const dataDate = new Date(data.date).getTime()
         return dataDate >= from && dataDate <= to
     })
 
     const averageTimeSpent = Math.floor(
-        filteredData.reduce((acc, curr) => acc + curr.value, 0) /
+        filteredData.reduce((acc, curr) => acc + curr.guideCount, 0) /
             filteredData.length
     )
 
@@ -72,10 +88,14 @@ function TimeSpentBarChart(): ReactNode {
             </button>
             <div className="text-2xl text-gray-500 w-full text-left absolute left-5 top-5">
                 <label>Average</label>
-                <p>{averageTimeSpent} min</p>
+                <p>{averageTimeSpent}</p>
                 <p></p>
             </div>
-            <BarChart data={filteredData} keys={['value']} indexBy="day" />
+            <BarChart
+                data={filteredData}
+                keys={['guideCount']}
+                indexBy="date"
+            />
         </div>
     )
 }
