@@ -197,29 +197,11 @@ export function EditGuide(props: EditGuideProps): ReactNode {
 
                             navigate(`/${guide.data.res.id}`)
 
-                            if (id) {
-                                try {
-                                    const result = await generateQuiz({
-                                        guideId: id
-                                    })
-                                    if (result) {
-                                        console.log(
-                                            'Quiz generated successfully',
-                                            id
-                                        )
-                                        navigate(`/${id}/edit/quiz`)
-                                    } else {
-                                        console.error(
-                                            'An error occurred during quiz generation.'
-                                        )
-                                    }
-                                } catch (error) {
-                                    console.error(
-                                        'An error occurred during quiz generation:',
-                                        error
-                                    )
-                                }
-                            }
+                            if (!id) return
+                            const result = await generateQuiz({ guideId: id })
+                            if (!result) return
+
+                            navigate(`/${id}/edit/quiz`)
                         })}
                     >
                         Generate Quiz
