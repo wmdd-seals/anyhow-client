@@ -1,10 +1,5 @@
 import { Button, TextEditor, TextInput } from '@shared/ui'
-import {
-    useEffect,
-    useLayoutEffect,
-    type ReactElement,
-    type ReactNode
-} from 'react'
+import { type ReactElement, type ReactNode } from 'react'
 import { Controller, FormProvider } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import cn from 'clsx'
