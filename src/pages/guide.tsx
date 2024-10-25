@@ -1,11 +1,12 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { TextEditor } from '@shared/ui'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import { Header } from '@widgets/header'
 import { Footer } from '@widgets/footer/ui/footer'
-import { GuideChat } from '@widgets/guide-chat'
+import { ADD_GUIDE_TAKEN_MUTATION } from 'src/features/add-guide-taken/api/add-guide-taken'
+// import { GuideChat } from '@widgets/guide-chat'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -25,6 +26,7 @@ const GUIDE_QUERY = graphql(`
 
 export function GuidePage(): ReactNode {
     const params = useParams<{ id: string }>()
+    const [addGuideTakenMutation] = useMutation(ADD_GUIDE_TAKEN_MUTATION)
 
     const { data, loading, error } = useQuery(GUIDE_QUERY, {
         variables: {
@@ -32,6 +34,15 @@ export function GuidePage(): ReactNode {
         },
         skip: !params.id
     })
+
+    useEffect(() => {
+        if (!params.id) return
+        void addGuideTakenMutation({
+            variables: {
+                input: { guideId: params.id }
+            }
+        })
+    }, [params.id])
 
     if (!params.id) return 'Guide not found'
 
@@ -43,7 +54,7 @@ export function GuidePage(): ReactNode {
         <div className="flex flex-col min-h-screen">
             <Header />
 
-            <GuideChat guideId={params.id} />
+            {/* <GuideChat guideId={params.id} /> */}
 
             <main className="max-w-[50rem] w-full mx-auto grow">
                 <h1 className="text-7xl font-bold mb-8">{data.res.title}</h1>

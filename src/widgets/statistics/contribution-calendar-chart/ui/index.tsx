@@ -1,24 +1,38 @@
 import { useState, type ReactNode } from 'react'
-import { calendarChartData } from '../sample-data'
 import { adjustDateRange } from 'src/shared/lib'
 import { TimeRange } from '@nivo/calendar'
 import { ResponsiveWrapper } from '@nivo/core'
+import { useQuery } from '@apollo/client'
+import { graphql } from '@gqlgen'
 
 type CalendarChartProps = {
     from: Date
     to: Date
     data: {
-        day: string
-        value: number
+        date: string
+        guideCount: number
     }[]
 }
 
+const GET_GUIDE_TAKEN_COUNTS = graphql(`
+    query GuideTakenCounts {
+        res: guideTakenCounts {
+            date
+            guideCount
+        }
+    }
+`)
+
 function CalendarChart({ from, to, data }: CalendarChartProps): ReactNode {
+    console.log({ data })
     return (
         <ResponsiveWrapper>
             {({ width, height }) => (
                 <TimeRange
-                    data={data}
+                    data={data.map(item => ({
+                        day: item.date,
+                        value: item.guideCount
+                    }))}
                     from={from}
                     to={to}
                     weekdayTicks={[0, 1, 2, 3, 4, 5, 6]}
@@ -54,6 +68,11 @@ function CalendarChart({ from, to, data }: CalendarChartProps): ReactNode {
 }
 
 function ContributionCalendarChart(): ReactNode {
+    const { data: counts } = useQuery(GET_GUIDE_TAKEN_COUNTS, {
+        fetchPolicy: 'no-cache'
+    })
+    console.log({ counts })
+
     const today = new Date()
     const [to, setTo] = useState<number>(today.getTime())
     const [from, setFrom] = useState<number>(
@@ -71,6 +90,8 @@ function ContributionCalendarChart(): ReactNode {
         setTo(newTo)
         setFrom(newFrom)
     }
+
+    if (!counts) return null
 
     return (
         <div className="relative flex flex-col items-center gap-2 border-solid border-2 border-gray-300 rounded-md p-4 h-96">
@@ -92,7 +113,7 @@ function ContributionCalendarChart(): ReactNode {
             <CalendarChart
                 from={new Date(from)}
                 to={new Date(to)}
-                data={calendarChartData}
+                data={counts?.res}
             />
         </div>
     )
