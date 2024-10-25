@@ -17,7 +17,6 @@ export function useUpdateQuiz(): UseUpdateQuiz {
         loading,
         update: async (payload): Promise<boolean> => {
             try {
-                console.log('payload', payload)
                 const res = await mutation({ variables: { input: payload } })
                 return !!res.data?.res.id
             } catch (e) {
