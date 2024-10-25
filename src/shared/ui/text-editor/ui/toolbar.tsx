@@ -14,7 +14,6 @@ import {
     type HeadingTagType
 } from '@lexical/rich-text'
 import { $setBlocksType } from '@lexical/selection'
-import { $isTableNode, $isTableSelection } from '@lexical/table'
 import {
     $findMatchingParent,
     $getNearestNodeOfType,
@@ -24,15 +23,12 @@ import {
 import {
     $createParagraphNode,
     $getSelection,
-    $isElementNode,
     $isRangeSelection,
     $isRootOrShadowRoot,
     COMMAND_PRIORITY_CRITICAL,
-    type ElementFormatType,
     FORMAT_ELEMENT_COMMAND,
     FORMAT_TEXT_COMMAND,
     type LexicalEditor,
-    type NodeKey,
     SELECTION_CHANGE_COMMAND
 } from 'lexical'
 import { type Dispatch, useCallback, useEffect, useState } from 'react'
@@ -73,42 +69,37 @@ const blockTypeToBlockName = {
     quote: 'Quote'
 }
 
-const rootTypeToRootName = {
-    root: 'Root',
-    table: 'Table'
-}
-
-const ELEMENT_FORMAT_OPTIONS: {
-    [key in Exclude<ElementFormatType, ''>]: {
-        icon: string
-        name: string
-    }
-} = {
-    center: {
-        icon: 'center-align',
-        name: 'Center Align'
-    },
-    end: {
-        icon: 'right-align',
-        name: 'End Align'
-    },
-    justify: {
-        icon: 'justify-align',
-        name: 'Justify Align'
-    },
-    left: {
-        icon: 'left-align',
-        name: 'Left Align'
-    },
-    right: {
-        icon: 'right-align',
-        name: 'Right Align'
-    },
-    start: {
-        icon: 'left-align',
-        name: 'Start Align'
-    }
-}
+// const ELEMENT_FORMAT_OPTIONS: {
+//     [key in Exclude<ElementFormatType, ''>]: {
+//         icon: string
+//         name: string
+//     }
+// } = {
+//     center: {
+//         icon: 'center-align',
+//         name: 'Center Align'
+//     },
+//     end: {
+//         icon: 'right-align',
+//         name: 'End Align'
+//     },
+//     justify: {
+//         icon: 'justify-align',
+//         name: 'Justify Align'
+//     },
+//     left: {
+//         icon: 'left-align',
+//         name: 'Left Align'
+//     },
+//     right: {
+//         icon: 'right-align',
+//         name: 'Right Align'
+//     },
+//     start: {
+//         icon: 'left-align',
+//         name: 'Start Align'
+//     }
+// }
 
 function BlockFormatDropDown({
     editor,
@@ -271,12 +262,8 @@ export function ToolbarPlugin(props: {
     const [activeEditor, setActiveEditor] = useState(editor)
     const [blockType, setBlockType] =
         useState<keyof typeof blockTypeToBlockName>('paragraph')
-    const [rootType, setRootType] =
-        useState<keyof typeof rootTypeToRootName>('root')
-    const [selectedElementKey, setSelectedElementKey] =
-        useState<NodeKey | null>(null)
-    const [elementFormat, setElementFormat] =
-        useState<ElementFormatType>('left')
+    // const [elementFormat, setElementFormat] =
+    //     useState<ElementFormatType>('left')
     const [isLink, setIsLink] = useState(false)
     const [isBold, setIsBold] = useState(false)
     const [isItalic, setIsItalic] = useState(false)
@@ -327,15 +314,7 @@ export function ToolbarPlugin(props: {
                 setIsLink(false)
             }
 
-            const tableNode = $findMatchingParent(node, $isTableNode)
-            if ($isTableNode(tableNode)) {
-                setRootType('table')
-            } else {
-                setRootType('root')
-            }
-
             if (elementDOM !== null) {
-                setSelectedElementKey(elementKey)
                 if ($isListNode(element)) {
                     const parentList = $getNearestNodeOfType<ListNode>(
                         anchorNode,
@@ -360,27 +339,29 @@ export function ToolbarPlugin(props: {
                 }
             }
             // Handle buttons
-            let matchingParent
-            if ($isLinkNode(parent)) {
-                // If node is a link, we need to fetch the parent paragraph node to set format
-                matchingParent = $findMatchingParent(
-                    node,
-                    parentNode =>
-                        $isElementNode(parentNode) && !parentNode.isInline()
-                )
-            }
+            // let matchingParent
+            // if ($isLinkNode(parent)) {
+            // If node is a link, we need to fetch the parent paragraph node to set format
+            // matchingParent = $findMatchingParent(
+            //     node,
+            //     parentNode =>
+            //         $isElementNode(parentNode) && !parentNode.isInline()
+            // )
+            // }
 
             // If matchingParent is a valid node, pass it's format type
-            setElementFormat(
-                $isElementNode(matchingParent)
-                    ? matchingParent.getFormatType()
-                    : $isElementNode(node)
-                      ? node.getFormatType()
-                      : parent?.getFormatType() || 'left'
-            )
+            // setElementFormat(
+            //     $isElementNode(matchingParent)
+            //         ? matchingParent.getFormatType()
+            //         : $isElementNode(node)
+            //           ? node.getFormatType()
+            //           : parent?.getFormatType() || 'left'
+            // )
         }
 
-        if ($isRangeSelection(selection) || $isTableSelection(selection)) {
+        if (
+            $isRangeSelection(selection) /* || $isTableSelection(selection) */
+        ) {
             // Update text format
             setIsBold(selection.hasFormat('bold'))
             setIsItalic(selection.hasFormat('italic'))
@@ -431,7 +412,7 @@ export function ToolbarPlugin(props: {
     }, [activeEditor, isLink, setIsLinkEditMode])
 
     const canViewerSeeInsertCodeButton = !isImageCaption
-    const formatOption = ELEMENT_FORMAT_OPTIONS[elementFormat || 'left']
+    // const formatOption = ELEMENT_FORMAT_OPTIONS[elementFormat || 'left']
 
     return (
         <div className={cn('flex items-center justify-between', className)}>
