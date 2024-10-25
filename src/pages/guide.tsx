@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import { Header } from '@widgets/header'
 import { Footer } from '@widgets/footer/ui/footer'
-
 import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
 import { getGuideProgress } from 'src/entities/guide'
