@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Icon, TextEditor } from '@shared/ui'
 import { useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/client'
