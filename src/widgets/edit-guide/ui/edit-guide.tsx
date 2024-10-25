@@ -4,7 +4,9 @@ import { Controller, FormProvider } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import cn from 'clsx'
 import { GET_GUIDE_QUERY } from '../api/get-guide'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
+import { UPDATE_GUIDE_MUTATION } from '../api/update-guide'
+import { useNavigate } from 'react-router-dom'
 
 type UseCreateGuideForm = {
     title: string
@@ -26,9 +28,11 @@ type EditGuideProps = {
 export function EditGuide(props: EditGuideProps): ReactNode {
     const { className, id } = props
 
-    const { data, loading } = useQuery(GET_GUIDE_QUERY, {
-        variables: { id }
-    })
+    const { data, loading } = useQuery(GET_GUIDE_QUERY, { variables: { id } })
+
+    const navigate = useNavigate()
+
+    const [updateGuide] = useMutation(UPDATE_GUIDE_MUTATION)
 
     const form = useForm<UseCreateGuideForm>({
         defaultValues,
@@ -151,12 +155,25 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                 />
 
                 <Button
-                    onClick={form.handleSubmit(data => {
-                        console.log(data)
-                        //
+                    onClick={form.handleSubmit(async data => {
+                        const guide = await updateGuide({
+                            variables: {
+                                input: {
+                                    id,
+                                    title: data.title,
+                                    body: data.body,
+                                    tags: data.tags.trim().split(','),
+                                    published: true
+                                }
+                            }
+                        })
+
+                        if (!guide.data?.res) return
+
+                        navigate(`/${guide.data.res.id}`)
                     })}
                 >
-                    Complete
+                    Publish
                 </Button>
             </div>
         </FormProvider>
