@@ -1,5 +1,5 @@
-import { useState, type ReactNode } from 'react'
-import { Icon, TextEditor } from '@shared/ui'
+import { type ReactNode, useState } from 'react'
+import { TextEditor, Icon } from '@shared/ui'
 import { useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
@@ -29,6 +29,25 @@ const GUIDE_QUERY = graphql(`
     }
 `)
 
+const GET_QUIZ_DATA_QUERY = graphql(`
+    query GetQuizData($guideId: ID!) {
+        res: guide(id: $guideId) {
+            quiz {
+                id
+                body {
+                    quiz {
+                        questions {
+                            correctAnswerIndex
+                            options
+                            questionTitle
+                        }
+                    }
+                }
+            }
+        }
+    }
+`)
+
 export function GuidePage(): ReactNode {
     const params = useParams<{ id: string }>()
     const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
@@ -41,7 +60,6 @@ export function GuidePage(): ReactNode {
     })
 
     const [sidebar, setSidebar] = useState<boolean>(false)
-
 
     const { data: quizInfo } = useQuery(GET_QUIZ_ID_QUERY, {
         variables: {
@@ -62,7 +80,6 @@ export function GuidePage(): ReactNode {
             }
         })
     }
-
 
     if (loading) return 'Loading...'
 
