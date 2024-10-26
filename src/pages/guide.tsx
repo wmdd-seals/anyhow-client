@@ -1,5 +1,5 @@
-import { useState, type ReactNode } from 'react'
-import { Icon, TextEditor } from '@shared/ui'
+import { type ReactNode, useState } from 'react'
+import { TextEditor, Button, Icon } from '@shared/ui'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
@@ -8,6 +8,7 @@ import { Footer } from '@widgets/footer/ui/footer'
 import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
 import { getGuideProgress } from 'src/entities/guide'
+import { QuizChallenge } from '@widgets/quiz-challenge'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -25,6 +26,25 @@ const GUIDE_QUERY = graphql(`
     }
 `)
 
+const GET_QUIZ_DATA_QUERY = graphql(`
+    query GetQuizData($guideId: ID!) {
+        res: guide(id: $guideId) {
+            quiz {
+                id
+                body {
+                    quiz {
+                        questions {
+                            correctAnswerIndex
+                            options
+                            questionTitle
+                        }
+                    }
+                }
+            }
+        }
+    }
+`)
+
 export function GuidePage(): ReactNode {
     const params = useParams<{ id: string }>()
 
@@ -34,6 +54,29 @@ export function GuidePage(): ReactNode {
     })
 
     const [sidebar, setSidebar] = useState<boolean>(false)
+    const { data: quizInfo, loading: quizLoading } = useQuery(
+        GET_QUIZ_DATA_QUERY,
+        {
+            variables: {
+                guideId: params.id!
+            },
+            skip: !params
+        }
+    )
+
+    const quizId = quizInfo?.res.quiz?.id
+    const quizData =
+        quizInfo?.res.quiz?.body?.quiz?.questions
+            ?.filter(question => question?.options)
+            .map(question => ({
+                questionTitle: question!.questionTitle,
+                options: question!.options.filter(
+                    (option): option is string => option !== null
+                ),
+                correctAnswerIndex: question!.correctAnswerIndex
+            })) || []
+
+    const [showQuiz, setShowQuiz] = useState(false)
 
     if (!params.id) return 'Guide not found'
 
@@ -68,7 +111,6 @@ export function GuidePage(): ReactNode {
                             {data.res.user!.firstName} {data.res.user!.lastName}
                         </div>
                     </div>
-
                     <TextEditor value={data.res.body || ''} editable={false} />
                 </article>
 
@@ -101,6 +143,22 @@ export function GuidePage(): ReactNode {
                         </div>
                     </TransitionChild>
                 </Transition>
+
+                <div className="flex justify-center">
+                    {quizId && !showQuiz && (
+                        <Button onClick={() => setShowQuiz(true)}>
+                            Test your learning
+                        </Button>
+                    )}
+
+                    {quizId && showQuiz && (
+                        <QuizChallenge
+                            quizId={quizId}
+                            quizData={quizData}
+                            quizLoading={quizLoading}
+                        />
+                    )}
+                </div>
             </main>
 
             <Footer />
