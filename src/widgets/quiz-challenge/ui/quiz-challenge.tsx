@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react'
 import type { QuestionInput } from '@gqlgen/graphql'
 import { QuizScoreModal } from './quiz-score-modal'
 import { Button } from '@shared/ui'
+import { SAVE_QUIZ_ANSWER } from '../index'
 
 interface QuizChallengeProp {
     quizId: string
@@ -34,6 +35,16 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
         const updatedSelectedOptions = [...selectedOptions]
         updatedSelectedOptions[questionIndex] = selectedOptionIndex
         setSelectedOptions(updatedSelectedOptions)
+
+        // Use `updatedSelectedOptions` as `answers` for the mutation call
+        saveQuizAnswer({
+            variables: {
+                input: {
+                    id: quizId,
+                    answers: updatedSelectedOptions
+                }
+            }
+        })
     }
 
     const allQuestionsAnswered = selectedOptions.every(option => option !== -1)
