@@ -44,7 +44,8 @@ export function EditGuide(props: EditGuideProps): ReactNode {
         reValidateMode: 'onChange'
     })
 
-    const { generate: generateQuiz } = useGenerateQuiz()
+    const { generate: generateQuiz, loading: generateQuizLoading } =
+        useGenerateQuiz()
 
     const navigate = useNavigate()
 
@@ -192,10 +193,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                                     }
                                 }
                             })
-
                             if (!guide.data?.res) return
-
-                            navigate(`/${guide.data.res.id}`)
 
                             if (!id) return
                             const result = await generateQuiz({ guideId: id })
@@ -207,6 +205,9 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                         Generate Quiz
                     </Button>
                 </div>
+                {generateQuizLoading && (
+                    <p className="text-center text-xl">Generating quiz...</p>
+                )}
             </div>
         </FormProvider>
     )
