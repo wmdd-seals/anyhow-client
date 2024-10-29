@@ -74,6 +74,9 @@ export function graphql(source: "\n    query Guides {\n        res: guides {\n  
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n"): (typeof documents)["\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n    mutation GenerateQuiz($input: GenerateQuizInput!) {\n        res: generateQuiz(input: $input) {\n            id\n            body {\n                quiz {\n                    questions {\n                        questionTitle\n                        options\n                        correctAnswerIndex\n                    }\n                }\n            }\n        }\n    }\n"): (typeof documents)["\n    mutation GenerateQuiz($input: GenerateQuizInput!) {\n        res: generateQuiz(input: $input) {\n            id\n            body {\n                quiz {\n                    questions {\n                        questionTitle\n                        options\n                        correctAnswerIndex\n                    }\n                }\n            }\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

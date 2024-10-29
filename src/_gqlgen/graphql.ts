@@ -16,6 +16,15 @@ export type Scalars = {
   Float: { input: number; output: number; }
   /** Custom scalar for JSON Object and Array */
   JSON: { input: any; output: any; }
+  /** Base64 to Stream Conversion */
+  Stream: { input: any; output: any; }
+};
+
+export type FileInfo = {
+  base64Data: Scalars['String']['input'];
+  guideId: Scalars['String']['input'];
+  mimeType: Scalars['String']['input'];
+  name: Scalars['String']['input'];
 };
 
 export type GenerateQuizInput = {
@@ -60,6 +69,7 @@ export type QuizInput = {
 
 export type SaveQuizAnswersInput = {
   answers: Scalars['JSON']['input'];
+  iscompleted?: InputMaybe<Scalars['Boolean']['input']>;
   quizid: Scalars['ID']['input'];
 };
 
@@ -111,21 +121,21 @@ export type GetQuizQueryVariables = Exact<{
 }>;
 
 
-export type GetQuizQuery = { __typename?: 'Query', res: { __typename?: 'Guide', quiz?: { __typename?: 'Quiz', id: string, body?: { __typename?: 'GenreatedQuiz', quiz?: { __typename?: 'QuizObject', questions?: Array<{ __typename?: 'Question', questionTitle: string, options: Array<string | null>, correctAnswerIndex: number } | null> | null } | null } | null } | null } };
+export type GetQuizQuery = { __typename?: 'Query', res: { __typename?: 'Guide', quiz?: { __typename?: 'Quiz', id?: string | null, body?: { __typename?: 'GenreatedQuiz', quiz?: { __typename?: 'QuizObject', questions?: Array<{ __typename?: 'Question', questionTitle: string, options: Array<string | null>, correctAnswerIndex: number } | null> | null } | null } | null } | null } };
 
 export type CreateGuideMutationVariables = Exact<{
   input: GuideCreationInput;
 }>;
 
 
-export type CreateGuideMutation = { __typename?: 'Mutation', res: { __typename?: 'Guide', id: string, title?: string | null, tags: any, description?: string | null, body?: string | null } };
+export type CreateGuideMutation = { __typename?: 'Mutation', res: { __typename?: 'Guide', id?: string | null, title?: string | null, tags?: any | null, description?: string | null, body?: string | null } };
 
 export type GuideQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GuideQuery = { __typename?: 'Query', res: { __typename?: 'Guide', id: string, title?: string | null, body?: string | null, tags: any, user: { __typename?: 'User', id: string, firstName: string, lastName: string } } };
+export type GuideQuery = { __typename?: 'Query', res: { __typename?: 'Guide', id?: string | null, title?: string | null, body?: string | null, tags?: any | null, user?: { __typename?: 'User', id: string, firstName: string, lastName: string } | null } };
 
 export type SignInQueryVariables = Exact<{
   input?: InputMaybe<UserSignInInput>;
@@ -139,19 +149,19 @@ export type GetGuideQueryVariables = Exact<{
 }>;
 
 
-export type GetGuideQuery = { __typename?: 'Query', res: { __typename?: 'Guide', id: string, title?: string | null, body?: string | null, tags: any } };
+export type GetGuideQuery = { __typename?: 'Query', res: { __typename?: 'Guide', id?: string | null, title?: string | null, body?: string | null, tags?: any | null } };
 
 export type UpdateGuideMutationVariables = Exact<{
   input: UpdateGuideInput;
 }>;
 
 
-export type UpdateGuideMutation = { __typename?: 'Mutation', res: { __typename?: 'Guide', id: string } };
+export type UpdateGuideMutation = { __typename?: 'Mutation', res: { __typename?: 'Guide', id?: string | null } };
 
 export type GuidesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GuidesQuery = { __typename?: 'Query', res: Array<{ __typename?: 'Guide', description?: string | null, title?: string | null, id: string, tags: any } | null> };
+export type GuidesQuery = { __typename?: 'Query', res: Array<{ __typename?: 'Guide', description?: string | null, title?: string | null, id?: string | null, tags?: any | null } | null> };
 
 export type SaveFavoriteTopicsMutationVariables = Exact<{
   input?: InputMaybe<UserProfile>;
@@ -160,34 +170,33 @@ export type SaveFavoriteTopicsMutationVariables = Exact<{
 
 export type SaveFavoriteTopicsMutation = { __typename?: 'Mutation', res: { __typename?: 'User', id: string } };
 
-
 export type GenerateQuizMutationVariables = Exact<{
   input: GenerateQuizInput;
 }>;
 
 
-export type GenerateQuizMutation = { __typename?: 'Mutation', res: { __typename?: 'Quiz', id: string, body?: { __typename?: 'GenreatedQuiz', quiz?: { __typename?: 'QuizObject', questions?: Array<{ __typename?: 'Question', questionTitle: string, options: Array<string | null>, correctAnswerIndex: number } | null> | null } | null } | null } };
+export type GenerateQuizMutation = { __typename?: 'Mutation', res: { __typename?: 'Quiz', id?: string | null, body?: { __typename?: 'GenreatedQuiz', quiz?: { __typename?: 'QuizObject', questions?: Array<{ __typename?: 'Question', questionTitle: string, options: Array<string | null>, correctAnswerIndex: number } | null> | null } | null } | null } };
 
 export type PublishGuideMutationVariables = Exact<{
   input: UpdateGuideInput;
 }>;
 
 
-export type PublishGuideMutation = { __typename?: 'Mutation', res: { __typename?: 'Guide', id: string } };
+export type PublishGuideMutation = { __typename?: 'Mutation', res: { __typename?: 'Guide', id?: string | null } };
 
 export type PublishQuizMutationVariables = Exact<{
   input: UpdateQuizInput;
 }>;
 
 
-export type PublishQuizMutation = { __typename?: 'Mutation', res: { __typename?: 'Quiz', id: string } };
+export type PublishQuizMutation = { __typename?: 'Mutation', res: { __typename?: 'Quiz', id?: string | null } };
 
 export type UpdateQuizMutationVariables = Exact<{
   input: UpdateQuizInput;
 }>;
 
 
-export type UpdateQuizMutation = { __typename?: 'Mutation', res: { __typename?: 'Quiz', id: string } };
+export type UpdateQuizMutation = { __typename?: 'Mutation', res: { __typename?: 'Quiz', id?: string | null } };
 
 
 export const GetQuizDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetQuiz"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"guideId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"guide"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"guideId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"quiz"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"body"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"quiz"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"questions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"questionTitle"}},{"kind":"Field","name":{"kind":"Name","value":"options"}},{"kind":"Field","name":{"kind":"Name","value":"correctAnswerIndex"}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetQuizQuery, GetQuizQueryVariables>;
