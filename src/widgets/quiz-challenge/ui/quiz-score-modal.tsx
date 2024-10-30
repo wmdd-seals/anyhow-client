@@ -61,9 +61,9 @@ export const QuizScoreModal: React.FC<ModalProps> = ({
                     ))}
                 </ul>
 
-                <div className="bg-slate-200 rounded-lg flex gap-3 justify-center items-center py-3 border border-slate-400">
-                    <h2 className="text-xl font-bold">
-                        {correctAnswers}/{totalQuestions}
+                <div className="bg-slate-200 rounded-lg flex gap-3 justify-center items-center py-3 border border-slate-400 text-xl font-bold">
+                    <h2>
+                        Score: {correctAnswers}/{totalQuestions}
                     </h2>
                     <p>{getFeedbackMessage()}</p>
                 </div>
