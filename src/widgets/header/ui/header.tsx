@@ -60,7 +60,7 @@ function Header(): ReactNode {
     const navigate = useNavigate()
 
     return (
-        <header className="bg-white text-white p-4 sticky top-0">
+        <header className="bg-white text-white p-4 sticky top-0 z-50 relative">
             <div className="container box-border mx-auto w-full flex justify-between items-center">
                 <div className="flex items-center">
                     <p className="text-2xl font-bold text-slate-800">Logo</p>
