@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from 'react'
+import { type ReactNode, useState, useEffect } from 'react'
 import { TextEditor, Button, Icon } from '@shared/ui'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
@@ -76,7 +76,20 @@ export function GuidePage(): ReactNode {
                 correctAnswerIndex: question!.correctAnswerIndex
             })) || []
 
-    const [showQuiz, setShowQuiz] = useState(false)
+    const [showQuiz, setShowQuiz] = useState<boolean>(() => {
+        const storedShowQuiz = localStorage.getItem('showQuiz')
+        return storedShowQuiz ? (JSON.parse(storedShowQuiz) as boolean) : false
+    })
+
+    useEffect(() => {
+        localStorage.setItem('showQuiz', JSON.stringify(showQuiz))
+    }, [showQuiz])
+
+    useEffect(() => {
+        return (): void => {
+            localStorage.removeItem('showQuiz')
+        }
+    }, [])
 
     if (!params.id) return 'Guide not found'
 
