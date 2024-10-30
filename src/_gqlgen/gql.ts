@@ -22,7 +22,8 @@ const documents = {
     "\n    mutation UpdateGuide($input: UpdateGuideInput!) {\n        res: updateGuide(input: $input) {\n            id\n        }\n    }\n": types.UpdateGuideDocument,
     "\n    query Guides {\n        res: guides {\n            description\n            title\n            id\n            tags\n        }\n    }\n": types.GuidesDocument,
     "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n": types.SaveFavoriteTopicsDocument,
-    "\n    mutation SaveQuizAnswer($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n": types.SaveQuizAnswerDocument,
+    "\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n": types.GetQuizAnswersDocument,
+    "\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n": types.SaveQuizAnswersDocument,
 };
 
 /**
@@ -74,7 +75,11 @@ export function graphql(source: "\n    mutation saveFavoriteTopics($input: UserP
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation SaveQuizAnswer($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n"): (typeof documents)["\n    mutation SaveQuizAnswer($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n"];
+export function graphql(source: "\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n"): (typeof documents)["\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n"): (typeof documents)["\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
