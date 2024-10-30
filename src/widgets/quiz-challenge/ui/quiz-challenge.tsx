@@ -1,8 +1,10 @@
-import { useState, type ReactNode } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
+import { useQuery } from '@apollo/client'
 import type { QuestionInput } from '@gqlgen/graphql'
 import { QuizScoreModal } from './quiz-score-modal'
 import { Button } from '@shared/ui'
-import { SAVE_QUIZ_ANSWER } from '../index'
+import { GET_QUIZ_ANSWERS } from '@widgets/quiz-challenge'
+import { useSaveQuizAnswer } from '@widgets/quiz-challenge'
 
 interface QuizChallengeProp {
     quizId: string
@@ -18,6 +20,22 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
     )
     const [showModal, setShowModal] = useState(false)
 
+    // Display the saved answers after the page refresh
+    const { data: quizAnswerData } = useQuery<{ res: { answers: number[] }[] }>(
+        GET_QUIZ_ANSWERS,
+        {
+            variables: { quizId }
+        }
+    )
+    useEffect(() => {
+        if (quizAnswerData?.res[0]?.answers) {
+            const savedAnswers = quizAnswerData.res[0].answers
+            setSelectedOptions(savedAnswers)
+        }
+    }, [quizAnswerData])
+
+    const { save: saveQuizAnswer } = useSaveQuizAnswer()
+
     const checkCorrectness = (): void => {
         const updatedCorrectness = quizData.map((question, questionIndex) =>
             selectedOptions[questionIndex] === question.correctAnswerIndex
@@ -28,22 +46,17 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
         setShowModal(true)
     }
 
-    const handleOptionChange = (
+    const handleOptionChange = async (
         questionIndex: number,
         selectedOptionIndex: number
-    ): void => {
+    ): Promise<void> => {
         const updatedSelectedOptions = [...selectedOptions]
         updatedSelectedOptions[questionIndex] = selectedOptionIndex
         setSelectedOptions(updatedSelectedOptions)
 
-        // Use `updatedSelectedOptions` as `answers` for the mutation call
-        saveQuizAnswer({
-            variables: {
-                input: {
-                    id: quizId,
-                    answers: updatedSelectedOptions
-                }
-            }
+        await saveQuizAnswer({
+            quizid: quizId,
+            answers: updatedSelectedOptions
         })
     }
 
