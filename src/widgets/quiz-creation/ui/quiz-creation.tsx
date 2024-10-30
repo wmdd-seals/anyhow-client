@@ -8,24 +8,6 @@ import type { QuestionInput } from '@gqlgen/graphql'
 import { GET_QUIZ_QUERY } from '../../../entities/quiz'
 import cn from 'clsx'
 
-const timerIds: (number | null)[] = []
-
-let lastlyChangedQuestionIndex: number | null = null
-
-const debounceQuestionUpdate = (
-    func: (questionIndex: number) => Promise<void>,
-    questionIndex: number
-): void => {
-    if (timerIds[questionIndex]) clearTimeout(timerIds[questionIndex])
-
-    timerIds[questionIndex] = window.setTimeout(async () => {
-        if (lastlyChangedQuestionIndex !== questionIndex) return
-
-        await func(questionIndex)
-        lastlyChangedQuestionIndex = null
-    }, 1000)
-}
-
 type QuizCreationProps = {
     className?: string
     guideId: string
@@ -50,13 +32,21 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
 
     const navigate = useNavigate()
 
+    const remainingQuestions = quizData ? quizData.length - visibleQuestions : 0
+
     useEffect(() => {
         if (data?.res.quiz?.body?.quiz?.questions) {
             setQuizData(data.res.quiz.body.quiz.questions as QuestionInput[])
         }
     }, [data])
 
-    const remainingQuestions = quizData ? quizData.length - visibleQuestions : 0
+    // Save the local state "quizData" on the server when it is updated
+    useEffect(() => {
+        const timeOutId = setTimeout(async () => {
+            await updateQuizOnServer()
+        }, 500)
+        return (): void => clearTimeout(timeOutId)
+    }, [quizData])
 
     const updateQuizOnServer = useCallback(async () => {
         if (!quizId || !quizData) return
@@ -73,31 +63,14 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
                 }
             }
         }
-
         const result = await updateQuiz(payload)
         if (!result) return
     }, [quizId, quizData, updateQuiz])
 
-    const handleChangeQuizData = async (
-        questionIndex: number
-    ): Promise<void> => {
-        // If the change is for a different question, update immediately and reset the index
-        if (lastlyChangedQuestionIndex !== questionIndex) {
-            await updateQuizOnServer()
-            lastlyChangedQuestionIndex = questionIndex
-        }
-
-        // Use debounce to delay the server update, setting lastlyChangedQuestionIndex after it executes
-        debounceQuestionUpdate(async () => {
-            await updateQuizOnServer()
-            lastlyChangedQuestionIndex = questionIndex
-        }, questionIndex)
-    }
-
-    const handleChangeQuestionTitle = async (
+    const handleChangeQuestionTitle = (
         questionIndex: number,
         newTitle: string
-    ): Promise<void> => {
+    ): void => {
         // Update the "quizData" in the local state
         setQuizData(prevQuizData => {
             if (!prevQuizData) return null
@@ -110,16 +83,12 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
 
             return newQuizData
         })
-
-        // Update the quiz data on the server
-        await handleChangeQuizData(questionIndex)
     }
 
-    const handleSelectAnswer = async (
+    const handleSelectAnswer = (
         questionIndex: number,
         answerIndex: number
-    ): Promise<void> => {
-        // Update the "quizData" in the local state
+    ): void => {
         setQuizData(prevQuizData => {
             if (!prevQuizData) return null
 
@@ -131,9 +100,6 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
 
             return newQuizData
         })
-
-        // Update the quiz data on the server
-        await handleChangeQuizData(questionIndex)
     }
 
     const handleAddQuestion = (): void => {
@@ -150,13 +116,12 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
         }
     }
 
-    const handleChangeOptionValue = async (
+    const handleChangeOptionValue = (
         questionIndex: number,
         optionIndex: number,
         value: string
-    ): Promise<void> => {
+    ): void => {
         setQuizData(prevQuizData => {
-            // Update the "quizData" in the local state
             if (!prevQuizData) return null
 
             const newQuizData = JSON.parse(
@@ -167,14 +132,10 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
 
             return newQuizData
         })
-
-        // Update the quiz data on the server
-        await handleChangeQuizData(questionIndex)
     }
 
-    const handleAddOption = async (questionIndex: number): Promise<void> => {
+    const handleAddOption = (questionIndex: number): void => {
         setQuizData(prevQuizData => {
-            // Update the "quizData" in the local state
             if (!prevQuizData) return null
 
             const newQuizData = JSON.parse(
@@ -186,15 +147,12 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
 
             return newQuizData
         })
-
-        // Update the quiz data on the server
-        await handleChangeQuizData(questionIndex)
     }
 
-    const handleDeleteOption = async (
+    const handleDeleteOption = (
         questionIndex: number,
         optionIndex: number
-    ): Promise<void> => {
+    ): void => {
         setQuizData(prevQuizData => {
             if (!prevQuizData) return null
 
@@ -212,8 +170,6 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
 
             return newQuizData
         })
-
-        await handleChangeQuizData(questionIndex)
     }
 
     const handlePublish = async (): Promise<void> => {
@@ -224,7 +180,7 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
         }
         publishGuide(guideInput)
 
-        // Update the quiz data on the server (remove the invisible questions by saving the only quiz data of visible questions)
+        // Remove the data about invisible questions from the server
         if (!quizData || !quizId) return
 
         const visibleQuizData = quizData.slice(0, visibleQuestions)
