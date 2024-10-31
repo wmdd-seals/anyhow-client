@@ -9,7 +9,8 @@ import { AutoLinkNode, LinkNode } from '@lexical/link'
 import { ListItemNode, ListNode } from '@lexical/list'
 import {
     $convertToMarkdownString,
-    $convertFromMarkdownString
+    $convertFromMarkdownString,
+    TRANSFORMERS
 } from '@lexical/markdown'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
@@ -21,7 +22,9 @@ import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import cn from 'clsx'
 import { ImageNode } from './image-node'
-import { ImagePlugin } from './image-plugin'
+import { IMAGE_TRANSFORMER, ImagePlugin } from './image-plugin'
+
+const MARKDOWN_TRANSFORMERS = [IMAGE_TRANSFORMER, ...TRANSFORMERS]
 
 type TextEditorProps = EditableTextEditorProps | ReadonlyTextEditorProps
 
@@ -84,12 +87,15 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                     const { initialValue } = props
 
                     if (initialValue !== undefined) {
-                        $convertFromMarkdownString(initialValue)
+                        $convertFromMarkdownString(
+                            initialValue,
+                            MARKDOWN_TRANSFORMERS
+                        )
                     }
                 } else {
                     const { value } = props
 
-                    $convertFromMarkdownString(value)
+                    $convertFromMarkdownString(value, MARKDOWN_TRANSFORMERS)
                     return
                 }
             }
@@ -127,7 +133,9 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                         <OnChangePlugin
                             onChange={(_, editor): void => {
                                 editor.read(() => {
-                                    const state = $convertToMarkdownString()
+                                    const state = $convertToMarkdownString(
+                                        MARKDOWN_TRANSFORMERS
+                                    )
                                     props.onChange(state)
                                 })
                             }}

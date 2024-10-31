@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     DecoratorNode,
+    type DOMConversionMap,
+    type DOMConversionOutput,
+    type DOMExportOutput,
     type EditorConfig,
     type LexicalEditor,
+    type LexicalNode,
     type NodeKey,
     type SerializedLexicalNode,
     type Spread
@@ -31,6 +35,14 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     public constructor(imageParams: ImageParams, key?: NodeKey) {
         super(key)
         this.imageParams = imageParams
+    }
+
+    public getAltText(): string {
+        return this.imageParams.altText
+    }
+
+    public getSrc(): string {
+        return this.imageParams.src
     }
 
     public static override importJSON(
@@ -73,8 +85,38 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
 
         return <img src={src} alt={altText} />
     }
+
+    public exportDOM(): DOMExportOutput {
+        const element = document.createElement('img')
+        element.setAttribute('src', this.imageParams.src)
+        element.setAttribute('alt', this.imageParams.altText)
+        return { element }
+    }
+
+    public static importDOM(): DOMConversionMap | null {
+        return {
+            img: (_node: Node) => ({
+                conversion: $convertImageElement,
+                priority: 0
+            })
+        }
+    }
 }
 
 export function $createImageNode(imageParams: ImageParams): ImageNode {
     return new ImageNode(imageParams)
+}
+
+function $convertImageElement(domNode: Node): null | DOMConversionOutput {
+    const img = domNode as HTMLImageElement
+
+    const { alt: altText, src } = img
+    const node = $createImageNode({ altText, src })
+    return { node }
+}
+
+export function $isImageNode(
+    node: LexicalNode | null | undefined
+): node is ImageNode {
+    return node instanceof ImageNode
 }

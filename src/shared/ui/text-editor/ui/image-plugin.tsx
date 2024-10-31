@@ -1,6 +1,11 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { useEffect, type ReactNode } from 'react'
-import { $createImageNode, ImageNode, type ImageParams } from './image-node'
+import {
+    $createImageNode,
+    $isImageNode,
+    ImageNode,
+    type ImageParams
+} from './image-node'
 import {
     $createParagraphNode,
     $insertNodes,
@@ -10,6 +15,7 @@ import {
     type LexicalCommand
 } from 'lexical'
 import { $wrapNodeInElement } from '@lexical/utils'
+import type { TextMatchTransformer } from '@lexical/markdown'
 
 export const INSERT_IMAGE_COMMAND: LexicalCommand<ImageParams> = createCommand(
     'INSERT_IMAGE_COMMAND'
@@ -43,4 +49,27 @@ export function ImagePlugin(): ReactNode {
     }, [editor])
 
     return null
+}
+
+export const IMAGE_TRANSFORMER: TextMatchTransformer = {
+    dependencies: [ImageNode],
+    export: node => {
+        if (!$isImageNode(node)) {
+            return null
+        }
+
+        return `![${node.getAltText()}](${node.getSrc()})`
+    },
+    importRegExp: /!(?:\[([^[]*)\])(?:\(([^(]+)\))/,
+    regExp: /!(?:\[([^[]*)\])(?:\(([^(]+)\))$/,
+    replace: (textNode, match) => {
+        const [, altText, src] = match
+        const imageNode = $createImageNode({
+            altText,
+            src
+        })
+        textNode.replace(imageNode)
+    },
+    trigger: ')',
+    type: 'text-match'
 }
