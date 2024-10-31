@@ -29,6 +29,17 @@ type EditGuideProps = {
     id: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function debounce<T extends (...args: any[]) => unknown>(fn: T, delay: number) {
+    let timeoutId: number | undefined
+
+    return function deferred(...args: Parameters<T>): void {
+        if (typeof timeoutId !== 'undefined') clearTimeout(timeoutId)
+
+        timeoutId = setTimeout(() => fn(...args), delay) as unknown as number
+    }
+}
+
 export function EditGuide(props: EditGuideProps): ReactNode {
     const { className, id } = props
 
@@ -94,6 +105,13 @@ export function EditGuide(props: EditGuideProps): ReactNode {
 
         coverImageRef.current!.src = `/guide-cover-thumbnail.jpg`
     }, [])
+
+    const syncGuide = useCallback(
+        debounce((body: string) => {
+            void updateGuideMutation({ variables: { input: { id, body } } })
+        }, 1000),
+        [id]
+    )
 
     if (loading) return 'Loading...'
 
@@ -181,7 +199,10 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                                     editable
                                     blockEditing={progress !== 100}
                                     initialValue={data.res!.body!}
-                                    onChange={field.onChange}
+                                    onChange={body => {
+                                        field.onChange(body)
+                                        syncGuide(body)
+                                    }}
                                     onImageUpload={async image => {
                                         const res = await uploadGuideImage({
                                             variables: {

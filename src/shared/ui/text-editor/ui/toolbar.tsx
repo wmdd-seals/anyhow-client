@@ -255,6 +255,7 @@ function BlockFormatDropDown({
 
 export function ToolbarPlugin(props: {
     className?: string
+    blockEditing?: boolean
     onImageUpload(image: File): Promise<string>
 }): JSX.Element {
     const { className, onImageUpload } = props
