@@ -1,8 +1,9 @@
 import { useAuth } from '@shared/lib'
-import { useState, type ReactNode } from 'react'
+import { useContext, useState, type ReactNode } from 'react'
 import { CreateGuideButton } from 'src/features/create-guide'
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'src/shared/ui'
+import { UserContext } from '@shared/lib/auth/provider'
 
 function MobileMenu({
     isAuthenticated
@@ -57,7 +58,13 @@ function MobileMenu({
 
 function Header(): ReactNode {
     const { isAuthenticated } = useAuth()
+    const { logout } = useContext(UserContext)
     const navigate = useNavigate()
+
+    const logoutHandler = (): void => {
+        logout()
+        navigate('/login')
+    }
 
     return (
         <header className="bg-white text-white p-4 sticky top-0 z-50 relative">
@@ -72,7 +79,7 @@ function Header(): ReactNode {
                     {isAuthenticated ? (
                         <>
                             <Button>About us</Button>
-                            <Button>Logout</Button>
+                            <Button onClick={logoutHandler}>Logout</Button>
                             <CreateGuideButton />
                         </>
                     ) : (
