@@ -5,13 +5,14 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "dev": "vite & graphql-codegen --watch",
+        "dev": "vite",
         "spec": "vitest run --passWithNoTests",
         "spec:watch": "vitest watch",
         "build": "vite build",
         "preview": "vite preview",
         "prod": "npm run build & vite preview",
         "graphql:gen": "graphql-codegen",
+        "graphql:watch": "graphql-codegen --watch",
         "types:check": "tsc --noEmit",
         "lint:check": "eslint .",
         "format:check": "prettier ./src --check"

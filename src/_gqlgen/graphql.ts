@@ -157,8 +157,8 @@ export type MutationUploadImageArgs = {
 export type Query = {
   __typename?: 'Query';
   chathistory: Array<ChatResponse>;
-  guide?: Maybe<Guide>;
-  guides?: Maybe<Array<Maybe<Guide>>>;
+  guide: Guide;
+  guides: Array<Maybe<Guide>>;
   image: File;
   images: Array<File>;
   quizAnswers: Array<Maybe<QuizAnswers>>;
@@ -329,7 +329,7 @@ export type GuideQueryVariables = Exact<{
 }>;
 
 
-export type GuideQuery = { __typename?: 'Query', res?: { __typename?: 'Guide', id?: string | null, title?: string | null, body?: string | null, tags?: any | null, user?: { __typename?: 'User', id: string, firstName: string, lastName: string } | null } | null };
+export type GuideQuery = { __typename?: 'Query', res: { __typename?: 'Guide', id?: string | null, title?: string | null, body?: string | null, tags?: any | null, user?: { __typename?: 'User', id: string, firstName: string, lastName: string } | null } };
 
 export type SignInQueryVariables = Exact<{
   input?: InputMaybe<UserSignInInput>;
@@ -348,7 +348,7 @@ export type GetGuideQueryVariables = Exact<{
 }>;
 
 
-export type GetGuideQuery = { __typename?: 'Query', res?: { __typename?: 'Guide', id?: string | null, title?: string | null, body?: string | null, tags?: any | null } | null };
+export type GetGuideQuery = { __typename?: 'Query', res: { __typename?: 'Guide', id?: string | null, title?: string | null, body?: string | null, tags?: any | null } };
 
 export type UpdateGuideMutationVariables = Exact<{
   input: UpdateGuideInput;
@@ -374,7 +374,7 @@ export type ChatMessagesQuery = { __typename?: 'Query', res: Array<{ __typename?
 export type GuidesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GuidesQuery = { __typename?: 'Query', res?: Array<{ __typename?: 'Guide', description?: string | null, title?: string | null, id?: string | null, tags?: any | null, user?: { __typename?: 'User', firstName: string, lastName: string } | null } | null> | null };
+export type GuidesQuery = { __typename?: 'Query', res: Array<{ __typename?: 'Guide', description?: string | null, title?: string | null, id?: string | null, tags?: any | null } | null> };
 
 export type SaveFavoriteTopicsMutationVariables = Exact<{
   input?: InputMaybe<UserProfile>;
@@ -393,4 +393,3 @@ export const UpdateGuideDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const GuideChatDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"GuideChat"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"GuideChatRequest"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"guideChat"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"role"}}]}}]}}]} as unknown as DocumentNode<GuideChatMutation, GuideChatMutationVariables>;
 export const ChatMessagesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ChatMessages"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"guideId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"chathistory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"guideId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"guideId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"role"}}]}}]}}]} as unknown as DocumentNode<ChatMessagesQuery, ChatMessagesQueryVariables>;
 export const GuidesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Guides"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"guides"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"tags"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}}]}}]} as unknown as DocumentNode<GuidesQuery, GuidesQueryVariables>;
-export const SaveFavoriteTopicsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"saveFavoriteTopics"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UserProfile"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"updateUserProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<SaveFavoriteTopicsMutation, SaveFavoriteTopicsMutationVariables>;
