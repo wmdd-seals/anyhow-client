@@ -11,6 +11,7 @@ import { UPLOAD_GUIDE_COVER } from '../api/upload-guide-cover'
 import { toBase64 } from '@shared/lib/file'
 import { REMOVE_GUIDE_COVER } from '../api/remove-guide-cover'
 import { UPLOAD_GUIDE_IMAGE } from '../api/upload-guide-image'
+import { getGuideProgress } from 'src/entities/guide'
 
 type UseCreateGuideForm = {
     title: string
@@ -68,10 +69,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
     })
 
     const body = form.watch('body')
-    const progress = Math.min(
-        ((body.replaceAll('\n', '').length * 0.95) / (1500 * 6)) * 100,
-        100
-    )
+    const progress = getGuideProgress(body)
 
     const selectCoverAndUpload = useCallback(() => {
         const input = document.createElement('input')

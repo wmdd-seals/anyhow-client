@@ -49,7 +49,7 @@ export function TextEditor(props: TextEditorProps): ReactNode {
             namespace: `guide-${editable}`,
             onError: console.error,
             theme: {
-                // root: 'grid gap-y-3',
+                root: 'grid gap-y-2',
                 text: {
                     bold: 'bold',
                     italic: 'italic',

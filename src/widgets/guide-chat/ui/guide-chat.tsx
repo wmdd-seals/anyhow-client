@@ -56,10 +56,7 @@ export function GuideChat(props: GuideChatProps): ReactNode {
 
     return (
         <div
-            className={cn(
-                'max-w-80 bg-white flex flex-col overflow-hidden',
-                className
-            )}
+            className={cn('bg-white flex flex-col overflow-hidden', className)}
         >
             <span className="text-2xl font-bold mb-6">Ask Any anything...</span>
 
@@ -77,8 +74,7 @@ export function GuideChat(props: GuideChatProps): ReactNode {
                 }}
             />
 
-            {/* height 1px is a hack to make it scrollable */}
-            <div className="grow flex flex-col gap-3 overflow-auto h-[1px]">
+            <div className="grow flex flex-col gap-3 overflow-auto">
                 {data?.res.map((message, i) => {
                     const { role, content } = message
 

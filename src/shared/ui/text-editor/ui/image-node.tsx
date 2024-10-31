@@ -83,7 +83,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     ): JSX.Element {
         const { src, altText } = this.imageParams
 
-        return <img src={src} alt={altText} />
+        return <img src={src} alt={altText} className="rounded-xl mt-16 mb-6" />
     }
 
     public exportDOM(): DOMExportOutput {
