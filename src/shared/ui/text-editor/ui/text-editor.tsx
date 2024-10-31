@@ -20,6 +20,8 @@ import { ToolbarPlugin } from './toolbar'
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import cn from 'clsx'
+import { ImageNode } from './image-node'
+import { ImagePlugin } from './image-plugin'
 
 type TextEditorProps = EditableTextEditorProps | ReadonlyTextEditorProps
 
@@ -71,7 +73,8 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                 ListNode,
                 ListItemNode,
                 AutoLinkNode,
-                LinkNode
+                LinkNode,
+                ImageNode
             ],
             editable,
             editorState(): void {
@@ -113,7 +116,7 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                 />
                 <LinkPlugin />
                 <ListPlugin />
-                {/* <ImagePlugin /> */}
+                <ImagePlugin />
 
                 {editable && (
                     <>

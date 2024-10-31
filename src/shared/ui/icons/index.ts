@@ -1,3 +1,4 @@
+export { Image } from './image'
 export { Bold } from './bold'
 export { Italic } from './italic'
 export { Underline } from './underline'
