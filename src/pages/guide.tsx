@@ -43,19 +43,30 @@ export function GuidePage(): ReactNode {
         <div className="flex flex-col min-h-screen">
             <Header />
 
-            {/* <GuideChat guideId={params.id} /> */}
+            <main
+                className="grow grid md:grid-cols-2 lg:grid-cols-3 overflow-hidden"
+                style={{
+                    gridTemplateColumns: 'minmax(0, 320px) 1fr 320px'
+                }}
+            >
+                <div></div>
 
-            <main className="max-w-[50rem] w-full mx-auto grow">
-                <h1 className="text-7xl font-bold mb-8">{data.res.title}</h1>
+                <article className="max-w-[50rem] w-full mx-auto">
+                    <h1 className="text-7xl font-bold mb-8">
+                        {data.res.title}
+                    </h1>
 
-                <div className="flex items-center gap-3 font-bold mb-8">
-                    <div className="size-10 rounded-full bg-gray-200" />
-                    <div>
-                        {data.res.user.firstName} {data.res.user.lastName}
+                    <div className="flex items-center gap-3 font-bold mb-8">
+                        <div className="size-10 rounded-full bg-gray-200" />
+                        <div>
+                            {data.res.user.firstName} {data.res.user.lastName}
+                        </div>
                     </div>
-                </div>
 
-                <TextEditor value={data.res.body || ''} editable={false} />
+                    <TextEditor value={data.res.body || ''} editable={false} />
+                </article>
+
+                <GuideChat guideId={params.id} className="" />
             </main>
 
             <Footer />
