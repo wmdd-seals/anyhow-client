@@ -11,6 +11,7 @@ import { Footer } from '@widgets/footer/ui/footer'
 import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
 import { getGuideProgress } from 'src/entities/guide'
+import { STORE_GUIDE_COMPLETED } from 'src/features/store-guide-completed/api/store-guide-completed'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -30,6 +31,7 @@ const GUIDE_QUERY = graphql(`
 
 export function GuidePage(): ReactNode {
     const params = useParams<{ id: string }>()
+    const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
 
     const { data, loading, error } = useQuery(GUIDE_QUERY, {
         variables: { id: params.id! },
@@ -44,7 +46,7 @@ export function GuidePage(): ReactNode {
 
     if (error || !data?.res) return 'Something went wrong...'
 
-    const progress = getGuideProgress(data.res.body!)
+    const progress = getGuideProgress(data.res.body)
     const minutes = Math.ceil((progress * 60) / 100)
 
     return (

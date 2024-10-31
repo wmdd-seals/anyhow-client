@@ -7,9 +7,10 @@ import { graphql } from '@gqlgen'
 const GET_GUIDES_WITH_USER = graphql(`
     query Guides {
         res: guides {
+            body
             description
-            title
             id
+            title
             tags
             user {
                 firstName
@@ -34,12 +35,12 @@ export function SliderGuideList(): ReactNode {
                     className="my-16 flex justify-items-center justify-center mx-auto w-[250px]"
                 >
                     <Card
-                        id={guide!.id!}
+                        id={guide!.id}
                         userName={`${guide!.user!.firstName} ${guide!.user!.lastName}`}
                         key={guide!.id}
                         imageUrl={`${import.meta.env.VITE_API_URL}/images/${guide!.id}`}
-                        title={guide!.title!}
-                        description={guide!.description!}
+                        title={guide!.title}
+                        description={guide!.description}
                         tags={guide!.tags as string[]}
                     />
                 </div>

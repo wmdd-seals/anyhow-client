@@ -10,15 +10,15 @@ type CalendarChartProps = {
     to: Date
     data: {
         date: string
-        guideCount: number
+        count: number
     }[]
 }
 
-const GET_GUIDE_TAKEN_COUNTS = graphql(`
-    query GuideTakenCounts {
-        res: guideTakenCounts {
+const GUIDE_COMPLETED_COUNTS = graphql(`
+    query GuideCompletedCounts {
+        res: guideCompletedCounts {
             date
-            guideCount
+            count
         }
     }
 `)
@@ -31,7 +31,7 @@ function CalendarChart({ from, to, data }: CalendarChartProps): ReactNode {
                 <TimeRange
                     data={data.map(item => ({
                         day: item.date,
-                        value: item.guideCount
+                        value: item.count
                     }))}
                     from={from}
                     to={to}
@@ -68,7 +68,7 @@ function CalendarChart({ from, to, data }: CalendarChartProps): ReactNode {
 }
 
 function ContributionCalendarChart(): ReactNode {
-    const { data: counts } = useQuery(GET_GUIDE_TAKEN_COUNTS, {
+    const { data: counts } = useQuery(GUIDE_COMPLETED_COUNTS, {
         fetchPolicy: 'no-cache'
     })
     console.log({ counts })

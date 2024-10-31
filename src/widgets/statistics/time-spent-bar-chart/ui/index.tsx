@@ -6,18 +6,18 @@ import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 type BarChartProps = {
     data: {
-        day: string
+        date: string
         value: number
     }[]
     keys: string[]
     indexBy: string
 }
 
-const GET_GUIDE_TAKEN_COUNTS = graphql(`
-    query GuideTakenCounts {
-        res: guideTakenCounts {
+const GUIDE_COMPLETED_COUNTS = graphql(`
+    query GuideCompletedCounts {
+        res: guideCompletedCounts {
             date
-            guideCount
+            count
         }
     }
 `)
@@ -38,7 +38,7 @@ function BarChart({ data, keys, indexBy }: BarChartProps): ReactNode {
 }
 
 function TimeSpentBarChart(): ReactNode {
-    const { data: counts } = useQuery(GET_GUIDE_TAKEN_COUNTS, {
+    const { data: counts } = useQuery(GUIDE_COMPLETED_COUNTS, {
         fetchPolicy: 'network-only'
     })
 
@@ -48,10 +48,10 @@ function TimeSpentBarChart(): ReactNode {
         new Date(today.setDate(today.getDate() - 7)).getTime()
     )
 
-    if (!counts) return null
+    if (!counts?.res.length) return null
 
-    const filteredData = counts.res.filter(data => {
-        const dataDate = new Date(data.date).getTime()
+    const filteredData = counts.res.filter(count => {
+        const dataDate = new Date(count!.date).getTime()
         return dataDate >= from && dataDate <= to
     })
 
@@ -91,11 +91,7 @@ function TimeSpentBarChart(): ReactNode {
                 <p>{averageTimeSpent}</p>
                 <p></p>
             </div>
-            <BarChart
-                data={filteredData}
-                keys={['guideCount']}
-                indexBy="date"
-            />
+            <BarChart data={filteredData} keys={['count']} indexBy="date" />
         </div>
     )
 }
