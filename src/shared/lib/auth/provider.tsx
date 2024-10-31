@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
     const userSession = useQuery(FETCH_USER)
 
     const [isAuthenticated, setIsAuthenticated] = useState(
-        userSession.data?.user ? true : false
+        userSession.data?.user ? userSession.data.user : false
     )
     const [queryHandler] = useLazyQuery<UserData, input>(USER_SIGNIN)
 
