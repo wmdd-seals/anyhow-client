@@ -9,36 +9,34 @@ type CalendarChartProps = {
     from: Date
     to: Date
     data: {
-        date: string
-        count: number
+        day: string
+        value: number
     }[]
 }
 
 const GUIDE_COMPLETED_COUNTS = graphql(`
-    query GuideCompletedCounts {
-        res: guideCompletedCounts {
-            date
+    query GuideCompletedCounts($input: GuideCompletedDateRange) {
+        res: guideCompletedCounts(input: $input) {
             count
+            date
         }
     }
 `)
 
 function CalendarChart({ from, to, data }: CalendarChartProps): ReactNode {
-    console.log({ data })
     return (
         <ResponsiveWrapper>
             {({ width, height }) => (
                 <TimeRange
-                    data={data.map(item => ({
-                        day: item.date,
-                        value: item.count
-                    }))}
+                    data={data}
                     from={from}
                     to={to}
                     weekdayTicks={[0, 1, 2, 3, 4, 5, 6]}
                     height={height}
                     width={width}
                     square={false}
+                    minValue={0}
+                    maxValue={10}
                     dayRadius={5}
                     daySpacing={3}
                     colors={[
@@ -68,16 +66,20 @@ function CalendarChart({ from, to, data }: CalendarChartProps): ReactNode {
 }
 
 function ContributionCalendarChart(): ReactNode {
-    const { data: counts } = useQuery(GUIDE_COMPLETED_COUNTS, {
-        fetchPolicy: 'no-cache'
-    })
-    console.log({ counts })
-
     const today = new Date()
     const [to, setTo] = useState<number>(today.getTime())
     const [from, setFrom] = useState<number>(
-        new Date(today.setDate(today.getDate() - 30)).getTime()
+        new Date(today.setDate(today.getDate() - 60)).getTime()
     )
+    const { data: counts } = useQuery(GUIDE_COMPLETED_COUNTS, {
+        variables: {
+            input: {
+                start: new Date(from).toISOString().split('T')[0],
+                end: new Date(to).toISOString().split('T')[0]
+            }
+        },
+        fetchPolicy: 'network-only'
+    })
 
     const handlePrev = (): void => {
         const [newFrom, newTo] = adjustDateRange(from, to, -30)
@@ -113,7 +115,10 @@ function ContributionCalendarChart(): ReactNode {
             <CalendarChart
                 from={new Date(from)}
                 to={new Date(to)}
-                data={counts?.res}
+                data={counts.res.map(item => ({
+                    day: item.date || '',
+                    value: item.count || 0
+                }))}
             />
         </div>
     )

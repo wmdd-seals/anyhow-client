@@ -1,7 +1,5 @@
-import { useState, type ReactNode } from 'react'
+import { useState, ReactNode } from 'react'
 import { Icon, TextEditor } from '@shared/ui'
-import { useEffect, type ReactNode } from 'react'
-import { TextEditor } from '@shared/ui'
 import { useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
@@ -33,14 +31,21 @@ export function GuidePage(): ReactNode {
     const params = useParams<{ id: string }>()
     const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
 
+    if (!params.id) return 'Guide not found'
+
     const { data, loading, error } = useQuery(GUIDE_QUERY, {
-        variables: { id: params.id! },
+        variables: { id: params.id },
         skip: !params.id
     })
 
     const [sidebar, setSidebar] = useState<boolean>(false)
-
-    if (!params.id) return 'Guide not found'
+    const handleCompleted = (): void => {
+        void storeGuideCompletedMutation({
+            variables: {
+                input: { guideId: params.id }
+            }
+        })
+    }
 
     if (loading) return 'Loading...'
 

@@ -5,9 +5,33 @@ import { ScoreCard } from 'src/entities/guide/ui/score-card'
 import { Card } from 'src/entities/guide/ui/card'
 import { Header } from 'src/widgets/header'
 import { Footer } from 'src/widgets/footer/ui/footer'
+import { graphql } from '@gqlgen'
+import { useQuery } from '@apollo/client'
+
+const GUIDE_COMPLETED_COUNTS = graphql(`
+    query GuideCompletedCounts($input: GuideCompletedDateRange) {
+        res: guideCompletedCounts(input: $input) {
+            count
+            date
+        }
+    }
+`)
 
 const Dashboard = (): ReactNode => {
     const [firstName] = useState('John')
+    const { data } = useQuery(GUIDE_COMPLETED_COUNTS, {
+        variables: {
+            input: {
+                start: '2000/01/01',
+                end: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+                    .toISOString()
+                    .split('T')[0]
+                    .replaceAll('-', '/')
+            }
+        }
+    })
+    const totalGuideCount =
+        data?.res.reduce((acc, curr) => acc + (curr.count || 0), 0) || 0
     return (
         <div className="flex flex-col gap-4 ">
             <Header />
@@ -20,11 +44,14 @@ const Dashboard = (): ReactNode => {
                 </section>
                 <section className="flex flex-col gap-4">
                     <h3 className="text-3xl font-bold">Overview</h3>
-                    <div className="grid grid-cols-3 gap-4">
-                        <ScoreCard title="Total learninghours">123</ScoreCard>
-                        <ScoreCard title="Quiz taken">10</ScoreCard>
+                    <div className="grid grid-cols-2 gap-4">
+                        <ScoreCard title="Total learning hours">
+                            {`${totalGuideCount * 30} minutes`}
+                        </ScoreCard>
+                        {/* <ScoreCard title="Quiz taken">10</ScoreCard> */}
                         <ScoreCard title="Study guides completed">
-                            1243
+                            {totalGuideCount} guide
+                            {totalGuideCount > 1 ? 's' : ''}
                         </ScoreCard>
                     </div>
                 </section>
