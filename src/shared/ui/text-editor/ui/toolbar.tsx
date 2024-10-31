@@ -31,7 +31,7 @@ import {
     type LexicalEditor,
     SELECTION_CHANGE_COMMAND
 } from 'lexical'
-import { type Dispatch, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { $isAtNodeEnd } from '@lexical/selection'
 import { ElementNode, type RangeSelection, TextNode } from 'lexical'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
@@ -421,7 +421,7 @@ export function ToolbarPlugin(props: {
             const image = input.files?.[0]
             if (!image) return
 
-            const src = await props.onImageUpload(image)
+            const src = await onImageUpload(image)
             editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
                 src,
                 altText: 'Guide Image'
@@ -429,7 +429,7 @@ export function ToolbarPlugin(props: {
         })
 
         input.click()
-    }, [props.onImageUpload])
+    }, [onImageUpload])
 
     const canViewerSeeInsertCodeButton = !isImageCaption
     // const formatOption = ELEMENT_FORMAT_OPTIONS[elementFormat || 'left']

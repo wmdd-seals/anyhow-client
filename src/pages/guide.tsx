@@ -37,7 +37,7 @@ export function GuidePage(): ReactNode {
 
     if (loading) return 'Loading...'
 
-    if (error || !data) return 'Something went wrong...'
+    if (error || !data?.res) return 'Something went wrong...'
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -59,7 +59,7 @@ export function GuidePage(): ReactNode {
                     <div className="flex items-center gap-3 font-bold mb-8">
                         <div className="size-10 rounded-full bg-gray-200" />
                         <div>
-                            {data.res.user.firstName} {data.res.user.lastName}
+                            {data.res.user!.firstName} {data.res.user!.lastName}
                         </div>
                     </div>
 
