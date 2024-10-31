@@ -126,7 +126,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                         e.currentTarget.src = `/guide-cover-thumbnail.jpg`
                     }}
                     alt="Guide Cover Thumbnail"
-                    className="max-w-[1300px] max-h-[520px] object-cover mx-auto rounded-3xl"
+                    className="max-w-[1300px] w-full max-h-[520px] object-cover object-center mx-auto rounded-3xl"
                 />
 
                 <div className="absolute left-1/2 -translate-x-1/2 bottom-14 flex items-center gap-2">
