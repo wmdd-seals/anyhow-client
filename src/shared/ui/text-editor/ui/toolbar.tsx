@@ -254,10 +254,10 @@ function BlockFormatDropDown({
 }
 
 export function ToolbarPlugin(props: {
-    setIsLinkEditMode: Dispatch<boolean>
     className?: string
+    onImageUpload(image: File): Promise<string>
 }): JSX.Element {
-    const { className, setIsLinkEditMode } = props
+    const { className, onImageUpload } = props
 
     const [editor] = useLexicalComposerContext()
     const [activeEditor, setActiveEditor] = useState(editor)
@@ -404,13 +404,11 @@ export function ToolbarPlugin(props: {
 
     const insertLink = useCallback(() => {
         if (!isLink) {
-            setIsLinkEditMode(true)
             activeEditor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://')
         } else {
-            setIsLinkEditMode(false)
             activeEditor.dispatchCommand(TOGGLE_LINK_COMMAND, null)
         }
-    }, [activeEditor, isLink, setIsLinkEditMode])
+    }, [activeEditor, isLink])
 
     const selectImage = useCallback(() => {
         const input = document.createElement('input')
@@ -422,8 +420,7 @@ export function ToolbarPlugin(props: {
             const image = input.files?.[0]
             if (!image) return
 
-            console.log(image)
-            const src = URL.createObjectURL(image)
+            const src = await props.onImageUpload(image)
             editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
                 src,
                 altText: 'Guide Image'
@@ -431,7 +428,7 @@ export function ToolbarPlugin(props: {
         })
 
         input.click()
-    }, [])
+    }, [props.onImageUpload])
 
     const canViewerSeeInsertCodeButton = !isImageCaption
     // const formatOption = ELEMENT_FORMAT_OPTIONS[elementFormat || 'left']

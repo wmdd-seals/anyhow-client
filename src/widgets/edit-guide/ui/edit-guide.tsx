@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { UPLOAD_GUIDE_COVER } from '../api/upload-guide-cover'
 import { toBase64 } from '@shared/lib/file'
 import { REMOVE_GUIDE_COVER } from '../api/remove-guide-cover'
+import { UPLOAD_GUIDE_IMAGE } from '../api/upload-guide-image'
 
 type UseCreateGuideForm = {
     title: string
@@ -40,23 +41,26 @@ export function EditGuide(props: EditGuideProps): ReactNode {
     const [removeCoverMutation] = useMutation(REMOVE_GUIDE_COVER, {
         variables: { id }
     })
+    const [uploadGuideImage] = useMutation(UPLOAD_GUIDE_IMAGE)
 
     const coverImageRef = useRef<HTMLImageElement>(null)
 
     const form = useForm<UseCreateGuideForm>({
         defaultValues,
         values: {
-            body: data?.res.body || '',
-            title: data?.res.title || '',
-            tags: (data?.res.tags as string) || ''
+            body: data?.res?.body || '',
+            title: data?.res?.title || '',
+            tags: (data?.res?.tags as string) || ''
         },
         mode: 'all',
         reValidateMode: 'onChange'
     })
 
     const body = form.watch('body')
-    const progress =
-        ((body.replaceAll('\n', '').length * 0.95) / (1500 * 6)) * 100
+    const progress = Math.min(
+        ((body.replaceAll('\n', '').length * 0.95) / (1500 * 6)) * 100,
+        100
+    )
 
     const selectCoverAndUpload = useCallback(() => {
         const input = document.createElement('input')
@@ -79,7 +83,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                 }
             })
 
-            coverImageRef.current!.src = getGuideCoverUrl(id)
+            coverImageRef.current!.src = getGuideImageUrl(id)
         })
 
         input.click()
@@ -100,13 +104,13 @@ export function EditGuide(props: EditGuideProps): ReactNode {
             <div className="relative">
                 <img
                     ref={coverImageRef}
-                    src={getGuideCoverUrl(id)}
+                    src={getGuideImageUrl(id)}
                     onError={(e): void => {
                         // if not loaded for any reason, use thumbnail
                         e.currentTarget.src = `/guide-cover-thumbnail.jpg`
                     }}
                     alt="Guide Cover Thumbnail"
-                    className="max-w-[1300px] mx-auto"
+                    className="max-w-[1300px] max-h-[520px] object-cover mx-auto rounded-3xl"
                 />
 
                 <div className="absolute left-1/2 -translate-x-1/2 bottom-14 flex items-center gap-2">
@@ -158,32 +162,6 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                     }}
                 />
 
-                <Controller<UseCreateGuideForm, 'tags'>
-                    name="tags"
-                    rules={{
-                        required: {
-                            value: true,
-                            message:
-                                'Adds several tags to allow users to find your guide'
-                        }
-                    }}
-                    render={({
-                        field,
-                        fieldState: { error }
-                    }): ReactElement => {
-                        return (
-                            <div>
-                                <TextInput label={'Tags'} {...field} />
-                                {error?.message && (
-                                    <span className="text-red-500">
-                                        {error.message}
-                                    </span>
-                                )}
-                            </div>
-                        )
-                    }}
-                />
-
                 <Controller<UseCreateGuideForm, 'body'>
                     name="body"
                     rules={{
@@ -201,9 +179,53 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                                 <span>Content</span>
                                 <TextEditor
                                     editable
-                                    initialValue={data.res.body!}
+                                    blockEditing={progress !== 100}
+                                    initialValue={data.res!.body!}
                                     onChange={field.onChange}
+                                    onImageUpload={async image => {
+                                        const res = await uploadGuideImage({
+                                            variables: {
+                                                input: {
+                                                    name: image.name,
+                                                    guideId: id,
+                                                    mimeType: image.type,
+                                                    base64Data:
+                                                        await toBase64(image)
+                                                }
+                                            }
+                                        })
+
+                                        return getGuideImageUrl(
+                                            res.data!.res.id!
+                                        )
+                                    }}
                                 />
+                                {error?.message && (
+                                    <span className="text-red-500">
+                                        {error.message}
+                                    </span>
+                                )}
+                            </div>
+                        )
+                    }}
+                />
+
+                <Controller<UseCreateGuideForm, 'tags'>
+                    name="tags"
+                    rules={{
+                        required: {
+                            value: true,
+                            message:
+                                'Adds several tags to allow users to find your guide'
+                        }
+                    }}
+                    render={({
+                        field,
+                        fieldState: { error }
+                    }): ReactElement => {
+                        return (
+                            <div className="mb-4">
+                                <TextInput label={'Tags'} {...field} />
                                 {error?.message && (
                                     <span className="text-red-500">
                                         {error.message}
@@ -240,7 +262,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
     )
 }
 
-function getGuideCoverUrl(id: string): string {
+function getGuideImageUrl(id: string): string {
     return (
         import.meta.env.VITE_API_URL +
         import.meta.env.VITE_IMAGES_ENDPOINT +

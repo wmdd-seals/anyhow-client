@@ -22,6 +22,7 @@ const documents = {
     "\n    mutation RemoveGuideCover($id: String!) {\n        res: removeImage(id: $id)\n    }\n": types.RemoveGuideCoverDocument,
     "\n    mutation UpdateGuide($input: UpdateGuideInput!) {\n        res: updateGuide(input: $input) {\n            id\n        }\n    }\n": types.UpdateGuideDocument,
     "\n    mutation UploadGuideCover($input: FileInfo!) {\n        res: uploadCoverImage(input: $input) {\n            id\n        }\n    }\n": types.UploadGuideCoverDocument,
+    "\n    mutation UploadGuideImage($input: FileInfo!) {\n        res: uploadImage(input: $input) {\n            id\n        }\n    }\n": types.UploadGuideImageDocument,
     "\n    mutation GuideChat($input: GuideChatRequest) {\n        res: guideChat(input: $input) {\n            content\n            role\n        }\n    }\n": types.GuideChatDocument,
     "\n    query ChatMessages($guideId: String!) {\n        res: chathistory(guideId: $guideId) {\n            content\n            role\n        }\n    }\n": types.ChatMessagesDocument,
     "\n    query Guides {\n        res: guides {\n            description\n            title\n            id\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n": types.GuidesDocument,
@@ -74,6 +75,10 @@ export function graphql(source: "\n    mutation UpdateGuide($input: UpdateGuideI
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation UploadGuideCover($input: FileInfo!) {\n        res: uploadCoverImage(input: $input) {\n            id\n        }\n    }\n"): (typeof documents)["\n    mutation UploadGuideCover($input: FileInfo!) {\n        res: uploadCoverImage(input: $input) {\n            id\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation UploadGuideImage($input: FileInfo!) {\n        res: uploadImage(input: $input) {\n            id\n        }\n    }\n"): (typeof documents)["\n    mutation UploadGuideImage($input: FileInfo!) {\n        res: uploadImage(input: $input) {\n            id\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

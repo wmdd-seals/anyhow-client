@@ -27,8 +27,10 @@ type TextEditorProps = EditableTextEditorProps | ReadonlyTextEditorProps
 
 type EditableTextEditorProps = {
     editable: true
+    blockEditing?: boolean
     initialValue?: string
     onChange: (state: string) => void
+    onImageUpload(image: File): Promise<string>
 }
 
 type ReadonlyTextEditorProps = {
@@ -104,8 +106,9 @@ export function TextEditor(props: TextEditorProps): ReactNode {
             >
                 {editable && (
                     <ToolbarPlugin
+                        blockEditing={props.blockEditing}
                         className="border-b border-gray-300"
-                        setIsLinkEditMode={console.log}
+                        onImageUpload={props.onImageUpload}
                     />
                 )}
                 <RichTextPlugin
