@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import { Header } from '@widgets/header'
 import { Footer } from '@widgets/footer/ui/footer'
-import { GuideChat } from '@widgets/guide-chat'
+// import { GuideChat } from '@widgets/guide-chat'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -43,7 +43,7 @@ export function GuidePage(): ReactNode {
         <div className="flex flex-col min-h-screen">
             <Header />
 
-            <GuideChat guideId={params.id} />
+            {/* <GuideChat guideId={params.id} /> */}
 
             <main className="max-w-[50rem] w-full mx-auto grow">
                 <h1 className="text-7xl font-bold mb-8">{data.res.title}</h1>

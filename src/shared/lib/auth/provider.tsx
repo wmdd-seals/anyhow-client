@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react'
-import { gql, useLazyQuery } from '@apollo/client'
+import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import { graphql } from '@gqlgen'
 
 type signIn = {
     message: string
@@ -40,13 +41,29 @@ const USER_SIGNIN = gql`
     }
 `
 
+const FETCH_USER = graphql(`
+    query User {
+        user {
+            email
+            favoriteTopics
+            firstName
+            id
+            lastName
+            middleName
+        }
+    }
+`)
+
 export const AuthProvider = ({ children }: Props): React.ReactNode => {
     // const navigate = useNavigate()
     const [authToken, setToken] = useState<string | null>(
         localStorage.getItem('authToken')
     )
+
+    const userSession = useQuery(FETCH_USER)
+
     const [isAuthenticated, setIsAuthenticated] = useState(
-        authToken ? true : false
+        userSession.data?.user ? true : false
     )
     const [queryHandler] = useLazyQuery<UserData, input>(USER_SIGNIN)
 
