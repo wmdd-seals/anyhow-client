@@ -6,9 +6,10 @@ import { Card } from 'src/entities/guide'
 const GET_GUIDES_WITH_USER = graphql(`
     query Guides {
         res: guides {
+            body
             description
-            title
             id
+            title
             tags
             user {
                 firstName
@@ -30,12 +31,12 @@ export function PanelGuideList(): ReactNode {
             {data.res.map((guide, index) => (
                 <div key={index}>
                     <Card
-                        id={guide!.id!}
+                        id={guide!.id}
                         key={index}
                         userName={`${guide!.user!.firstName} ${guide!.user!.lastName}`}
                         imageUrl={`${import.meta.env.VITE_API_URL}/images/${guide!.id}`}
-                        title={guide!.title!}
-                        description={guide!.description!}
+                        title={guide!.title}
+                        description={guide!.description}
                         tags={guide!.tags as string[]} // TODO: fix the type
                     />
                 </div>

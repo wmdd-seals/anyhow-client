@@ -1,14 +1,15 @@
-import { useState, type ReactNode } from 'react'
+import { useState, ReactNode } from 'react'
 import { Icon, TextEditor } from '@shared/ui'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import { Header } from '@widgets/header'
 import { Footer } from '@widgets/footer/ui/footer'
-
+import { Button } from '@shared/ui'
 import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
 import { getGuideProgress } from 'src/entities/guide'
+import { STORE_GUIDE_COMPLETED } from 'src/features/store-guide-completed/api/store-guide-completed'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -28,21 +29,29 @@ const GUIDE_QUERY = graphql(`
 
 export function GuidePage(): ReactNode {
     const params = useParams<{ id: string }>()
+    const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
+
+    if (!params.id) return 'Guide not found'
 
     const { data, loading, error } = useQuery(GUIDE_QUERY, {
-        variables: { id: params.id! },
+        variables: { id: params.id },
         skip: !params.id
     })
 
     const [sidebar, setSidebar] = useState<boolean>(false)
-
-    if (!params.id) return 'Guide not found'
+    const handleCompleted = (): void => {
+        void storeGuideCompletedMutation({
+            variables: {
+                input: { guideId: params.id }
+            }
+        })
+    }
 
     if (loading) return 'Loading...'
 
     if (error || !data?.res) return 'Something went wrong...'
 
-    const progress = getGuideProgress(data.res.body!)
+    const progress = getGuideProgress(data.res.body)
     const minutes = Math.ceil((progress * 60) / 100)
 
     return (
@@ -71,6 +80,13 @@ export function GuidePage(): ReactNode {
                     </div>
 
                     <TextEditor value={data.res.body || ''} editable={false} />
+
+                    <Button
+                        onClick={handleCompleted}
+                        className="max-w-80 bg-emerald-950 text-white font-bold p-4 text-xl rounded-xl ml-auto mt-3"
+                    >
+                        Completed
+                    </Button>
                 </article>
 
                 <Transition show={sidebar}>
@@ -86,9 +102,9 @@ export function GuidePage(): ReactNode {
 
                     <TransitionChild>
                         <div
-                            className={`transition bg-white h-screen fixed 
-                                max-w-[30rem] w-full rounded-l-3xl top-0 right-0 z-[2] 
-                                data-[closed]:translate-x-full py-8 px-5 
+                            className={`transition bg-white h-screen fixed
+                                max-w-[30rem] w-full rounded-l-3xl top-0 right-0 z-[2]
+                                data-[closed]:translate-x-full py-8 px-5
                                 flex flex-col`}
                         >
                             <button

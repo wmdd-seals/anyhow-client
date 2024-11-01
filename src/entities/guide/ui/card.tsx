@@ -43,7 +43,7 @@ const Card: React.FC<CardComponentProps> = ({
     return (
         <Link
             className="flex overflow-hidden flex-col bg-white rounded-2xl border-2 box-border border-gray-100 border-solid w-full"
-            to={id}
+            to={`/${id}`}
         >
             <div className="flex overflow-hidden flex-col justify-center items-center px-20 py-24 w-full bg-blue-900 bg-gradient-to-b from-blue-900 to-black">
                 <img

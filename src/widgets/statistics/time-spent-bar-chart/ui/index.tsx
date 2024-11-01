@@ -2,16 +2,25 @@ import { useState, type ReactNode } from 'react'
 import { adjustDateRange } from 'src/shared/lib'
 import { ResponsiveBar } from '@nivo/bar'
 
-import { barChartData } from '../sample-data'
-
+import { useQuery } from '@apollo/client'
+import { graphql } from '@gqlgen'
 type BarChartProps = {
     data: {
-        day: string
-        value: number
+        date: string
+        count: number
     }[]
     keys: string[]
     indexBy: string
 }
+
+const GUIDE_COMPLETED_COUNTS = graphql(`
+    query GuideCompletedCounts($input: GuideCompletedDateRange) {
+        res: guideCompletedCounts(input: $input) {
+            count
+            date
+        }
+    }
+`)
 
 function BarChart({ data, keys, indexBy }: BarChartProps): ReactNode {
     return (
@@ -34,15 +43,29 @@ function TimeSpentBarChart(): ReactNode {
     const [from, setFrom] = useState<number>(
         new Date(today.setDate(today.getDate() - 7)).getTime()
     )
-    const filteredData = barChartData.filter(data => {
-        const dataDate = new Date(data.day).getTime()
-        return dataDate >= from && dataDate <= to
+    const { data: counts } = useQuery(GUIDE_COMPLETED_COUNTS, {
+        variables: {
+            input: {
+                start: new Date(from)
+                    .toISOString()
+                    .split('T')[0]
+                    .replaceAll('-', '/'),
+                end: new Date(to)
+                    .toISOString()
+                    .split('T')[0]
+                    .replaceAll('-', '/')
+            }
+        },
+        fetchPolicy: 'network-only'
     })
 
-    const averageTimeSpent = Math.floor(
-        filteredData.reduce((acc, curr) => acc + curr.value, 0) /
-            filteredData.length
-    )
+    if (!counts?.res.length) return null
+
+    const averageTimeSpent =
+        Math.floor(
+            counts.res.reduce((acc, curr) => acc + (curr.count || 0), 0) /
+                counts.res.length
+        ) * 30
 
     const handlePrev = (): void => {
         const [newFrom, newTo] = adjustDateRange(from, to, -7)
@@ -72,10 +95,17 @@ function TimeSpentBarChart(): ReactNode {
             </button>
             <div className="text-2xl text-gray-500 w-full text-left absolute left-5 top-5">
                 <label>Average</label>
-                <p>{averageTimeSpent} min</p>
+                <p>{averageTimeSpent} minutes</p>
                 <p></p>
             </div>
-            <BarChart data={filteredData} keys={['value']} indexBy="day" />
+            <BarChart
+                data={counts.res.map(item => ({
+                    date: item.date || '',
+                    count: item.count || 0
+                }))}
+                keys={['count']}
+                indexBy="date"
+            />
         </div>
     )
 }
