@@ -7,11 +7,11 @@ import {
 } from 'react-router-dom'
 import {
     HomePage,
+    OnboardingPage,
     GuidePage,
     AccountPage,
-    QuizPage,
+    QuizCreationPage,
     LoginPage,
-    OnboardingPage,
     EditGuidePage,
     Dashboard,
     SignUpPage
@@ -37,8 +37,8 @@ const router = createBrowserRouter(
                 <Route element={<ProtectedRoute />}>
                     <Route path="edit">
                         <Route index element={<EditGuidePage />} />
+                        <Route path="quiz" element={<QuizCreationPage />} />
                     </Route>
-                    <Route path="quiz/:id" element={<QuizPage />} />
                 </Route>
             </Route>
         </Route>

@@ -26,7 +26,7 @@ export function CreateGuideButton(): ReactNode {
             onClick={async (): Promise<void> => {
                 const id = await create({
                     body: DEFAULT_TEMPLATE,
-                    title: '',
+                    title: 'Sample guide',
                     tags: [],
                     description: ''
                 })

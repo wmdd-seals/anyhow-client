@@ -4,39 +4,47 @@ import { useQuery } from '@apollo/client'
 import { Slider } from 'src/shared/ui'
 import { graphql } from '@gqlgen'
 
-const GET_GUIDES = graphql(`
+const GET_GUIDES_WITH_USER = graphql(`
     query Guides {
         res: guides {
+            body
             description
-            title
             id
+            title
             tags
+            user {
+                firstName
+                lastName
+            }
         }
     }
 `)
 
 export function SliderGuideList(): ReactNode {
-    const { data } = useQuery(GET_GUIDES)
+    const { data, loading, error } = useQuery(GET_GUIDES_WITH_USER)
 
-    if (data?.res.length === 0) return <div>No guides found</div>
+    if (loading) return <div>Loading...</div>
+    if (error || !data?.res || data.res.length === 0)
+        return <div>Error: {error?.message}</div>
+
     return (
         <Slider desktopItems={4} tabletItems={2} mobileItems={1}>
-            {data?.res.map((guide, index) => (
+            {data.res.slice(0, 6).map((guide, index) => (
                 <div
                     key={index}
                     className="my-16 flex justify-items-center justify-center mx-auto w-[250px]"
                 >
                     <Card
                         id={guide!.id}
+                        userName={`${guide!.user!.firstName} ${guide!.user!.lastName}`}
                         key={guide!.id}
-                        imageUrl={'https://example.com/${index}.jpg'}
-                        title={guide!.title!}
-                        description={guide!.description!}
+                        imageUrl={`${import.meta.env.VITE_API_URL}/images/${guide!.id}`}
+                        title={guide!.title}
+                        description={guide!.description}
                         tags={guide!.tags as string[]}
                     />
                 </div>
             ))}
-            <p>test</p>
         </Slider>
     )
 }
