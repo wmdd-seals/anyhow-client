@@ -67,7 +67,7 @@ function Header(): ReactNode {
     }
 
     return (
-        <header className="bg-white text-white p-4 sticky top-0 z-50 relative">
+        <header className="bg-white text-white p-4 sticky top-0 z-[1]">
             <div className="container box-border mx-auto w-full flex justify-between items-center">
                 <div className="flex items-center">
                     <Link to={'/'}>
