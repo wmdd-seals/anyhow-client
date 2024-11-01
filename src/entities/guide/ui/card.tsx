@@ -33,7 +33,7 @@ const Card: React.FC<CardComponentProps> = ({
                 } else {
                     setImageSrc(defaultImageUrl)
                 }
-            } catch (error) {
+            } catch {
                 setImageSrc(defaultImageUrl)
             }
         }
