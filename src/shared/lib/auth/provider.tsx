@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
     )
 
     const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const { data, loading } = useQuery(FETCH_USER, {
+    const { loading } = useQuery(FETCH_USER, {
         fetchPolicy: 'cache-and-network',
         onCompleted: data => {
             if (!data.user.id) {
