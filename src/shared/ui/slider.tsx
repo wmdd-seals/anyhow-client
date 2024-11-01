@@ -7,13 +7,19 @@ type SliderProps = {
     desktopItems?: number
     tabletItems?: number
     mobileItems?: number
+    sliderClass?: string
+    showDots?: boolean
+    itemClass?: string
 }
 
 function Slider({
     children,
     desktopItems = 1,
     tabletItems = 1,
-    mobileItems = 1
+    mobileItems = 1,
+    sliderClass,
+    itemClass,
+    showDots = true
 }: SliderProps): React.ReactNode {
     const responsive = {
         desktop: {
@@ -35,8 +41,8 @@ function Slider({
                 additionalTransfrom={0}
                 autoPlaySpeed={3000}
                 centerMode={false}
-                className=""
                 containerClass="container"
+                itemClass={itemClass}
                 draggable
                 focusOnSelect={false}
                 infinite
@@ -51,8 +57,8 @@ function Slider({
                 rewindWithAnimation={false}
                 rtl={false}
                 shouldResetAutoplay
-                showDots
-                sliderClass=""
+                showDots={showDots}
+                sliderClass={sliderClass}
                 slidesToSlide={1}
                 swipeable
                 arrows={false}
