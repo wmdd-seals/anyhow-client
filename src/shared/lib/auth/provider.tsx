@@ -26,7 +26,6 @@ export type UserContextType = {
     loginUser: (userInput: UserSignInInput) => void
     logout: () => void
     isAuthenticated: boolean
-    loading: boolean
 }
 
 type Props = { children: React.ReactNode }
@@ -61,20 +60,17 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
         localStorage.getItem('authToken')
     )
 
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     const userSession = useQuery(FETCH_USER, {
         fetchPolicy: 'cache-and-network',
         onCompleted: data => {
-            if (!data.user) {
+            if (!data.user.id) {
                 setIsAuthenticated(false)
                 logout()
             }
-            setIsAuthenticated(data.user ? true : false)
+            setIsAuthenticated(!!data.user)
         }
     })
-
-    const [isAuthenticated, setIsAuthenticated] = useState(
-        userSession.data?.user ? userSession.data.user : false
-    )
 
     const [queryHandler] = useLazyQuery<UserData, input>(USER_SIGNIN)
 
@@ -110,14 +106,21 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
         setIsAuthenticated(false)
     }
 
+    if (userSession.loading)
+        // TODO Switch it to svg which Bee created
+        return (
+            <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-900 to-green-300">
+                <img src="/logo.svg" alt="logo" className="w-96 h-96" />
+            </div>
+        )
+
     return (
         <UserContext.Provider
             value={{
                 loginUser,
                 authToken,
                 logout,
-                isAuthenticated,
-                loading: userSession.loading
+                isAuthenticated
             }}
         >
             {children}
