@@ -10,7 +10,6 @@ import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
 import { getGuideProgress } from 'src/entities/guide'
 
-
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
         res: guide(id: $id) {
@@ -50,7 +49,6 @@ export function GuidePage(): ReactNode {
         <div className="flex flex-col min-h-screen">
             <Header />
 
-
             <main className="grow">
                 <article className="max-w-[50rem] w-full mx-auto flex flex-col">
                     <button onClick={(): void => setSidebar(true)}>
@@ -64,7 +62,6 @@ export function GuidePage(): ReactNode {
                     <span className="text-center font-medium">
                         {minutes} minute{minutes === 1 ? '' : 's'} guide
                     </span>
-
 
                     <div className="flex items-center gap-3 font-bold mb-8">
                         <div className="size-10 rounded-full bg-gray-200" />
