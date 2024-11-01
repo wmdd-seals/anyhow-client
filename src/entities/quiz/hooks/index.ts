@@ -1,1 +1,1 @@
-export * from './use-create-quiz'
+export * from './get-quiz'

@@ -6,6 +6,7 @@ import cn from 'clsx'
 import { GET_GUIDE_QUERY } from '../api/get-guide'
 import { useMutation, useQuery } from '@apollo/client'
 import { UPDATE_GUIDE_MUTATION } from '../api/update-guide'
+import { useGenerateQuiz } from '../../quiz-creation/api/use-generate-quiz'
 import { useNavigate } from 'react-router-dom'
 import { UPLOAD_GUIDE_COVER } from '../api/upload-guide-cover'
 import { toBase64 } from '@shared/lib/file'
@@ -68,6 +69,9 @@ export function EditGuide(props: EditGuideProps): ReactNode {
         mode: 'all',
         reValidateMode: 'onChange'
     })
+
+    const { generate: generateQuiz, loading: generateQuizLoading } =
+        useGenerateQuiz()
 
     const body = form.watch('body')
     const progress = getGuideProgress(body)
@@ -138,7 +142,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
 
             <div
                 className={cn(
-                    'flex flex-col max-w-[50rem] mx-auto w-full',
+                    'flex flex-col gap-3 max-w-[50rem] mx-auto w-full',
                     className
                 )}
             >
@@ -270,27 +274,56 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                     }}
                 />
 
-                <Button
-                    onClick={form.handleSubmit(async data => {
-                        const guide = await updateGuideMutation({
-                            variables: {
-                                input: {
-                                    id,
-                                    title: data.title,
-                                    body: data.body,
-                                    tags: data.tags,
-                                    published: true
+                <div className="flex gap-3 justify-center">
+                    <Button
+                        onClick={form.handleSubmit(async data => {
+                            const guide = await updateGuideMutation({
+                                variables: {
+                                    input: {
+                                        id,
+                                        title: data.title,
+                                        body: data.body,
+                                        tags: data.tags,
+                                        published: true
+                                    }
                                 }
-                            }
-                        })
+                            })
 
-                        if (!guide.data?.res) return
+                            if (!guide.data?.res) return
+                            navigate(`/${guide.data.res.id}`)
+                        })}
+                    >
+                        Publish
+                    </Button>
 
-                        navigate(`/${guide.data.res.id}`)
-                    })}
-                >
-                    Publish
-                </Button>
+                    <Button
+                        onClick={form.handleSubmit(async data => {
+                            const guide = await updateGuideMutation({
+                                variables: {
+                                    input: {
+                                        id,
+                                        title: data.title,
+                                        body: data.body,
+                                        tags: data.tags,
+                                        published: true
+                                    }
+                                }
+                            })
+                            if (!guide.data?.res) return
+
+                            if (!id) return
+                            const result = await generateQuiz({ guideId: id })
+                            if (!result) return
+
+                            navigate(`/${id}/edit/quiz`)
+                        })}
+                    >
+                        Generate Quiz
+                    </Button>
+                </div>
+                {generateQuizLoading && (
+                    <p className="text-center text-xl">Generating quiz...</p>
+                )}
             </div>
         </FormProvider>
     )

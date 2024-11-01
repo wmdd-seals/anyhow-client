@@ -1,7 +1,7 @@
 export { HomePage } from './home'
 export { GuidePage } from './guide'
 export { AccountPage } from './account'
-export { QuizPage } from './quiz'
+export { QuizCreationPage } from './quiz-creation'
 export { LoginPage } from './login'
 export { EditGuidePage } from './edit-guide'
 export { Dashboard } from './dashboard'
