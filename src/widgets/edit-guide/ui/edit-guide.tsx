@@ -47,7 +47,6 @@ export function EditGuide(props: EditGuideProps): ReactNode {
 
     const { data, loading } = useQuery(GET_GUIDE_QUERY, { variables: { id } })
 
-
     const navigate = useNavigate()
 
     const [updateGuideMutation] = useMutation(UPDATE_GUIDE_MUTATION)
@@ -58,7 +57,6 @@ export function EditGuide(props: EditGuideProps): ReactNode {
     const [uploadGuideImage] = useMutation(UPLOAD_GUIDE_IMAGE)
 
     const coverImageRef = useRef<HTMLImageElement>(null)
-
 
     const form = useForm<UseCreateGuideForm>({
         defaultValues,
@@ -74,8 +72,6 @@ export function EditGuide(props: EditGuideProps): ReactNode {
 
     const { generate: generateQuiz, loading: generateQuizLoading } =
         useGenerateQuiz()
-
-    const navigate = useNavigate()
 
     const body = form.watch('body')
     const progress = getGuideProgress(body)
@@ -279,19 +275,17 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                 />
 
                 <div className="flex gap-3 justify-center">
-                    
-
-                <Button
-                    onClick={form.handleSubmit(async data => {
-                        const guide = await updateGuideMutation({
-                            variables: {
-                                input: {
-                                    id,
-                                    title: data.title,
-                                    body: data.body,
-                                    tags: data.tags,
-                                    published: true
-                                   }
+                    <Button
+                        onClick={form.handleSubmit(async data => {
+                            const guide = await updateGuideMutation({
+                                variables: {
+                                    input: {
+                                        id,
+                                        title: data.title,
+                                        body: data.body,
+                                        tags: data.tags,
+                                        published: true
+                                    }
                                 }
                             })
 
