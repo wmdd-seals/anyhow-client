@@ -13,7 +13,8 @@ import {
     LoginPage,
     OnboardingPage,
     EditGuidePage,
-    Dashboard
+    Dashboard,
+    SignUpPage
 } from '../pages'
 import ProtectedRoute from './protectedroute'
 import { PublicRoute } from './public-route'
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
             <Route index element={<HomePage />} />
             <Route element={<PublicRoute />}>
                 <Route path="login" element={<LoginPage />} />
+                <Route path="signup" element={<SignUpPage />} />
             </Route>
             <Route path="onboarding" element={<OnboardingPage />} />
             <Route element={<ProtectedRoute />}>

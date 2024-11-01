@@ -56,7 +56,7 @@ function MobileMenu({
 }
 
 function Header(): ReactNode {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, logout } = useAuth()
     const navigate = useNavigate()
 
     return (
@@ -72,7 +72,7 @@ function Header(): ReactNode {
                     {isAuthenticated ? (
                         <>
                             <Button>About us</Button>
-                            <Button>Logout</Button>
+                            <Button onClick={logout}>Logout</Button>
                             <CreateGuideButton />
                         </>
                     ) : (
