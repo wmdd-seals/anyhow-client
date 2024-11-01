@@ -26,6 +26,7 @@ export type UserContextType = {
     loginUser: (userInput: UserSignInInput) => void
     logout: () => void
     isAuthenticated: boolean
+    loading: boolean
 }
 
 type Props = { children: React.ReactNode }
@@ -60,11 +61,21 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
         localStorage.getItem('authToken')
     )
 
-    const userSession = useQuery(FETCH_USER)
+    const userSession = useQuery(FETCH_USER, {
+        fetchPolicy: 'cache-and-network',
+        onCompleted: data => {
+            if (!data.user) {
+                setIsAuthenticated(false)
+                logout()
+            }
+            setIsAuthenticated(data.user ? true : false)
+        }
+    })
 
     const [isAuthenticated, setIsAuthenticated] = useState(
         userSession.data?.user ? userSession.data.user : false
     )
+
     const [queryHandler] = useLazyQuery<UserData, input>(USER_SIGNIN)
 
     const loginUser = (userInput: UserSignInInput): void => {
@@ -101,7 +112,13 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
 
     return (
         <UserContext.Provider
-            value={{ loginUser, authToken, logout, isAuthenticated }}
+            value={{
+                loginUser,
+                authToken,
+                logout,
+                isAuthenticated,
+                loading: userSession.loading
+            }}
         >
             {children}
         </UserContext.Provider>
