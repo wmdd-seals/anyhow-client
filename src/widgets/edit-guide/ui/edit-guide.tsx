@@ -243,7 +243,6 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                         field,
                         fieldState: { error }
                     }): ReactElement => {
-                        console.log(field.value)
                         return (
                             <div className="mb-4">
                                 <TextInput
