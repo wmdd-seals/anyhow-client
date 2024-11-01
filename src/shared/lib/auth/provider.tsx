@@ -1,29 +1,10 @@
 import { createContext, useState } from 'react'
-import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
-
-type signIn = {
-    message: string
-    token: string
-}
-
-type UserData = {
-    signIn: signIn
-}
-
-export type UserSignInInput = {
-    email: string
-    password: string
-}
-
-type input = {
-    input: UserSignInInput
-}
 
 export type UserContextType = {
     authToken: string | null
-    //registerUser: (email: string, password: string) => void
-    loginUser: (userInput: UserSignInInput) => void
+    loginUser: (token: string) => void
     logout: () => void
     isAuthenticated: boolean
 }
@@ -31,15 +12,6 @@ export type UserContextType = {
 type Props = { children: React.ReactNode }
 
 export const UserContext = createContext<UserContextType>({} as UserContextType)
-
-const USER_SIGNIN = gql`
-    query SignIn($input: UserSignInInput) {
-        signIn(input: $input) {
-            message
-            token
-        }
-    }
-`
 
 const FETCH_USER = graphql(`
     query User {
@@ -73,32 +45,10 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
         }
     })
 
-    const [queryHandler] = useLazyQuery<UserData, input>(USER_SIGNIN)
-
-    const loginUser = (userInput: UserSignInInput): void => {
-        try {
-            queryHandler({
-                variables: {
-                    input: {
-                        email: userInput.email,
-                        password: userInput.password
-                    }
-                }
-            })
-                .then(response => {
-                    if (response.data?.signIn.token) {
-                        localStorage.setItem(
-                            'authToken',
-                            response.data.signIn.token
-                        )
-                        setToken(response.data.signIn.token)
-                        setIsAuthenticated(true)
-                    }
-                })
-                .catch(e => console.log(e))
-        } catch (e) {
-            console.error(e)
-        }
+    const loginUser = (token: string): void => {
+        localStorage.setItem('authToken', token)
+        setToken(token)
+        setIsAuthenticated(true)
     }
 
     const logout = (): void => {

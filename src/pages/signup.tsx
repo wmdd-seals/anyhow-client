@@ -1,43 +1,33 @@
+import { gql, useMutation } from '@apollo/client'
+import type { UserCreateInput } from '@gqlgen/graphql'
+import { Button, TextInput } from '@shared/ui'
 import { useState, type ReactNode } from 'react'
-import { TextInput, Button } from '../shared/ui'
-import { useAuth } from '../shared/lib/auth'
-import type { SignInQuery, UserSignInInput } from '@gqlgen/graphql'
-import { useLazyQuery } from '@apollo/client/react/hooks'
-import { gql } from '@apollo/client'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-const USER_SIGNIN = gql`
-    query SignIn($input: UserSignInInput) {
-        signIn(input: $input) {
-            message
-            token
+const USER_SIGNUP = gql`
+    mutation SignupUser($input: UserCreateInput!) {
+        signupUser(input: $input) {
+            id
         }
     }
 `
 
-export const LoginPage = (): ReactNode => {
-    const { loginUser } = useAuth()
+export const SignUpPage = (): ReactNode => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
-
-    const [singIn, { loading, error }] = useLazyQuery<
-        SignInQuery,
-        { input: UserSignInInput }
-    >(USER_SIGNIN, {
-        onCompleted: data => {
-            if (data.signIn.message) {
-                setErrorMessage(data.signIn.message)
-                return
-            }
-            loginUser(data.signIn.token)
-        },
+    const navigate = useNavigate()
+    const [addUser, { loading }] = useMutation(USER_SIGNUP, {
         onError: err => {
-            setErrorMessage(err.message)
+            console.error(err)
+            setErrorMessage('Failed to Register the User')
         }
     })
 
-    const [values, setValues] = useState<UserSignInInput>({
+    const [values, setValues] = useState<UserCreateInput>({
         email: '',
-        password: ''
+        password: '',
+        firstName: '',
+        lastName: '',
+        middleName: ''
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -48,9 +38,13 @@ export const LoginPage = (): ReactNode => {
     ): Promise<void> => {
         event.preventDefault()
         setErrorMessage(null)
-        await singIn({
+        const res = await addUser({
             variables: { input: values }
         })
+
+        console.log(res.data.signupUser.id)
+
+        if (res.data.signupUser.id) navigate(`/login`)
     }
 
     return (
@@ -72,6 +66,25 @@ export const LoginPage = (): ReactNode => {
                             required
                         />
                         <TextInput
+                            type="text"
+                            placeholder="First Name"
+                            name="firstName"
+                            onChange={handleChange}
+                            required
+                        />
+                        <TextInput
+                            type="text"
+                            placeholder="Middle Name"
+                            name="middleName"
+                            onChange={handleChange}
+                        />
+                        <TextInput
+                            type="text"
+                            placeholder="Last Name"
+                            name="lastName"
+                            onChange={handleChange}
+                        />
+                        <TextInput
                             type="password"
                             placeholder="Password"
                             name="password"
@@ -79,19 +92,12 @@ export const LoginPage = (): ReactNode => {
                             required
                         />
                         <Button type="submit">
-                            {loading ? 'Logging in' : 'Login'}
+                            {loading ? 'Signing Up' : 'Signup'}
                         </Button>
                     </form>
                     {errorMessage && (
                         <p style={{ color: 'red' }}>{errorMessage}</p>
                     )}
-                    {error && (
-                        <p style={{ color: 'red' }}>Error: {error.message}</p>
-                    )}
-                </div>
-                <div>
-                    Don't have an account yet?{' '}
-                    <Link to="/signup"> Sign Up Now</Link>
                 </div>
             </div>
         </>
