@@ -61,12 +61,13 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
     )
 
     const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const userSession = useQuery(FETCH_USER, {
+    const { data, loading } = useQuery(FETCH_USER, {
         fetchPolicy: 'cache-and-network',
         onCompleted: data => {
             if (!data.user.id) {
                 setIsAuthenticated(false)
                 logout()
+                return
             }
             setIsAuthenticated(!!data.user)
         }
@@ -106,7 +107,7 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
         setIsAuthenticated(false)
     }
 
-    if (userSession.loading)
+    if (loading)
         // TODO Switch it to svg which Bee created
         return (
             <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-900 to-green-300">
