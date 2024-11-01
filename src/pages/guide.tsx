@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import { Header } from '@widgets/header'
 import { Footer } from '@widgets/footer/ui/footer'
-
+import { Button } from '@shared/ui'
 import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
 import { getGuideProgress } from 'src/entities/guide'
@@ -80,6 +80,13 @@ export function GuidePage(): ReactNode {
                     </div>
 
                     <TextEditor value={data.res.body || ''} editable={false} />
+
+                    <Button
+                        onClick={handleCompleted}
+                        className="max-w-80 bg-emerald-950 text-white font-bold p-4 text-xl rounded-xl ml-auto mt-3"
+                    >
+                        Completed
+                    </Button>
                 </article>
 
                 <Transition show={sidebar}>
