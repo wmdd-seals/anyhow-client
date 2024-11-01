@@ -29,25 +29,6 @@ const GUIDE_QUERY = graphql(`
     }
 `)
 
-const GET_QUIZ_DATA_QUERY = graphql(`
-    query GetQuizData($guideId: ID!) {
-        res: guide(id: $guideId) {
-            quiz {
-                id
-                body {
-                    quiz {
-                        questions {
-                            correctAnswerIndex
-                            options
-                            questionTitle
-                        }
-                    }
-                }
-            }
-        }
-    }
-`)
-
 export function GuidePage(): ReactNode {
     const params = useParams<{ id: string }>()
     const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
