@@ -1,28 +1,10 @@
 import { createContext, useState } from 'react'
-import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
-
-type signIn = {
-    message: string
-    token: string
-}
-
-type UserData = {
-    signIn: signIn
-}
-
-export type UserSignInInput = {
-    email: string
-    password: string
-}
-
-type input = {
-    input: UserSignInInput
-}
 
 export type UserContextType = {
     authToken: string | null
-    login: (token: string) => void
+    loginUser: (token: string) => void
     logout: () => void
     isAuthenticated: boolean
 }
@@ -45,6 +27,7 @@ const FETCH_USER = graphql(`
 `)
 
 export const AuthProvider = ({ children }: Props): React.ReactNode => {
+    // const navigate = useNavigate()
     const [authToken, setToken] = useState<string | null>(
         localStorage.getItem('authToken')
     )
@@ -62,32 +45,10 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
         }
     })
 
-    const [queryHandler] = useLazyQuery<UserData, input>(USER_SIGNIN)
-
-    const loginUser = (userInput: UserSignInInput): void => {
-        try {
-            queryHandler({
-                variables: {
-                    input: {
-                        email: userInput.email,
-                        password: userInput.password
-                    }
-                }
-            })
-                .then(response => {
-                    if (response.data?.signIn.token) {
-                        localStorage.setItem(
-                            'authToken',
-                            response.data.signIn.token
-                        )
-                        setToken(response.data.signIn.token)
-                        setIsAuthenticated(true)
-                    }
-                })
-                .catch(e => console.log(e))
-        } catch (e) {
-            console.error(e)
-        }
+    const loginUser = (token: string): void => {
+        localStorage.setItem('authToken', token)
+        setToken(token)
+        setIsAuthenticated(true)
     }
 
     const logout = (): void => {
@@ -95,6 +56,14 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
         setToken('')
         setIsAuthenticated(false)
     }
+
+    if (loading)
+        // TODO Switch it to svg which Bee created
+        return (
+            <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-900 to-green-300">
+                <img src="/logo.svg" alt="logo" className="w-96 h-96" />
+            </div>
+        )
 
     return (
         <UserContext.Provider

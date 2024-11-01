@@ -16,7 +16,7 @@ const USER_SIGNIN = gql`
 `
 
 export const LoginPage = (): ReactNode => {
-    const { login } = useAuth()
+    const { loginUser } = useAuth()
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
     const [singIn, { loading, error }] = useLazyQuery<
@@ -28,7 +28,7 @@ export const LoginPage = (): ReactNode => {
                 setErrorMessage(data.signIn.message)
                 return
             }
-            login(data.signIn.token)
+            loginUser(data.signIn.token)
         },
         onError: err => {
             setErrorMessage(err.message)
