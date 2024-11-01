@@ -70,7 +70,7 @@ function Header(): ReactNode {
         <header className="bg-white text-white p-4 sticky top-0 z-50 relative">
             <div className="container box-border mx-auto w-full flex justify-between items-center">
                 <div className="flex items-center">
-                    <p className="text-2xl font-bold text-slate-800">Logo</p>
+                    <img src="/primary-logo.svg" alt="Logo" className="w-36" />
                 </div>
                 <div className="lg:hidden">
                     <MobileMenu isAuthenticated={isAuthenticated} />
