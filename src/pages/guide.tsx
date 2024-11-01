@@ -43,7 +43,6 @@ export function GuidePage(): ReactNode {
         },
         skip: !params
     })
-
     const quizId = quizInfo?.res?.quiz?.id
 
     const [showQuiz, setShowQuiz] = useState<boolean>(false)
