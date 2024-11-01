@@ -5,13 +5,14 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "dev": "vite & graphql-codegen --watch",
+        "dev": "vite",
         "spec": "vitest run --passWithNoTests",
         "spec:watch": "vitest watch",
         "build": "vite build",
         "preview": "vite preview",
         "prod": "npm run build & vite preview",
         "graphql:gen": "graphql-codegen",
+        "graphql:watch": "graphql-codegen --watch",
         "types:check": "tsc --noEmit",
         "lint:check": "eslint .",
         "format:check": "prettier ./src --check"
@@ -29,8 +30,8 @@
         "lexical": "^0.18.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "react-multi-carousel": "^2.8.5",
         "react-hook-form": "^7.53.0",
+        "react-multi-carousel": "^2.8.5",
         "react-router-dom": "^6.26.2"
     },
     "devDependencies": {
@@ -45,6 +46,7 @@
         "eslint": "^9.10.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.2.1",
+        "globals": "^15.11.0",
         "jsdom": "^25.0.1",
         "postcss": "^8.4.45",
         "prettier": "^3.3.3",

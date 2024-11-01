@@ -1,6 +1,8 @@
+export { Image } from './image'
 export { Bold } from './bold'
 export { Italic } from './italic'
 export { Underline } from './underline'
 export { AlignLeft } from './align-left'
 export { AlignRight } from './align-right'
 export { AlignJustify } from './align-justify'
+export { X } from './x'
