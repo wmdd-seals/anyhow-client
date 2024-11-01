@@ -31,12 +31,13 @@ import {
     type LexicalEditor,
     SELECTION_CHANGE_COMMAND
 } from 'lexical'
-import { type Dispatch, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { $isAtNodeEnd } from '@lexical/selection'
 import { ElementNode, type RangeSelection, TextNode } from 'lexical'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Icon } from '@shared/ui'
 import cn from 'clsx'
+import { INSERT_IMAGE_COMMAND } from './image-plugin'
 
 function getSelectedNode(selection: RangeSelection): TextNode | ElementNode {
     const anchor = selection.anchor
@@ -253,10 +254,11 @@ function BlockFormatDropDown({
 }
 
 export function ToolbarPlugin(props: {
-    setIsLinkEditMode: Dispatch<boolean>
     className?: string
+    blockEditing?: boolean
+    onImageUpload(image: File): Promise<string>
 }): JSX.Element {
-    const { className, setIsLinkEditMode } = props
+    const { className, onImageUpload } = props
 
     const [editor] = useLexicalComposerContext()
     const [activeEditor, setActiveEditor] = useState(editor)
@@ -403,13 +405,31 @@ export function ToolbarPlugin(props: {
 
     const insertLink = useCallback(() => {
         if (!isLink) {
-            setIsLinkEditMode(true)
             activeEditor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://')
         } else {
-            setIsLinkEditMode(false)
             activeEditor.dispatchCommand(TOGGLE_LINK_COMMAND, null)
         }
-    }, [activeEditor, isLink, setIsLinkEditMode])
+    }, [activeEditor, isLink])
+
+    const selectImage = useCallback(() => {
+        const input = document.createElement('input')
+        input.type = 'file'
+        input.accept = 'image/*'
+        input.multiple = false
+
+        input.addEventListener('change', async () => {
+            const image = input.files?.[0]
+            if (!image) return
+
+            const src = await onImageUpload(image)
+            editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+                src,
+                altText: 'Guide Image'
+            })
+        })
+
+        input.click()
+    }, [onImageUpload])
 
     const canViewerSeeInsertCodeButton = !isImageCaption
     // const formatOption = ELEMENT_FORMAT_OPTIONS[elementFormat || 'left']
@@ -487,6 +507,9 @@ export function ToolbarPlugin(props: {
                     }}
                 >
                     <Icon.AlignJustify />
+                </button>
+                <button onClick={selectImage}>
+                    <Icon.Image />
                 </button>
                 {canViewerSeeInsertCodeButton && (
                     <button

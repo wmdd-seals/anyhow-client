@@ -9,7 +9,8 @@ import { AutoLinkNode, LinkNode } from '@lexical/link'
 import { ListItemNode, ListNode } from '@lexical/list'
 import {
     $convertToMarkdownString,
-    $convertFromMarkdownString
+    $convertFromMarkdownString,
+    TRANSFORMERS
 } from '@lexical/markdown'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
@@ -20,13 +21,19 @@ import { ToolbarPlugin } from './toolbar'
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import cn from 'clsx'
+import { ImageNode } from './image-node'
+import { IMAGE_TRANSFORMER, ImagePlugin } from './image-plugin'
+
+const MARKDOWN_TRANSFORMERS = [IMAGE_TRANSFORMER, ...TRANSFORMERS]
 
 type TextEditorProps = EditableTextEditorProps | ReadonlyTextEditorProps
 
 type EditableTextEditorProps = {
     editable: true
+    blockEditing?: boolean
     initialValue?: string
     onChange: (state: string) => void
+    onImageUpload(image: File): Promise<string>
 }
 
 type ReadonlyTextEditorProps = {
@@ -42,7 +49,7 @@ export function TextEditor(props: TextEditorProps): ReactNode {
             namespace: `guide-${editable}`,
             onError: console.error,
             theme: {
-                // root: 'grid gap-y-3',
+                root: 'flex flex-col gap-y-2',
                 text: {
                     bold: 'bold',
                     italic: 'italic',
@@ -71,7 +78,8 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                 ListNode,
                 ListItemNode,
                 AutoLinkNode,
-                LinkNode
+                LinkNode,
+                ImageNode
             ],
             editable,
             editorState(): void {
@@ -79,12 +87,15 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                     const { initialValue } = props
 
                     if (initialValue !== undefined) {
-                        $convertFromMarkdownString(initialValue)
+                        $convertFromMarkdownString(
+                            initialValue,
+                            MARKDOWN_TRANSFORMERS
+                        )
                     }
                 } else {
                     const { value } = props
 
-                    $convertFromMarkdownString(value)
+                    $convertFromMarkdownString(value, MARKDOWN_TRANSFORMERS)
                     return
                 }
             }
@@ -101,8 +112,9 @@ export function TextEditor(props: TextEditorProps): ReactNode {
             >
                 {editable && (
                     <ToolbarPlugin
+                        blockEditing={props.blockEditing}
                         className="border-b border-gray-300"
-                        setIsLinkEditMode={console.log}
+                        onImageUpload={props.onImageUpload}
                     />
                 )}
                 <RichTextPlugin
@@ -113,7 +125,7 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                 />
                 <LinkPlugin />
                 <ListPlugin />
-                {/* <ImagePlugin /> */}
+                <ImagePlugin />
 
                 {editable && (
                     <>
@@ -121,7 +133,9 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                         <OnChangePlugin
                             onChange={(_, editor): void => {
                                 editor.read(() => {
-                                    const state = $convertToMarkdownString()
+                                    const state = $convertToMarkdownString(
+                                        MARKDOWN_TRANSFORMERS
+                                    )
                                     props.onChange(state)
                                 })
                             }}
