@@ -19,7 +19,7 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
     const { data, loading } = useQuery(GET_QUIZ_QUERY, {
         variables: { guideId: guideId }
     })
-    const quizId = data?.res?.quiz?.id
+    const quizId = data?.res.quiz?.id
 
     // "quizData" includes the invisible questions
     const [quizData, setQuizData] = useState<QuestionInput[] | null>(null)
@@ -35,7 +35,7 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
     const remainingQuestions = quizData ? quizData.length - visibleQuestions : 0
 
     useEffect(() => {
-        if (data?.res?.quiz?.body?.quiz?.questions) {
+        if (data?.res.quiz?.body?.quiz?.questions) {
             setQuizData(data.res.quiz.body.quiz.questions as QuestionInput[])
         }
     }, [data])
@@ -104,7 +104,7 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
 
     const handleAddQuestion = (): void => {
         // This function reveals the next invisible question on the screen.
-        // No need to update the "quizData" in the local state because "quizData" already includes the invisible questions).
+        // No need to update the "quizData" in the local state because "quizData" already includes the invisible questions.
         // No need to update the quiz data on the server because the quiz data on the server already includes the invisible questions.
         if (!quizData) return
 

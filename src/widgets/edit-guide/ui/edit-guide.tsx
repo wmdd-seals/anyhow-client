@@ -296,7 +296,6 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                             })
 
                             if (!guide.data?.res) return
-
                             navigate(`/${guide.data.res.id}`)
                         })}
                     >
