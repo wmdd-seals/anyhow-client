@@ -11,17 +11,17 @@ import { UPLOAD_GUIDE_COVER } from '../api/upload-guide-cover'
 import { toBase64 } from '@shared/lib/file'
 import { REMOVE_GUIDE_COVER } from '../api/remove-guide-cover'
 import { UPLOAD_GUIDE_IMAGE } from '../api/upload-guide-image'
-import { getGuideProgress } from 'src/entities/guide'
+import { getGuideProgress, TagList } from 'src/entities/guide'
 
 type UseCreateGuideForm = {
     title: string
-    tags: string
+    tags: string[]
     body: string
 }
 
 const defaultValues = {
     title: '',
-    tags: '',
+    tags: [],
     body: ''
 }
 
@@ -62,7 +62,8 @@ export function EditGuide(props: EditGuideProps): ReactNode {
         values: {
             body: data?.res?.body || '',
             title: data?.res?.title || '',
-            tags: (data?.res?.tags as string) || ''
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            tags: (data?.res?.tags as string[]) || []
         },
         mode: 'all',
         reValidateMode: 'onChange'
@@ -242,14 +243,29 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                         field,
                         fieldState: { error }
                     }): ReactElement => {
+                        console.log(field.value)
                         return (
                             <div className="mb-4">
-                                <TextInput label={'Tags'} {...field} />
+                                <TextInput
+                                    label={'Tags'}
+                                    placeholder="Hit enter to add"
+                                    onKeyDown={e => {
+                                        if (e.key !== 'Enter') {
+                                            return
+                                        }
+
+                                        const val = e.currentTarget.value
+
+                                        field.onChange([...field.value, val])
+                                        e.currentTarget.value = ''
+                                    }}
+                                />
                                 {error?.message && (
                                     <span className="text-red-500">
                                         {error.message}
                                     </span>
                                 )}
+                                <TagList tags={field.value} />
                             </div>
                         )
                     }}
@@ -263,7 +279,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                                     id,
                                     title: data.title,
                                     body: data.body,
-                                    tags: data.tags.trim().split(','),
+                                    tags: data.tags,
                                     published: true
                                 }
                             }
