@@ -9,6 +9,7 @@ import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
 import { getGuideProgress } from 'src/entities/guide'
 import { QuizChallenge } from '@widgets/quiz-challenge'
+import { GET_QUIZ_ID_QUERY } from '../entities/quiz'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -26,25 +27,6 @@ const GUIDE_QUERY = graphql(`
     }
 `)
 
-const GET_QUIZ_DATA_QUERY = graphql(`
-    query GetQuizData($guideId: ID!) {
-        res: guide(id: $guideId) {
-            quiz {
-                id
-                body {
-                    quiz {
-                        questions {
-                            correctAnswerIndex
-                            options
-                            questionTitle
-                        }
-                    }
-                }
-            }
-        }
-    }
-`)
-
 export function GuidePage(): ReactNode {
     const params = useParams<{ id: string }>()
 
@@ -54,42 +36,17 @@ export function GuidePage(): ReactNode {
     })
 
     const [sidebar, setSidebar] = useState<boolean>(false)
-    const { data: quizInfo, loading: quizLoading } = useQuery(
-        GET_QUIZ_DATA_QUERY,
-        {
-            variables: {
-                guideId: params.id!
-            },
-            skip: !params
-        }
-    )
 
-    const quizId = quizInfo?.res.quiz?.id
-    const quizData =
-        quizInfo?.res.quiz?.body?.quiz?.questions
-            ?.filter(question => question?.options)
-            .map(question => ({
-                questionTitle: question!.questionTitle,
-                options: question!.options.filter(
-                    (option): option is string => option !== null
-                ),
-                correctAnswerIndex: question!.correctAnswerIndex
-            })) || []
-
-    const [showQuiz, setShowQuiz] = useState<boolean>(() => {
-        const storedShowQuiz = localStorage.getItem('showQuiz')
-        return storedShowQuiz ? (JSON.parse(storedShowQuiz) as boolean) : false
+    const { data: quizInfo } = useQuery(GET_QUIZ_ID_QUERY, {
+        variables: {
+            guideId: params.id!
+        },
+        skip: !params
     })
 
-    useEffect(() => {
-        localStorage.setItem('showQuiz', JSON.stringify(showQuiz))
-    }, [showQuiz])
+    const quizId = quizInfo?.res?.quiz?.id
 
-    useEffect(() => {
-        return (): void => {
-            localStorage.removeItem('showQuiz')
-        }
-    }, [])
+    const [showQuiz, setShowQuiz] = useState<boolean>(false)
 
     if (!params.id) return 'Guide not found'
 
@@ -165,11 +122,7 @@ export function GuidePage(): ReactNode {
                     )}
 
                     {quizId && showQuiz && (
-                        <QuizChallenge
-                            quizId={quizId}
-                            quizData={quizData}
-                            quizLoading={quizLoading}
-                        />
+                        <QuizChallenge guideId={params.id} quizId={quizId} />
                     )}
                 </div>
             </main>
