@@ -42,9 +42,17 @@ export function GuidePage(): ReactNode {
 
     const [sidebar, setSidebar] = useState<boolean>(false)
 
+    const handleCompleted = (): void => {
+        void storeGuideCompletedMutation({
+            variables: {
+                input: { guideId: params.id }
+            }
+        })
+    }
+
     const { data: quizInfo } = useQuery(GET_QUIZ_ID_QUERY, {
         variables: {
-            guideId: params.id!
+            guideId: params.id
         },
         skip: !params
     })
