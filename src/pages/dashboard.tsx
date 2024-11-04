@@ -8,6 +8,7 @@ import { Footer } from 'src/widgets/footer/ui/footer'
 import { graphql } from '@gqlgen'
 import { useQuery } from '@apollo/client'
 import { Slider } from '@shared/ui'
+import type { Guide } from '@gqlgen/graphql'
 
 const GUIDE_COMPLETED_COUNTS = graphql(`
     query GuideCompletedCounts($input: GuideCompletedDateRange) {
@@ -117,13 +118,9 @@ const Dashboard = (): ReactNode => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {historyData?.res.map((h, index) => (
                             <Card
-                                id={h.guideId || ''}
                                 key={index}
-                                imageUrl={`${import.meta.env.VITE_API_URL}/images/${h.guide?.id}`}
-                                title={h.guide?.title || ''}
-                                description={h.guide?.description || ''}
-                                tags={h.guide?.tags as string[]}
                                 cardType="simple"
+                                guide={h.guide as Guide}
                             />
                         ))}
                     </div>

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { useQuery } from '@apollo/client'
 import { Slider } from 'src/shared/ui'
 import { graphql } from '@gqlgen'
+import type { Guide } from '@gqlgen/graphql'
 
 const GET_GUIDES_WITH_USER = graphql(`
     query Guides {
@@ -34,15 +35,7 @@ export function SliderGuideList(): ReactNode {
                     key={index}
                     className="my-16 flex justify-items-center justify-center mx-auto w-[250px]"
                 >
-                    <Card
-                        id={guide!.id}
-                        userName={`${guide!.user!.firstName} ${guide!.user!.lastName}`}
-                        key={guide!.id}
-                        imageUrl={`${import.meta.env.VITE_API_URL}/images/${guide!.id}`}
-                        title={guide!.title}
-                        description={guide!.description}
-                        tags={guide!.tags as string[]}
-                    />
+                    <Card guide={guide as Guide} />
                 </div>
             ))}
         </Slider>

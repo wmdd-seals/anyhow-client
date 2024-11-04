@@ -4,6 +4,7 @@ import { CreateGuideButton } from 'src/features/create-guide'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from 'src/shared/ui'
 import { UserContext } from '@shared/lib/auth/provider'
+import { Edit, Menu, X } from 'react-feather'
 
 function MobileMenu({
     isAuthenticated
@@ -20,8 +21,7 @@ function MobileMenu({
                 className="text-slate-800 focus:outline-none"
                 aria-label="Menu"
             >
-                {/* TODO: need to put icon here */}
-                {isOpen ? 'CloseIcon' : 'MenuIcon'}
+                {isOpen ? <X /> : <Menu />}
             </button>
             {isOpen && (
                 <div className="fixed inset-0 z-50 bg-white">
@@ -31,16 +31,18 @@ function MobileMenu({
                             className="absolute top-4 right-4 text-slate-800 focus:outline-none"
                             aria-label="Close"
                         >
-                            CloseIcon
+                            <X />
                         </button>
                         {isAuthenticated ? (
                             <>
-                                <Button>About us</Button>
+                                <CreateGuideButton className="bg-none text-slate-700 underline flex items-center">
+                                    <Edit />
+                                </CreateGuideButton>
                                 <Button>Logout</Button>
-                                <CreateGuideButton />
                             </>
                         ) : (
                             <>
+                                <Button>About us</Button>
                                 <Button onClick={() => navigate('/login')}>
                                     Login
                                 </Button>
@@ -84,16 +86,24 @@ function Header(): ReactNode {
                 <div className="hidden lg:flex lg:space-x-4">
                     {isAuthenticated ? (
                         <>
-                            <Button>About us</Button>
+                            <CreateGuideButton className="bg-none text-slate-700 underline flex items-center gap-2" />
                             <Button onClick={logoutHandler}>Logout</Button>
-                            <CreateGuideButton />
                         </>
                     ) : (
                         <>
-                            <Button onClick={() => navigate('/login')}>
+                            <Button className="bg-none text-slate-700 underline">
+                                About us
+                            </Button>
+                            <Button
+                                className="bg-none text-slate-700 underline"
+                                onClick={() => navigate('/login')}
+                            >
                                 Login
                             </Button>
-                            <Button onClick={() => navigate('/signup')}>
+                            <Button
+                                onClick={() => navigate('/signup')}
+                                className="bg-ah-green-primary text-font-purple py-3 px-6 rounded-full font-bold"
+                            >
                                 Sign Up
                             </Button>
                         </>

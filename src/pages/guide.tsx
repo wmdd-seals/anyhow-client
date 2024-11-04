@@ -1,5 +1,5 @@
-import { type ReactNode, useState } from 'react'
-import { TextEditor, Icon } from '@shared/ui'
+import { useState, type ReactNode } from 'react'
+import { Icon, TextEditor } from '@shared/ui'
 import { useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
@@ -45,7 +45,7 @@ export function GuidePage(): ReactNode {
     const handleCompleted = (): void => {
         void storeGuideCompletedMutation({
             variables: {
-                input: { guideId: params.id }
+                input: { guideId: params.id! }
             }
         })
     }
@@ -63,7 +63,7 @@ export function GuidePage(): ReactNode {
 
     if (error || !data?.res) return 'Something went wrong...'
 
-    const progress = getGuideProgress(data.res.body)
+    const progress = getGuideProgress(data.res.body || '')
     const minutes = Math.ceil((progress * 60) / 100)
 
     return (

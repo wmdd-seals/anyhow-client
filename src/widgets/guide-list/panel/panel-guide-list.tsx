@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
+import type { Guide } from '@gqlgen/graphql'
 import type { ReactNode } from 'react'
 import { Card } from 'src/entities/guide'
 
@@ -30,15 +31,7 @@ export function PanelGuideList(): ReactNode {
         <>
             {data.res.map((guide, index) => (
                 <div key={index}>
-                    <Card
-                        id={guide!.id}
-                        key={index}
-                        userName={`${guide!.user!.firstName} ${guide!.user!.lastName}`}
-                        imageUrl={`${import.meta.env.VITE_API_URL}/images/${guide!.id}`}
-                        title={guide!.title}
-                        description={guide!.description}
-                        tags={guide!.tags as string[]} // TODO: fix the type
-                    />
+                    <Card key={index} guide={guide as Guide} />
                 </div>
             ))}
         </>
