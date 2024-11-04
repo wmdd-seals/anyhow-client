@@ -4,7 +4,7 @@ import { CreateGuideButton } from 'src/features/create-guide'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from 'src/shared/ui'
 import { UserContext } from '@shared/lib/auth/provider'
-import { Edit, Menu, X } from 'react-feather'
+import { Menu, X } from 'react-feather'
 
 function MobileMenu({
     isAuthenticated
@@ -35,9 +35,7 @@ function MobileMenu({
                         </button>
                         {isAuthenticated ? (
                             <>
-                                <CreateGuideButton className="bg-none text-slate-700 underline flex items-center">
-                                    <Edit />
-                                </CreateGuideButton>
+                                <CreateGuideButton className="bg-none text-slate-700 underline flex items-center" />
                                 <Button>Logout</Button>
                             </>
                         ) : (
