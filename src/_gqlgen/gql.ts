@@ -15,7 +15,7 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  */
 const documents = {
     "\n    query User {\n        user {\n            email\n            favoriteTopics\n            firstName\n            id\n            lastName\n            middleName\n        }\n    }\n": types.UserDocument,
-    "\n    query GetQuizId($guideId: ID!) {\n        res: guide(id: $guideId) {\n            quiz {\n                id\n            }\n        }\n    }\n": types.GetQuizIdDocument,
+    "\n    query GetQuizId($guideId: ID!) {\n        res: guide(id: $guideId) {\n            id\n            quiz {\n                id\n            }\n        }\n    }\n": types.GetQuizIdDocument,
     "\n    query GetQuiz($guideId: ID!) {\n        res: guide(id: $guideId) {\n            quiz {\n                id\n                body {\n                    quiz {\n                        questions {\n                            questionTitle\n                            options\n                            correctAnswerIndex\n                        }\n                    }\n                }\n            }\n        }\n    }\n": types.GetQuizDocument,
     "\n    mutation CreateGuide($input: GuideCreationInput!) {\n        res: createGuide(input: $input) {\n            id\n            title\n            tags\n            description\n            body\n        }\n    }\n": types.CreateGuideDocument,
     "\n    mutation StoreGuideCompleted($input: StoreGuideCompletedInput!) {\n        storeGuideCompleted(input: $input) {\n            id\n            guideId\n            userId\n            createdAt\n        }\n    }\n": types.StoreGuideCompletedDocument,
@@ -62,7 +62,7 @@ export function graphql(source: "\n    query User {\n        user {\n           
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query GetQuizId($guideId: ID!) {\n        res: guide(id: $guideId) {\n            quiz {\n                id\n            }\n        }\n    }\n"): (typeof documents)["\n    query GetQuizId($guideId: ID!) {\n        res: guide(id: $guideId) {\n            quiz {\n                id\n            }\n        }\n    }\n"];
+export function graphql(source: "\n    query GetQuizId($guideId: ID!) {\n        res: guide(id: $guideId) {\n            id\n            quiz {\n                id\n            }\n        }\n    }\n"): (typeof documents)["\n    query GetQuizId($guideId: ID!) {\n        res: guide(id: $guideId) {\n            id\n            quiz {\n                id\n            }\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
