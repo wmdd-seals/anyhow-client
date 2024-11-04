@@ -9,7 +9,8 @@ export default {
             },
             colors: {
                 'ah-green-primary': '#5AD859',
-                'ah-font-primary': '#1D1544'
+                'ah-font-primary': '#1D1544',
+                'ah-bg-purple': '#1D1544'
             }
         }
     },
