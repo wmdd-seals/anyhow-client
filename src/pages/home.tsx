@@ -39,7 +39,7 @@ export function HomePage(): ReactNode {
     return (
         <>
             <Header />
-            <section className="px-6 md:px-0">
+            <section className="container mx-auto px-6 md:px-0">
                 <Slider>
                     {carouselItems.map((item, index) => (
                         <div
