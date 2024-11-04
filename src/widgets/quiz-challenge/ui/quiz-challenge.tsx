@@ -34,9 +34,16 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
             })) || []
 
     const [correctness, setCorrectness] = useState<string[]>([])
-    const [selectedOptions, setSelectedOptions] = useState<number[]>(
-        Array(quizData.length).fill(-1)
-    )
+
+    const [selectedOptions, setSelectedOptions] = useState<number[]>([])
+
+    // Update selectedOptions with "-1" when quizData first loads
+    useEffect(() => {
+        if (selectedOptions.length !== quizData.length) {
+            setSelectedOptions(Array(quizData.length).fill(-1))
+        }
+    }, [quizData])
+
     const [showModal, setShowModal] = useState(false)
 
     // Display the saved answers after the page refresh
@@ -71,6 +78,7 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
     ): Promise<void> => {
         const updatedSelectedOptions = [...selectedOptions]
         updatedSelectedOptions[questionIndex] = selectedOptionIndex
+
         setSelectedOptions(updatedSelectedOptions)
 
         await saveQuizAnswer({
