@@ -1,4 +1,5 @@
 import { Button } from '@shared/ui'
+import { Check, X } from 'react-feather'
 
 interface ModalProps {
     Correctness: string[]
@@ -39,12 +40,14 @@ export const QuizScoreModal: React.FC<ModalProps> = ({
                             <h2 className="text-lg font-semibold">
                                 Question {index + 1}: {question.questionTitle}
                             </h2>
-                            <p>
+                            <p className="flex gap-5">
                                 Your Answer:{' '}
                                 {question.options[selectedOptions[index]]}{' '}
-                                {Correctness[index] === 'Correct'
-                                    ? ' ✔️'
-                                    : ' ❌'}
+                                {Correctness[index] === 'Correct' ? (
+                                    <Check className="text-red-500" />
+                                ) : (
+                                    <X className="text-red-500" />
+                                )}
                             </p>
 
                             {Correctness[index] === 'Incorrect' && (
