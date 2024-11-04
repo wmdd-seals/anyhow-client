@@ -44,7 +44,7 @@ export function HomePage(): ReactNode {
                     {carouselItems.map((item, index) => (
                         <div
                             key={index}
-                            className="relative aspect-[1/1.54] md:aspect-[2.84/1] mx-auto rounded-3xl overflow-hidden p-5"
+                            className="relative aspect-[1/1.54] md:aspect-[1.5/1] lg:aspect-[2.3/1] xl:aspect-[2.84/1]  mx-auto rounded-3xl overflow-hidden p-5"
                         >
                             <div className="block absolute inset-0">
                                 <img
@@ -54,11 +54,11 @@ export function HomePage(): ReactNode {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 from-5% via-transparent via-70% to-green-200/50 to-95% w-full h-full" />
                             </div>
-                            <div className="absolute inset-x-0 bottom-0 md:bottom-8 gap-3 flex flex-col justify-end pl-11 pb-8 w-full md:w-2/3 lg:w-1/2">
-                                <h2 className="font-bold mb-2 text-[48px] md:text-6xl text-white w-full">
+                            <div className="absolute inset-x-0 bottom-0 md:bottom-8 gap-6 flex flex-col justify-end p-6 pb-8 md:pl-11 md:pb-8 w-full md:w-2/3 lg:w-1/2">
+                                <h2 className="font-bold text-3xl md:text-6xl text-white w-full text-wrap">
                                     {item.title}
                                 </h2>
-                                <p className="text-[22px] md:text-base text-white">
+                                <p className="text-base md:text-lg text-white">
                                     {item.description}
                                 </p>
                                 <a
@@ -79,7 +79,7 @@ export function HomePage(): ReactNode {
                         Collection of the top featured guides of the week
                     </p>
                     <SliderGuideList />
-                    <div className="my-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+                    <div className="my-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-10">
                         <PanelGuideList />
                     </div>
                 </section>

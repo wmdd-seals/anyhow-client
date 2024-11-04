@@ -29,11 +29,16 @@ export function SliderGuideList(): ReactNode {
         return <div>Error: {error?.message}</div>
 
     return (
-        <Slider desktopItems={4} tabletItems={2} mobileItems={1}>
+        <Slider
+            desktopItems={4}
+            smallDesktopItems={3}
+            tabletItems={1}
+            mobileItems={1}
+        >
             {data.res.slice(0, 6).map((guide, index) => (
                 <div
                     key={index}
-                    className="my-16 flex justify-items-center justify-center mx-auto w-[250px]"
+                    className="my-16 flex justify-items-center justify-center mx-auto w-[300px]"
                 >
                     <Card guide={guide as Guide} />
                 </div>
