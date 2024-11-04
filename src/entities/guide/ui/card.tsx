@@ -53,7 +53,7 @@ const Card: React.FC<CardComponentProps> = ({
                         <img
                             src="/pattern.svg"
                             alt=""
-                            className="object-fit w-full h-full"
+                            className="object-fit w-full h-full opacity-50"
                         />
                         <img
                             loading="lazy"
