@@ -35,7 +35,7 @@ function MobileMenu({
                         </button>
                         {isAuthenticated ? (
                             <>
-                                <CreateGuideButton className="bg-none text-slate-700 underline flex items-center" />
+                                <CreateGuideButton />
                                 <Button>Logout</Button>
                             </>
                         ) : (
@@ -84,7 +84,7 @@ function Header(): ReactNode {
                 <div className="hidden lg:flex lg:space-x-4">
                     {isAuthenticated ? (
                         <>
-                            <CreateGuideButton className="bg-none text-slate-700 underline flex items-center gap-2" />
+                            <CreateGuideButton />
                             <Button onClick={logoutHandler}>Logout</Button>
                         </>
                     ) : (
