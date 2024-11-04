@@ -7,6 +7,7 @@ type SliderProps = {
     desktopItems?: number
     tabletItems?: number
     mobileItems?: number
+    smallDesktopItems?: number
     sliderClass?: string
     showDots?: boolean
     itemClass?: string
@@ -17,14 +18,19 @@ function Slider({
     desktopItems = 1,
     tabletItems = 1,
     mobileItems = 1,
+    smallDesktopItems = 1,
     sliderClass,
     itemClass,
     showDots = true
 }: SliderProps): React.ReactNode {
     const responsive = {
         desktop: {
-            breakpoint: { max: 3000, min: 1024 },
+            breakpoint: { max: 3000, min: 1500 },
             items: desktopItems
+        },
+        smallDesktop: {
+            breakpoint: { max: 1500, min: 1024 },
+            items: smallDesktopItems
         },
         tablet: {
             breakpoint: { max: 1024, min: 464 },

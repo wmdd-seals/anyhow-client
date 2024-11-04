@@ -19,5 +19,6 @@
 
     body {
         @apply font-satoshi;
+        @apply text-ah-font-primary;
     }
 }
