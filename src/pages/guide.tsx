@@ -49,7 +49,6 @@ export function GuidePage(): ReactNode {
             }
         })
     }
-
     const { data: quizInfo } = useQuery(GET_QUIZ_ID_QUERY, {
         variables: {
             guideId: params.id
@@ -59,16 +58,6 @@ export function GuidePage(): ReactNode {
     const quizId = quizInfo?.res?.quiz?.id
 
     const [showQuiz, setShowQuiz] = useState<boolean>(false)
-
-    if (!params.id) return 'Guide not found'
-
-    const handleCompleted = (): void => {
-        void storeGuideCompletedMutation({
-            variables: {
-                input: { guideId: params.id }
-            }
-        })
-    }
 
     if (loading) return 'Loading...'
 
