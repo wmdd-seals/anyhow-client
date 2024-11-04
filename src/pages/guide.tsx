@@ -1,10 +1,12 @@
-import { useState, ReactNode } from 'react'
-import { Icon, TextEditor } from '@shared/ui'
+import { type ReactNode, useState } from 'react'
+import { TextEditor, Icon } from '@shared/ui'
 import { useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import { Header } from '@widgets/header'
 import { Footer } from '@widgets/footer/ui/footer'
+import { QuizChallenge } from '@widgets/quiz-challenge'
+import { GET_QUIZ_ID_QUERY } from '../entities/quiz'
 import { Button } from '@shared/ui'
 import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
@@ -39,6 +41,7 @@ export function GuidePage(): ReactNode {
     })
 
     const [sidebar, setSidebar] = useState<boolean>(false)
+
     const handleCompleted = (): void => {
         void storeGuideCompletedMutation({
             variables: {
@@ -46,6 +49,15 @@ export function GuidePage(): ReactNode {
             }
         })
     }
+    const { data: quizInfo } = useQuery(GET_QUIZ_ID_QUERY, {
+        variables: {
+            guideId: params.id
+        },
+        skip: !params
+    })
+    const quizId = quizInfo?.res?.quiz?.id
+
+    const [showQuiz, setShowQuiz] = useState<boolean>(false)
 
     if (loading) return 'Loading...'
 
@@ -78,7 +90,6 @@ export function GuidePage(): ReactNode {
                             {data.res.user!.firstName} {data.res.user!.lastName}
                         </div>
                     </div>
-
                     <TextEditor value={data.res.body || ''} editable={false} />
 
                     <Button
@@ -118,6 +129,18 @@ export function GuidePage(): ReactNode {
                         </div>
                     </TransitionChild>
                 </Transition>
+
+                <div className="flex justify-center">
+                    {quizId && !showQuiz && (
+                        <Button onClick={() => setShowQuiz(true)}>
+                            Test your learning
+                        </Button>
+                    )}
+
+                    {quizId && showQuiz && (
+                        <QuizChallenge guideId={params.id} quizId={quizId} />
+                    )}
+                </div>
             </main>
 
             <Footer />

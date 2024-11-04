@@ -15,6 +15,7 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  */
 const documents = {
     "\n    query User {\n        user {\n            email\n            favoriteTopics\n            firstName\n            id\n            lastName\n            middleName\n        }\n    }\n": types.UserDocument,
+    "\n    query GetQuizId($guideId: ID!) {\n        res: guide(id: $guideId) {\n            id\n            quiz {\n                id\n            }\n        }\n    }\n": types.GetQuizIdDocument,
     "\n    query GetQuiz($guideId: ID!) {\n        res: guide(id: $guideId) {\n            quiz {\n                id\n                body {\n                    quiz {\n                        questions {\n                            questionTitle\n                            options\n                            correctAnswerIndex\n                        }\n                    }\n                }\n            }\n        }\n    }\n": types.GetQuizDocument,
     "\n    mutation CreateGuide($input: GuideCreationInput!) {\n        res: createGuide(input: $input) {\n            id\n            title\n            tags\n            description\n            body\n        }\n    }\n": types.CreateGuideDocument,
     "\n    mutation StoreGuideCompleted($input: StoreGuideCompletedInput!) {\n        storeGuideCompleted(input: $input) {\n            id\n            guideId\n            userId\n            createdAt\n        }\n    }\n": types.StoreGuideCompletedDocument,
@@ -22,6 +23,7 @@ const documents = {
     "\n    query GuideCompletedList {\n        res: guideCompletedList {\n            guide {\n                description\n                id\n                tags\n                title\n            }\n            createdAt\n            id\n            guideId\n        }\n    }\n": types.GuideCompletedListDocument,
     "\n    query Guide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n            user {\n                id\n                firstName\n                lastName\n            }\n        }\n    }\n": types.GuideDocument,
     "\n    query SignIn($input: UserSignInInput) {\n        signIn(input: $input) {\n            message\n            token\n        }\n    }\n": types.SignInDocument,
+    "\n    mutation SignupUser($input: UserCreateInput!) {\n        signupUser(input: $input) {\n            id\n        }\n    }\n": types.SignupUserDocument,
     "\n    query GetGuide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n        }\n    }\n": types.GetGuideDocument,
     "\n    mutation RemoveGuideCover($id: String!) {\n        res: removeImage(id: $id)\n    }\n": types.RemoveGuideCoverDocument,
     "\n    mutation UpdateGuide($input: UpdateGuideInput!) {\n        res: updateGuide(input: $input) {\n            id\n        }\n    }\n": types.UpdateGuideDocument,
@@ -31,6 +33,8 @@ const documents = {
     "\n    query ChatMessages($guideId: String!) {\n        res: chathistory(guideId: $guideId) {\n            content\n            role\n        }\n    }\n": types.ChatMessagesDocument,
     "\n    query Guides {\n        res: guides {\n            body\n            description\n            id\n            title\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n": types.GuidesDocument,
     "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n": types.SaveFavoriteTopicsDocument,
+    "\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n": types.GetQuizAnswersDocument,
+    "\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n": types.SaveQuizAnswersDocument,
     "\n    mutation GenerateQuiz($input: GenerateQuizInput!) {\n        res: generateQuiz(input: $input) {\n            id\n            body {\n                quiz {\n                    questions {\n                        questionTitle\n                        options\n                        correctAnswerIndex\n                    }\n                }\n            }\n        }\n    }\n": types.GenerateQuizDocument,
     "\n    mutation PublishGuide($input: UpdateGuideInput!) {\n        res: updateGuide(input: $input) {\n            id\n        }\n    }\n": types.PublishGuideDocument,
     "\n    mutation PublishQuiz($input: UpdateQuizInput!) {\n        res: updateQuiz(input: $input) {\n            id\n        }\n    }\n": types.PublishQuizDocument,
@@ -55,6 +59,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    query User {\n        user {\n            email\n            favoriteTopics\n            firstName\n            id\n            lastName\n            middleName\n        }\n    }\n"): (typeof documents)["\n    query User {\n        user {\n            email\n            favoriteTopics\n            firstName\n            id\n            lastName\n            middleName\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GetQuizId($guideId: ID!) {\n        res: guide(id: $guideId) {\n            id\n            quiz {\n                id\n            }\n        }\n    }\n"): (typeof documents)["\n    query GetQuizId($guideId: ID!) {\n        res: guide(id: $guideId) {\n            id\n            quiz {\n                id\n            }\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -83,6 +91,10 @@ export function graphql(source: "\n    query Guide($id: ID!) {\n        res: gui
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    query SignIn($input: UserSignInInput) {\n        signIn(input: $input) {\n            message\n            token\n        }\n    }\n"): (typeof documents)["\n    query SignIn($input: UserSignInInput) {\n        signIn(input: $input) {\n            message\n            token\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation SignupUser($input: UserCreateInput!) {\n        signupUser(input: $input) {\n            id\n        }\n    }\n"): (typeof documents)["\n    mutation SignupUser($input: UserCreateInput!) {\n        signupUser(input: $input) {\n            id\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -119,6 +131,14 @@ export function graphql(source: "\n    query Guides {\n        res: guides {\n  
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n"): (typeof documents)["\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n"): (typeof documents)["\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n"): (typeof documents)["\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -19,7 +19,7 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
     const { data, loading } = useQuery(GET_QUIZ_QUERY, {
         variables: { guideId: guideId }
     })
-    const quizId = data?.res.quiz?.id
+    const quizId = data?.res?.quiz?.id
 
     // "quizData" includes the invisible questions
     const [quizData, setQuizData] = useState<QuestionInput[] | null>(null)
@@ -35,7 +35,7 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
     const remainingQuestions = quizData ? quizData.length - visibleQuestions : 0
 
     useEffect(() => {
-        if (data?.res.quiz?.body?.quiz?.questions) {
+        if (data?.res?.quiz?.body?.quiz?.questions) {
             setQuizData(data.res.quiz.body.quiz.questions as QuestionInput[])
         }
     }, [data])
