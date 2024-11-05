@@ -1,6 +1,7 @@
 import { type ReactNode, useState, useEffect } from 'react'
-import { Button } from '@shared/ui'
+import { Button, TextInput } from '@shared/ui'
 import type { QuestionInput, InputMaybe } from '@gqlgen/graphql'
+import { Trash } from 'react-feather'
 
 type QuestionCreationProps = {
     questionInput: QuestionInput
@@ -39,21 +40,20 @@ export const QuestionCreation = ({
 
     return (
         <div className="py-4">
-            {/* Question Input */}
-            <div>
+            {/* QuestionTitle Input */}
+            <div className="py-3">
                 <h2 className="text-xl font-bold py-2">Question {index + 1}</h2>
-                <div className="flex items-center border border-gray-400 rounded-lg p-2 mb-4">
-                    <input
+                <div>
+                    <TextInput
                         type="text"
                         value={questionTitle}
                         onChange={e => onChangeQuestionTitle(e.target.value)}
-                        className="flex-grow border-none outline-none p-2 w-full"
                     />
                 </div>
             </div>
 
             {/* Options Input */}
-            <div className="flex flex-col gap-4 border border-gray-400 rounded-lg p-4">
+            <div className="flex flex-col gap-4 border border-gray-300 rounded-md p-4">
                 {options.map((option, optionIndex) => (
                     <div key={optionIndex}>
                         <label className="block pb-1 font-medium">Option</label>
@@ -64,8 +64,8 @@ export const QuestionCreation = ({
                                 checked={selectedAnswerIndex === optionIndex}
                                 onChange={() => onSelectAnswer(optionIndex)}
                             />
-                            <div className="grow flex items-center border border-gray-700 rounded-lg p-2">
-                                <input
+                            <div className="grow">
+                                <TextInput
                                     type="text"
                                     value={option as string}
                                     onChange={e =>
@@ -74,14 +74,13 @@ export const QuestionCreation = ({
                                             e.target.value
                                         )
                                     }
-                                    className="p-2 flex-grow"
-                                />
+                                ></TextInput>
                             </div>
                             <button
                                 onClick={() => onDeleteOption(optionIndex)}
                                 disabled={options.length <= 2}
                             >
-                                deletion icon
+                                <Trash size={20} />
                             </button>
                         </div>
                     </div>
@@ -90,7 +89,7 @@ export const QuestionCreation = ({
                 <Button onClick={onAddOption} disabled={options.length >= 4}>
                     Add option
                 </Button>
-                <p className="text-black text-lg">
+                <p className="text-black text-md">
                     You can have options of between 2 and 4.
                 </p>
             </div>
