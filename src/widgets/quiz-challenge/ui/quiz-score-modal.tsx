@@ -1,5 +1,6 @@
 import { Button } from '@shared/ui'
 import { Check, X } from 'react-feather'
+import { useState } from 'react'
 
 interface ModalProps {
     Correctness: string[]
@@ -10,19 +11,22 @@ interface ModalProps {
     }[]
     selectedOptions: number[]
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    handleCompleted: () => void
 }
 
 export const QuizScoreModal: React.FC<ModalProps> = ({
     Correctness,
     questions,
     setShowModal,
-    selectedOptions
+    selectedOptions,
+    handleCompleted
 }) => {
     const correctAnswers = Correctness.filter(
         result => result === 'Correct'
     ).length
     const totalQuestions = questions.length
     const score = (correctAnswers / totalQuestions) * 100
+    const [isCompleted, setIsCompleted] = useState(false)
 
     const getFeedbackMessage = (): string => {
         if (score === 100) return 'Your learning capacity is impressive!'
@@ -75,7 +79,17 @@ export const QuizScoreModal: React.FC<ModalProps> = ({
                     <Button onClick={() => setShowModal(false)}>
                         Try again
                     </Button>
-                    <Button>Mark as completed</Button>
+                    {!isCompleted && (
+                        <Button
+                            onClick={() => {
+                                handleCompleted()
+                                setShowModal(false)
+                                setIsCompleted(true)
+                            }}
+                        >
+                            Mark as completed
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>

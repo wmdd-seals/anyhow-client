@@ -71,7 +71,7 @@ export function GuidePage(): ReactNode {
             <Header />
 
             <main className="grow">
-                <article className="max-w-[50rem] w-full mx-auto flex flex-col">
+                <article className="max-w-[50rem] w-full mx-auto flex flex-col py-16">
                     <button onClick={(): void => setSidebar(true)}>
                         Ask Any
                     </button>
@@ -92,12 +92,30 @@ export function GuidePage(): ReactNode {
                     </div>
                     <TextEditor value={data.res.body || ''} editable={false} />
 
-                    <Button
-                        onClick={handleCompleted}
-                        className="max-w-80 bg-emerald-950 text-white font-bold p-4 text-xl rounded-xl ml-auto mt-3"
-                    >
-                        Completed
-                    </Button>
+                    <div className="flex justify-center items-center gap-6 py-6">
+                        {quizId && !showQuiz && (
+                            <Button onClick={() => setShowQuiz(true)}>
+                                Test your learning
+                            </Button>
+                        )}
+
+                        {!showQuiz && (
+                            <Button
+                                onClick={handleCompleted}
+                                className="max-w-80 bg-emerald-950 text-white font-bold p-4 text-xl rounded-xl"
+                            >
+                                Completed
+                            </Button>
+                        )}
+                    </div>
+
+                    {quizId && showQuiz && (
+                        <QuizChallenge
+                            guideId={params.id}
+                            quizId={quizId}
+                            handleCompleted={handleCompleted}
+                        />
+                    )}
                 </article>
 
                 <Transition show={sidebar}>
@@ -129,18 +147,6 @@ export function GuidePage(): ReactNode {
                         </div>
                     </TransitionChild>
                 </Transition>
-
-                <div className="flex justify-center">
-                    {quizId && !showQuiz && (
-                        <Button onClick={() => setShowQuiz(true)}>
-                            Test your learning
-                        </Button>
-                    )}
-
-                    {quizId && showQuiz && (
-                        <QuizChallenge guideId={params.id} quizId={quizId} />
-                    )}
-                </div>
             </main>
 
             <Footer />

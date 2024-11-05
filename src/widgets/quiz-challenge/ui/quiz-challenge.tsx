@@ -1,7 +1,7 @@
 import { useState, useEffect, type ReactNode } from 'react'
 import { useQuery } from '@apollo/client'
 import { QuizScoreModal } from './quiz-score-modal'
-import { Button } from '@shared/ui'
+import { Button, TextInput } from '@shared/ui'
 import { GET_QUIZ_ANSWERS } from '@widgets/quiz-challenge/api/get-quiz-answers'
 import { useSaveQuizAnswer } from '@widgets/quiz-challenge/api/use-save-answers'
 import { GET_QUIZ_QUERY } from '../../../entities/quiz'
@@ -9,10 +9,11 @@ import { GET_QUIZ_QUERY } from '../../../entities/quiz'
 interface QuizChallengeProp {
     guideId: string
     quizId: string
+    handleCompleted: () => void
 }
 
 export function QuizChallenge(props: QuizChallengeProp): ReactNode {
-    const { guideId, quizId } = props
+    const { guideId, quizId, handleCompleted } = props
 
     const { data: quizInfo, loading: quizLoading } = useQuery(GET_QUIZ_QUERY, {
         fetchPolicy: 'cache-and-network',
@@ -114,28 +115,35 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
                                     <ul>
                                         {question.options.map(
                                             (option, selectedOptionIndex) => (
-                                                <li key={selectedOptionIndex}>
-                                                    <label className="flex items-center gap-2">
-                                                        <input
-                                                            type="radio"
-                                                            name={`question-${questionIndex}`}
-                                                            value={
+                                                <li
+                                                    key={selectedOptionIndex}
+                                                    className="flex gap-2"
+                                                >
+                                                    <input
+                                                        id="option"
+                                                        type="radio"
+                                                        name={`question-${questionIndex}`}
+                                                        value={
+                                                            selectedOptionIndex
+                                                        }
+                                                        onChange={() =>
+                                                            handleOptionChange(
+                                                                questionIndex,
                                                                 selectedOptionIndex
-                                                            }
-                                                            onChange={() =>
-                                                                handleOptionChange(
-                                                                    questionIndex,
-                                                                    selectedOptionIndex
-                                                                )
-                                                            }
-                                                            checked={
-                                                                selectedOptions[
-                                                                    questionIndex
-                                                                ] ===
-                                                                selectedOptionIndex
-                                                            }
-                                                            className="form-radio text-slate-800"
-                                                        />
+                                                            )
+                                                        }
+                                                        checked={
+                                                            selectedOptions[
+                                                                questionIndex
+                                                            ] ===
+                                                            selectedOptionIndex
+                                                        }
+                                                        className="form-radio text-slate-800"
+                                                    />
+                                                    <label
+                                                        htmlFor="option"
+                                                        className="flex items-center gap-2"
+                                                    >
                                                         {option}
                                                     </label>
                                                 </li>
@@ -159,6 +167,7 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
                             questions={formattedQuizData}
                             setShowModal={setShowModal}
                             selectedOptions={selectedOptions}
+                            handleCompleted={handleCompleted}
                         />
                     )}
                 </div>
