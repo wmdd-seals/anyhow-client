@@ -14,7 +14,7 @@ export const TextInput = forwardRef<HTMLInputElement, InputProps>(
                 {Boolean(label) && <Label>{label}</Label>}
                 <Input
                     ref={ref}
-                    className={'border border-gray-300 rounded-lg'}
+                    className={'border border-gray-300 rounded-md p-2'}
                     {...rest}
                 />
             </Field>
