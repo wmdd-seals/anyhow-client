@@ -208,13 +208,13 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
     return (
         <div
             className={cn(
-                'flex flex-col gap-1 max-w-3xl mx-auto px-6',
+                'flex flex-col gap-1 md:w-3/4 max-w-3xl mx-auto p-6',
                 className
             )}
         >
             <h1 className="text-center text-5xl font-bold">Generated Quiz</h1>
 
-            <div className="grow">
+            <div className="grow flex flex-col gap-4">
                 {loading && <p>Loading quiz...</p>}
                 {publishGuideLoading && <p>Publishing guide...</p>}
 
@@ -265,15 +265,19 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
                                     question
                                     {remainingQuestions > 1 ? 's' : ''}.
                                 </p>
-                                <Button onClick={handleAddQuestion}>
-                                    Add question
-                                </Button>
+                                <div className="flex md:justify-start">
+                                    <Button onClick={handleAddQuestion}>
+                                        Add question
+                                    </Button>
+                                </div>
                             </>
                         )}
                     </div>
                 )}
+                <div className="flex md:justify-center">
+                    <Button onClick={handlePublish}>Publish guide</Button>
+                </div>
             </div>
-            <Button onClick={handlePublish}>Publish guide</Button>
         </div>
     )
 }
