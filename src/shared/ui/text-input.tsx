@@ -24,7 +24,7 @@ export const TextInput = forwardRef<HTMLInputElement, InputProps>(
                         {...rest}
                     />
                     {showEnterButton && (
-                        <button className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white rounded-full px-4 py-1 text-xs pointer-events-none">
+                        <button className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-slate-800 text-white rounded-full px-4 py-1 text-xs pointer-events-none">
                             Hit enter to add
                         </button>
                     )}
