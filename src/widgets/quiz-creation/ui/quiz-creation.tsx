@@ -266,8 +266,11 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
                                     {remainingQuestions > 1 ? 's' : ''}.
                                 </p>
                                 <div className="flex md:justify-start">
-                                    <Button onClick={handleAddQuestion}>
-                                        Add question
+                                    <Button
+                                        className="w-full md:w-auto"
+                                        onClick={handleAddQuestion}
+                                    >
+                                        Add new question
                                     </Button>
                                 </div>
                             </>
@@ -275,7 +278,12 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
                     </div>
                 )}
                 <div className="flex md:justify-center">
-                    <Button onClick={handlePublish}>Publish guide</Button>
+                    <Button
+                        className="w-full md:w-auto"
+                        onClick={handlePublish}
+                    >
+                        Publish guide
+                    </Button>
                 </div>
             </div>
         </div>
