@@ -106,10 +106,7 @@ function Header(): ReactNode {
                     {isAuthenticated ? (
                         <>
                             <CreateGuideButton />
-                            <Button
-                                onClick={logoutHandler}
-                                className="bg-none text-slate-700 underline"
-                            >
+                            <Button onClick={logoutHandler} kind="tertiary">
                                 Logout
                             </Button>
                         </>

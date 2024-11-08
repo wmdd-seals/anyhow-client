@@ -16,9 +16,7 @@ export function Footer(): ReactNode {
                     />
                 </div>
                 <div className="flex flex-col sm:flex-row w-full sm:w-1/2 sm:justify-end sm:pr-12 gap-4">
-                    <Button className="bg-none text-white underline">
-                        About Us
-                    </Button>
+                    About Us
                     {!isAuthenticated && (
                         <>
                             <Button

@@ -94,7 +94,7 @@ export function GuidePage(): ReactNode {
 
                     <Button
                         onClick={handleCompleted}
-                        className="max-w-80 bg-emerald-950 text-white font-bold p-4 text-xl rounded-xl ml-auto mt-3"
+                        className="max-w-80 ml-auto mt-3"
                     >
                         Completed
                     </Button>
