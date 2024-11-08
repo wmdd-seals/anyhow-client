@@ -12,28 +12,25 @@ const carouselItems = [
         title: 'Dive into quick learning',
         description:
             'Got a few minutes? Jump into bite-sized guides that fit your schedule and help you grow, one quick lesson at a time!',
-        imageUrl:
-            'https://images.unsplash.com/photo-1549989476-69a92fa57c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+        imageUrl: '/bg-img1.png',
         link: '/onboarding',
         linkText: 'Start Exploring'
     },
     {
-        title: 'Dive into quick learning',
+        title: 'Get Full Access, Go Further!',
         description:
-            'Got a few minutes? Jump into bite-sized guides that fit your schedule and help you grow, one quick lesson at a time!',
-        imageUrl:
-            'https://images.unsplash.com/photo-1549989476-69a92fa57c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+            'Want more? Unlock all guides, create your own learning paths, and access exclusive content by subscribing. Let’s level up!',
+        imageUrl: '/bg-img2.jpeg',
         link: '/onboarding',
         linkText: 'Start Exploring'
     },
     {
-        title: 'Dive into quick learning',
+        title: 'Meet AnyHow',
         description:
-            'Got a few minutes? Jump into bite-sized guides that fit your schedule and help you grow, one quick lesson at a time!',
-        imageUrl:
-            'https://images.unsplash.com/photo-1549989476-69a92fa57c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-        link: '/onboarding',
-        linkText: 'Start Exploring'
+            'Curious about who we are? Check out our story and learn how we’re changing the way people learn, one bite at a time!',
+        imageUrl: '/bg-img3.jpeg',
+        link: '/about',
+        linkText: 'About Us'
     }
 ]
 
@@ -57,7 +54,8 @@ export function HomePage(): ReactNode {
                                         className="w-full h-full object-cover object-center"
                                         alt={item.title}
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 from-5% via-transparent via-70% to-green-200/50 to-95% w-full h-full" />
+                                    <div className="absolute inset-0 bg-gradient-to-r from-any-purple-800/60 to-white/10 from-0%  to-80%"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-any-purple-800/80 via-transparent to-any-green-300/70 from-10% via-50% to-90% w-full h-full" />
                                 </div>
                                 <div className="absolute inset-x-0 bottom-0 md:bottom-8 gap-6 flex flex-col justify-end p-6 pb-8 md:pl-11 md:pb-8 w-full md:w-2/3 lg:w-1/2">
                                     <h2 className="font-bold text-3xl md:text-6xl text-white w-full text-wrap">
@@ -68,7 +66,7 @@ export function HomePage(): ReactNode {
                                     </p>
                                     <a
                                         href={item.link}
-                                        className="bg-white w-fit px-4 py-2 rounded-full text-black"
+                                        className="bg-white w-fit px-4 py-2 rounded-full font-bold"
                                     >
                                         {item.linkText}
                                     </a>
