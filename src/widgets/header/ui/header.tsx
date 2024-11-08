@@ -4,13 +4,30 @@ import { CreateGuideButton } from 'src/features/create-guide'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from 'src/shared/ui'
 import { Menu, X } from 'react-feather'
+import { useQuery } from '@apollo/client'
+import { graphql } from '@gqlgen/gql'
+import type { User } from '@gqlgen/graphql'
+
+const FETCH_USER = graphql(`
+    query User {
+        user {
+            email
+            favoriteTopics
+            firstName
+            id
+            lastName
+            middleName
+        }
+    }
+`)
 
 function MobileMenu({
-    isAuthenticated
+    isAuthenticated,
+    user
 }: {
     isAuthenticated: boolean
+    user: User | null | undefined
 }): ReactNode {
-    const { user } = useAuth()
     const [isOpen, setIsOpen] = useState(false)
     const navigate = useNavigate()
 
@@ -68,8 +85,12 @@ function MobileMenu({
 }
 
 function Header(): ReactNode {
-    const { isAuthenticated, user } = useAuth()
+    const { isAuthenticated } = useAuth()
     const navigate = useNavigate()
+    const { data, loading } = useQuery(FETCH_USER)
+    const user = data?.user
+
+    if (loading) return <div>Loading...</div>
 
     return (
         <header className="bg-white text-white p-4 sticky top-0 z-[1]">
@@ -91,7 +112,7 @@ function Header(): ReactNode {
                     </Link>
                 </div>
                 <div className="lg:hidden">
-                    <MobileMenu isAuthenticated={isAuthenticated} />
+                    <MobileMenu isAuthenticated={isAuthenticated} user={user} />
                 </div>
                 <div className="hidden lg:flex lg:space-x-4 items-center">
                     {isAuthenticated && user ? (
