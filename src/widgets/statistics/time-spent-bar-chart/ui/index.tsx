@@ -27,10 +27,12 @@ const GUIDE_COMPLETED_COUNTS = graphql(`
 function BarChart({ data, keys, indexBy }: BarChartProps): ReactNode {
     return (
         <ResponsiveBar
-            colors={['grey']}
+            colors={['#32D430']}
             keys={keys}
             data={data}
             indexBy={indexBy}
+            borderRadius={5}
+            enableLabel={false}
             enableGridX={false}
             enableGridY={false}
             axisLeft={null}
@@ -45,7 +47,8 @@ function TimeSpentBarChart(): ReactNode {
     const [from, setFrom] = useState<number>(
         new Date(today.setDate(today.getDate() - 7)).getTime()
     )
-    const { data: counts } = useQuery(GUIDE_COMPLETED_COUNTS, {
+    console.log({ today })
+    const { data: counts, loading } = useQuery(GUIDE_COMPLETED_COUNTS, {
         variables: {
             input: {
                 start: new Date(from).toISOString().split('T')[0],
@@ -54,14 +57,6 @@ function TimeSpentBarChart(): ReactNode {
         },
         fetchPolicy: 'network-only'
     })
-
-    if (!counts?.res.length) return null
-
-    const averageTimeSpent =
-        Math.floor(
-            counts.res.reduce((acc, curr) => acc + (curr.count || 0), 0) /
-                counts.res.length
-        ) * 30
 
     const handlePrev = (): void => {
         const [newFrom, newTo] = adjustDateRange(from, to, -7)
@@ -77,6 +72,12 @@ function TimeSpentBarChart(): ReactNode {
 
     return (
         <div className="relative flex flex-col items-center gap-2 border-solid rounded-md p-4 h-96 shadow-md shadow-lg">
+            {loading || !counts?.res.length ? (
+                <div className="w-full h-full flex items-center justify-center">
+                    <p>Loading</p>
+                </div>
+            ) : (
+                <>
             <button
                 onClick={handlePrev}
                 className="text-[#2D3648] absolute left-[10px] top-1/2"
@@ -91,9 +92,9 @@ function TimeSpentBarChart(): ReactNode {
             </button>
             <div className="text-2xl w-full text-left absolute left-5 top-5 font-bold">
                 <label>Completed Guides</label>
-                <p>{averageTimeSpent} minutes</p>
-                <p></p>
+                        <p className="text-base">{`${new Date(from).toLocaleDateString()} - ${new Date(to).toLocaleDateString()}`}</p>
             </div>
+                    <div className="w-11/12 mx-auto max-w-[350px] md:max-w-[450px] h-full">
             <BarChart
                 data={counts.res.map(item => ({
                     date: item.date
@@ -106,6 +107,9 @@ function TimeSpentBarChart(): ReactNode {
                 keys={['count']}
                 indexBy="date"
             />
+                    </div>
+                </>
+            )}
         </div>
     )
 }

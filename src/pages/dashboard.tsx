@@ -84,6 +84,7 @@ const Dashboard = (): ReactNode => {
                         </h3>
                         <Slider
                             desktopItems={2}
+                            smallDesktopItems={2}
                             tabletItems={1}
                             mobileItems={1}
                             showDots={false}
