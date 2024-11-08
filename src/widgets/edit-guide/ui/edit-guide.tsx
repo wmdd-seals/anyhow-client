@@ -151,12 +151,12 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                 </h1>
 
                 <div className="flex flex-col">
-                    <span>Progress</span>
+                    <span className="mb-2">Progress</span>
 
                     <div
-                        className="h-4 rounded-lg border border-grey-200"
+                        className="h-4 rounded-lg border border-any-purple-400"
                         style={{
-                            background: `linear-gradient(to right, #000 0% ${progress}%, #fff ${progress}%)`
+                            background: `linear-gradient(to right, #32d430 0% ${progress}%, #fff ${progress}%)`
                         }}
                     />
                 </div>
@@ -172,7 +172,11 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                     }): ReactElement => {
                         return (
                             <div>
-                                <TextInput label={'Title'} {...field} />
+                                <TextInput
+                                    label={'Title'}
+                                    labelClassName="font-bold"
+                                    {...field}
+                                />
                                 {error?.message && (
                                     <span className="text-red-500">
                                         {error.message}
@@ -197,7 +201,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                     }): ReactElement => {
                         return (
                             <div className="flex flex-col">
-                                <span>Content</span>
+                                <span className="font-bold mb-2">Content</span>
                                 <TextEditor
                                     editable
                                     blockEditing={progress !== 100}
@@ -251,6 +255,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                             <div className="mb-4">
                                 <TextInput
                                     label={'Tags'}
+                                    labelClassName="font-bold"
                                     placeholder="Hit enter to add"
                                     onKeyDown={e => {
                                         if (e.key !== 'Enter') {

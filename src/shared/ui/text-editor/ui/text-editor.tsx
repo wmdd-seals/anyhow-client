@@ -49,7 +49,7 @@ export function TextEditor(props: TextEditorProps): ReactNode {
             namespace: `guide-${editable}`,
             onError: console.error,
             theme: {
-                root: 'flex flex-col gap-y-2',
+                root: 'flex flex-col gap-2',
                 text: {
                     bold: 'bold',
                     italic: 'italic',
@@ -106,20 +106,20 @@ export function TextEditor(props: TextEditorProps): ReactNode {
         <LexicalComposer initialConfig={config}>
             <div
                 className={cn('flex flex-col ', {
-                    'border-2 border-gray-300 rounded-lg focus-within:border-green-500':
+                    'border border-any-purple-400 rounded-lg focus-within:border-green-500':
                         editable
                 })}
             >
                 {editable && (
                     <ToolbarPlugin
                         blockEditing={props.blockEditing}
-                        className="border-b border-gray-300"
+                        className="border-b border-any-purple-400 p-3"
                         onImageUpload={props.onImageUpload}
                     />
                 )}
                 <RichTextPlugin
                     contentEditable={
-                        <ContentEditable className="focus:border-none focus:outline-none min-h-96" />
+                        <ContentEditable className="p-4 focus:border-none focus:outline-none min-h-96" />
                     }
                     ErrorBoundary={LexicalErrorBoundary}
                 />
