@@ -1,5 +1,11 @@
 import { Button, TextEditor, TextInput } from '@shared/ui'
-import { useCallback, useRef, type ReactElement, type ReactNode } from 'react'
+import {
+    useCallback,
+    useRef,
+    type ReactElement,
+    type ReactNode,
+    useState
+} from 'react'
 import { Controller, FormProvider } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import cn from 'clsx'
@@ -12,7 +18,8 @@ import { UPLOAD_GUIDE_COVER } from '../api/upload-guide-cover'
 import { toBase64 } from '@shared/lib/file'
 import { REMOVE_GUIDE_COVER } from '../api/remove-guide-cover'
 import { UPLOAD_GUIDE_IMAGE } from '../api/upload-guide-image'
-import { getGuideProgress, TagList } from 'src/entities/guide'
+import { getGuideProgress, Tag } from 'src/entities/guide'
+import { X, Edit, Check } from 'react-feather'
 
 type UseCreateGuideForm = {
     title: string
@@ -46,6 +53,8 @@ export function EditGuide(props: EditGuideProps): ReactNode {
     const { className, id } = props
 
     const { data, loading } = useQuery(GET_GUIDE_QUERY, { variables: { id } })
+
+    const [hasCoverImage, setHasCoverImage] = useState(true)
 
     const navigate = useNavigate()
 
@@ -98,6 +107,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
             })
 
             coverImageRef.current!.src = getGuideImageUrl(id)
+            setHasCoverImage(true)
         })
 
         input.click()
@@ -107,6 +117,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
         void removeCoverMutation()
 
         coverImageRef.current!.src = `/guide-cover-thumbnail.jpg`
+        setHasCoverImage(false)
     }, [])
 
     const syncGuide = useCallback(
@@ -129,14 +140,19 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                     onError={(e): void => {
                         // if not loaded for any reason, use thumbnail
                         e.currentTarget.src = `/guide-cover-thumbnail.jpg`
+                        setHasCoverImage(false)
                     }}
                     alt="Guide Cover Thumbnail"
-                    className="max-w-[1300px] w-full max-h-[520px] object-cover object-center mx-auto rounded-3xl"
+                    className="max-w-[1300px] w-full max-sm:h-[480px] max-h-[520px] object-cover object-center mx-auto rounded-3xl"
                 />
 
                 <div className="absolute left-1/2 -translate-x-1/2 bottom-14 flex items-center gap-2">
-                    <Button onClick={selectCoverAndUpload}>Edit</Button>
-                    <Button onClick={removeCover}>Delete</Button>
+                    <Button kind="inverse" onClick={selectCoverAndUpload}>
+                        Add Cover Image <Edit className="size-4" />
+                    </Button>
+                    {hasCoverImage && (
+                        <Button onClick={removeCover}>Delete</Button>
+                    )}
                 </div>
             </div>
 
@@ -273,7 +289,41 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                                         {error.message}
                                     </span>
                                 )}
-                                <TagList tags={field.value} />
+                                {!!field.value.length && (
+                                    <div className="flex items-center flex-wrap gap-4 mt-6">
+                                        {field.value.map((tag, index) => {
+                                            return (
+                                                <Tag
+                                                    key={index}
+                                                    active
+                                                    prefix={
+                                                        <Check className="size-4" />
+                                                    }
+                                                    suffix={
+                                                        <button
+                                                            onClick={function () {
+                                                                field.onChange(
+                                                                    field.value.filter(
+                                                                        (
+                                                                            _,
+                                                                            i
+                                                                        ) =>
+                                                                            i !==
+                                                                            index
+                                                                    )
+                                                                )
+                                                            }}
+                                                        >
+                                                            <X className="size-4" />
+                                                        </button>
+                                                    }
+                                                >
+                                                    {tag}
+                                                </Tag>
+                                            )
+                                        })}
+                                    </div>
+                                )}
                             </div>
                         )
                     }}

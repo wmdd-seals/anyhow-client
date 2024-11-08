@@ -119,7 +119,12 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                 )}
                 <RichTextPlugin
                     contentEditable={
-                        <ContentEditable className="p-4 focus:border-none focus:outline-none min-h-96" />
+                        <ContentEditable
+                            className={cn(
+                                'p-4 focus:border-none focus:outline-none',
+                                editable && 'min-h-96'
+                            )}
+                        />
                     }
                     ErrorBoundary={LexicalErrorBoundary}
                 />
