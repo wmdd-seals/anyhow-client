@@ -1,7 +1,7 @@
 import { useState, useEffect, type ReactNode } from 'react'
 import { useQuery } from '@apollo/client'
 import { QuizScoreModal } from './quiz-score-modal'
-import { Button, TextInput } from '@shared/ui'
+import { Button } from '@shared/ui'
 import { GET_QUIZ_ANSWERS } from '@widgets/quiz-challenge/api/get-quiz-answers'
 import { useSaveQuizAnswer } from '@widgets/quiz-challenge/api/use-save-answers'
 import { GET_QUIZ_QUERY } from '../../../entities/quiz'
@@ -138,7 +138,7 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
                                                             ] ===
                                                             selectedOptionIndex
                                                         }
-                                                        className="form-radio text-slate-800"
+                                                        className="form-radio text-slate-800 accent-green-500"
                                                     />
                                                     <label
                                                         htmlFor="option"
