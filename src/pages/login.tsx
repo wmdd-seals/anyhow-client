@@ -54,16 +54,38 @@ export const LoginPage = (): ReactNode => {
     }
 
     return (
-        <>
-            <div className="container text-center sm:text-left">
-                <div>
+        <div className="text-center grid sm:grid-cols-1 md:grid-cols-2 gap-3">
+            {/* Left Column */}
+            <div className="self-center justify-center grid gap-3 my-10 mx-5">
+                {/* Mobile View */}
+                <div className="md:hidden grid gap-3">
+                    <div className="flex justify-center items-center">
+                        <img src="/primary-logo.svg" alt="" className="w-36" />
+                    </div>
+                    <img
+                        src="/login-mobile-img.webp"
+                        alt=""
+                        className="h-full w-full rounded-lg"
+                    />
                     <div className="flex flex-col">
                         <h1>Welcome to AnyHow</h1>
                         <span className="text-xs">
                             Your bite-sized learning app
                         </span>
                     </div>
-                    <form onSubmit={handleSubmit}>
+                </div>
+
+                {/* Desktop View */}
+                <div className="hidden md:block text-center">
+                    <h1>Welcome to</h1>
+                    <div className="flex justify-center items-center">
+                        <img src="/primary-logo.svg" alt="" className="w-36" />
+                    </div>
+                </div>
+
+                {/* Form Section */}
+                <div className="grid gap-3 m-auto">
+                    <form onSubmit={handleSubmit} className="grid gap-3">
                         <TextInput
                             type="email"
                             placeholder="Email address"
@@ -79,21 +101,32 @@ export const LoginPage = (): ReactNode => {
                             required
                         />
                         <Button type="submit">
-                            {loading ? 'Logging in' : 'Login'}
+                            {loading ? 'Signing in' : 'Sign In'}
                         </Button>
                     </form>
                     {errorMessage && (
-                        <p style={{ color: 'red' }}>{errorMessage}</p>
+                        <p className="text-red-500">{errorMessage}</p>
                     )}
                     {error && (
-                        <p style={{ color: 'red' }}>Error: {error.message}</p>
+                        <p className="text-red-500">Error: {error.message}</p>
                     )}
-                </div>
-                <div>
-                    Don't have an account yet?{' '}
-                    <Link to="/signup"> Sign Up Now</Link>
+                    <p className="text-gray-400">
+                        Don't have an account yet?{' '}
+                        <Link to="/signup" className="underline text-slate-800">
+                            Sign up now
+                        </Link>
+                    </p>
                 </div>
             </div>
-        </>
+
+            {/* Right Column (Desktop Image) */}
+            <div className="hidden md:block bg-black">
+                <img
+                    src="/login-desktop-img.webp"
+                    alt=""
+                    className="h-screen w-screen object-center min-w-full min-h-full"
+                />
+            </div>
+        </div>
     )
 }

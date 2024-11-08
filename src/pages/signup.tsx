@@ -2,7 +2,7 @@ import { gql, useMutation } from '@apollo/client'
 import type { UserCreateInput } from '@gqlgen/graphql'
 import { Button, TextInput } from '@shared/ui'
 import { useState, type ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const USER_SIGNUP = gql`
     mutation SignupUser($input: UserCreateInput!) {
@@ -48,58 +48,95 @@ export const SignUpPage = (): ReactNode => {
     }
 
     return (
-        <>
-            <div className="container text-center sm:text-left">
-                <div>
-                    <div className="flex flex-col">
-                        <h1>Welcome to AnyHow</h1>
-                        <span className="text-xs">
-                            Your bite-sized learning app
-                        </span>
-                    </div>
-                    <form onSubmit={handleSubmit}>
-                        <TextInput
-                            type="email"
-                            placeholder="Email address"
-                            name="email"
-                            onChange={handleChange}
-                            required
-                        />
-                        <TextInput
-                            type="text"
-                            placeholder="First Name"
-                            name="firstName"
-                            onChange={handleChange}
-                            required
-                        />
-                        <TextInput
-                            type="text"
-                            placeholder="Middle Name"
-                            name="middleName"
-                            onChange={handleChange}
-                        />
-                        <TextInput
-                            type="text"
-                            placeholder="Last Name"
-                            name="lastName"
-                            onChange={handleChange}
-                        />
-                        <TextInput
-                            type="password"
-                            placeholder="Password"
-                            name="password"
-                            onChange={handleChange}
-                            required
-                        />
-                        <Button type="submit">
-                            {loading ? 'Signing Up' : 'Signup'}
-                        </Button>
-                    </form>
-                    {errorMessage && (
-                        <p style={{ color: 'red' }}>{errorMessage}</p>
-                    )}
+        <div className="text-center grid grid-cols-1 md:grid-cols-2 gap-3 p-5 md:p-0">
+            {/* Left Section (Form Content) */}
+            <div className="flex flex-col items-center justify-center gap-5 md:w-3/4 lg:w-1/2 mx-auto">
+                {/* Logo */}
+                <img
+                    src="/primary-logo.svg"
+                    alt="Primary Logo"
+                    className="w-36 mx-auto"
+                />
+
+                {/* Mobile-Only Image */}
+                <img
+                    src="/login-mobile-img.webp"
+                    alt="Learning illustration for mobile view"
+                    className="md:hidden w-full h-auto rounded-lg object-cover"
+                />
+
+                {/* Heading and Subtitle */}
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold">Sign Up</h1>
+                    <p className="text-xs text-gray-600">
+                        Discover a world of learning
+                    </p>
                 </div>
+
+                {/* Signup Form */}
+                <form
+                    onSubmit={handleSubmit}
+                    className="w-full max-w-sm flex flex-col gap-4"
+                >
+                    <TextInput
+                        type="email"
+                        placeholder="Email address"
+                        name="email"
+                        onChange={handleChange}
+                        required
+                    />
+                    <TextInput
+                        type="text"
+                        placeholder="First Name"
+                        name="firstName"
+                        onChange={handleChange}
+                        required
+                    />
+                    <TextInput
+                        type="text"
+                        placeholder="Middle Name"
+                        name="middleName"
+                        onChange={handleChange}
+                    />
+                    <TextInput
+                        type="text"
+                        placeholder="Last Name"
+                        name="lastName"
+                        onChange={handleChange}
+                        required
+                    />
+                    <TextInput
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        onChange={handleChange}
+                        required
+                    />
+                    <Button type="submit">
+                        {loading ? 'Signing Up...' : 'Sign Up'}
+                    </Button>
+                </form>
+
+                {/* Error Message */}
+                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+
+                {/* Login Prompt */}
+                <p className="text-sm text-gray-500">
+                    Already have an account?{' '}
+                    <Link to="/login" className="underline text-blue-600">
+                        Log In
+                    </Link>
+                </p>
             </div>
-        </>
+
+            {/* Right Section (Desktop Image) */}
+            <div className="hidden md:block bg-black">
+                <img
+                    src="/login-desktop-img.webp"
+                    alt="Learning illustration for desktop view"
+                    className="h-screen w-screen object-center min-w-full min-h-full"
+                />
+            </div>
+        </div>
     )
 }
