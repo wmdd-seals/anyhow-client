@@ -12,8 +12,8 @@ import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
 import { getGuideProgress, Tag } from 'src/entities/guide'
 import { STORE_GUIDE_COMPLETED } from 'src/features/store-guide-completed/api/store-guide-completed'
-import { Zap, ArrowRight } from 'react-feather'
 import { GET_GUIDE_COMPLETED_LIST } from '@widgets/quiz-challenge/api/get-guide-completed-list'
+import { ArrowRight, Zap } from 'react-feather'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
