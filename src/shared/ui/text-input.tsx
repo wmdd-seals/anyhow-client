@@ -4,12 +4,12 @@ import { Field, Input, Label } from '@headlessui/react'
 type InputProps = {
     label?: string | JSX.Element
     disabled?: boolean
-    showEnterButton?: boolean
+    suffix?: JSX.Element
 } & ComponentPropsWithRef<'input'>
 
 export const TextInput = forwardRef<HTMLInputElement, InputProps>(
     function TextInput(props, ref): ReactNode {
-        const { label, disabled, showEnterButton, ...rest } = props
+        const { label, disabled, suffix, ...rest } = props
 
         return (
             <Field className="flex flex-col gap-2">
@@ -23,10 +23,10 @@ export const TextInput = forwardRef<HTMLInputElement, InputProps>(
                         disabled={disabled}
                         {...rest}
                     />
-                    {showEnterButton && (
-                        <button className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-slate-800 text-white rounded-full px-4 py-1 text-xs pointer-events-none">
-                            Hit enter to add
-                        </button>
+                    {suffix && (
+                        <div className="absolute right-1 top-1/2 transform -translate-y-1/2">
+                            {suffix}
+                        </div>
                     )}
                 </div>
             </Field>
