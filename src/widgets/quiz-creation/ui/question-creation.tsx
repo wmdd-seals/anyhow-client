@@ -63,6 +63,7 @@ export const QuestionCreation = ({
                                 name={`answer-${index}`}
                                 checked={selectedAnswerIndex === optionIndex}
                                 onChange={() => onSelectAnswer(optionIndex)}
+                                className="accent-green-500"
                             />
                             <div className="grow">
                                 <TextInput
