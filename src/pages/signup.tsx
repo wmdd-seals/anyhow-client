@@ -134,7 +134,7 @@ export const SignUpPage = (): ReactNode => {
                 <img
                     src="/login-desktop-img.webp"
                     alt="Learning illustration for desktop view"
-                    className="h-screen w-screen object-center min-w-full min-h-full"
+                    className="h-screen w-screen object-center object-cover min-w-full min-h-full"
                 />
             </div>
         </div>

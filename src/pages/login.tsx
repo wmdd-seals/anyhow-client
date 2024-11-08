@@ -124,7 +124,7 @@ export const LoginPage = (): ReactNode => {
                 <img
                     src="/login-desktop-img.webp"
                     alt=""
-                    className="h-screen w-screen object-center min-w-full min-h-full"
+                    className="h-screen w-screen object-center object-cover min-w-full min-h-full"
                 />
             </div>
         </div>
