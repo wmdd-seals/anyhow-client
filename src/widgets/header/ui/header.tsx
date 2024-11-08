@@ -68,13 +68,8 @@ function MobileMenu({
 }
 
 function Header(): ReactNode {
-    const { isAuthenticated, logout, user } = useAuth()
+    const { isAuthenticated, user } = useAuth()
     const navigate = useNavigate()
-
-    const logoutHandler = (): void => {
-        logout()
-        navigate('/login')
-    }
 
     return (
         <header className="bg-white text-white p-4 sticky top-0 z-[1]">
