@@ -56,40 +56,53 @@ export function GuideChat(props: GuideChatProps): ReactNode {
 
     return (
         <div
-            className={cn('bg-white flex flex-col overflow-hidden', className)}
+            className={cn(
+                'grow bg-white flex flex-col overflow-hidden',
+                className
+            )}
         >
             <span className="text-2xl font-bold mb-6">Ask Any anything...</span>
 
-            <TextInput
-                placeholder="What means Maecenas?"
-                value={input}
-                onChange={e => setInput(e.currentTarget.value)}
-                onKeyDown={e => {
-                    const { key } = e
+            <div className="grow flex flex-col-reverse md:flex-col gap-4 overflow-hidden">
+                <TextInput
+                    placeholder="What means Maecenas?"
+                    value={input}
+                    onChange={e => setInput(e.currentTarget.value)}
+                    onKeyDown={e => {
+                        const { key } = e
 
-                    if (key !== 'Enter' || askPending || loading) return
+                        if (key !== 'Enter' || askPending || loading) return
 
-                    void askAI(input)
-                    setInput('')
-                }}
-            />
+                        void askAI(input)
+                        setInput('')
+                    }}
+                />
 
-            <div className="grow flex flex-col gap-3 overflow-auto">
-                {data?.res.map((message, i) => {
-                    const { role, content } = message
+                <div className="grow flex flex-col-reverse md:flex-col gap-3 overflow-auto">
+                    {data?.res.length ? (
+                        data.res.map((message, i) => {
+                            const { role, content } = message
 
-                    return (
-                        <div
-                            key={i}
-                            className={cn(
-                                'w-[80%] rounded-xl p-4 bg-[#F2F2F3]',
-                                role === 'user' ? 'self-end' : 'self-start'
-                            )}
-                        >
-                            {content}
-                        </div>
-                    )
-                })}
+                            return (
+                                <div
+                                    key={i}
+                                    className={cn(
+                                        'w-[80%] rounded-xl p-4 bg-[#F2F2F3]',
+                                        role === 'user'
+                                            ? 'self-end'
+                                            : 'self-start'
+                                    )}
+                                >
+                                    {content}
+                                </div>
+                            )
+                        })
+                    ) : (
+                        <p className="font-bold text-xl m-auto">
+                            Start by asking a first question
+                        </p>
+                    )}
+                </div>
             </div>
         </div>
     )

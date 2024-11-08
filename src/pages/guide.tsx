@@ -10,9 +10,10 @@ import { GET_QUIZ_ID_QUERY } from '../entities/quiz'
 import { Button } from '@shared/ui'
 import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
-import { getGuideProgress } from 'src/entities/guide'
+import { getGuideProgress, Tag } from 'src/entities/guide'
 import { STORE_GUIDE_COMPLETED } from 'src/features/store-guide-completed/api/store-guide-completed'
 import { GET_GUIDE_COMPLETED_LIST } from '@widgets/quiz-challenge/api/get-guide-completed-list'
+import { ArrowRight, Check, Zap } from 'react-feather'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -79,11 +80,16 @@ export function GuidePage(): ReactNode {
         <div className="flex flex-col min-h-screen">
             <Header />
 
-            <main className="grow">
+            <main className="grow p-6">
                 <article className="max-w-[50rem] w-full mx-auto flex flex-col py-16">
-                    <button onClick={(): void => setSidebar(true)}>
+                    <Button
+                        onClick={(): void => setSidebar(true)}
+                        size="small"
+                        className="max-sm:fixed sticky right-5 max-sm:bottom-5 md:top-[10rem] ml-auto w-fit border-2 border-white"
+                    >
                         Ask Any
-                    </button>
+                        <Zap className="size-5" />
+                    </Button>
 
                     <h1 className="text-5xl font-bold mb-8 text-center">
                         {data.res.title}
@@ -101,13 +107,29 @@ export function GuidePage(): ReactNode {
                     </div>
                     <TextEditor value={data.res.body || ''} editable={false} />
 
-                    <div className="flex justify-center items-center gap-6 py-6">
+                    {!!data.res.tags.length && (
+                        <div className="flex items-center flex-wrap gap-4 my-16">
+                            {(data.res.tags as string[]).map((tag, index) => {
+                                return (
+                                    <Tag key={index} active>
+                                        {tag}
+                                    </Tag>
+                                )
+                            })}
+                        </div>
+                    )}
+
+                    <hr />
+
+                    <div className="flex flex-col md:flex-row justify-center items-center gap-6 py-6">
                         {quizId && !showQuiz && (
                             <Button
-                                kind="secondary"
+
                                 onClick={() => setShowQuiz(true)}
+                                kind="secondary"
                             >
                                 Test your learning
+                                <ArrowRight />
                             </Button>
                         )}
 
@@ -116,7 +138,6 @@ export function GuidePage(): ReactNode {
                                 onClick={() =>
                                     handleCompleted(params.id as string)
                                 }
-                                className="max-w-80"
                             >
                                 Mark as completed
                             </Button>

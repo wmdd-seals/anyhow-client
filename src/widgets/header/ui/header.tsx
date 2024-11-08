@@ -1,31 +1,45 @@
 import { useAuth } from '@shared/lib'
-import { useContext, useState, type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { CreateGuideButton } from 'src/features/create-guide'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from 'src/shared/ui'
-import { UserContext } from '@shared/lib/auth/provider'
 import { Menu, X } from 'react-feather'
+import { useQuery } from '@apollo/client'
+import { graphql } from '@gqlgen/gql'
+import type { User } from '@gqlgen/graphql'
+
+const FETCH_USER = graphql(`
+    query User {
+        user {
+            email
+            favoriteTopics
+            firstName
+            id
+            lastName
+            middleName
+        }
+    }
+`)
 
 function MobileMenu({
-    isAuthenticated
+    isAuthenticated,
+    user
 }: {
     isAuthenticated: boolean
+    user: User | null | undefined
 }): ReactNode {
     const [isOpen, setIsOpen] = useState(false)
     const navigate = useNavigate()
 
     return (
         <>
-            {isAuthenticated ? (
+            {isAuthenticated && user ? (
                 <Link
                     to={'/account'}
-                    className="flex items-center rounded-full w-10 h-10 bg-slate-200"
+                    className="flex items-center justify-center rounded-full w-10 h-10 bg-slate-200 text-slate-800 space-x-1"
                 >
-                    <img
-                        src=""
-                        alt="Avatar"
-                        className="w-10 h-10 rounded-full"
-                    />
+                    {user.firstName[0].toUpperCase() +
+                        user.lastName[0].toUpperCase()}
                 </Link>
             ) : (
                 <button
@@ -72,13 +86,11 @@ function MobileMenu({
 
 function Header(): ReactNode {
     const { isAuthenticated } = useAuth()
-    const { logout } = useContext(UserContext)
     const navigate = useNavigate()
+    const { data, loading } = useQuery(FETCH_USER)
+    const user = data?.user
 
-    const logoutHandler = (): void => {
-        logout()
-        navigate('/login')
-    }
+    if (loading) return <div>Loading...</div>
 
     return (
         <header className="bg-white text-white p-4 sticky top-0 z-[1]">
@@ -100,15 +112,19 @@ function Header(): ReactNode {
                     </Link>
                 </div>
                 <div className="lg:hidden">
-                    <MobileMenu isAuthenticated={isAuthenticated} />
+                    <MobileMenu isAuthenticated={isAuthenticated} user={user} />
                 </div>
-                <div className="hidden lg:flex lg:space-x-4">
-                    {isAuthenticated ? (
+                <div className="hidden lg:flex lg:space-x-4 items-center">
+                    {isAuthenticated && user ? (
                         <>
                             <CreateGuideButton />
-                            <Button onClick={logoutHandler} kind="tertiary">
-                                Logout
-                            </Button>
+                            <Link
+                                to={'/account'}
+                                className="flex items-center justify-center rounded-full w-10 h-10 bg-slate-200 text-slate-800 space-x-1"
+                            >
+                                {user.firstName[0].toUpperCase() +
+                                    user.lastName[0].toUpperCase()}
+                            </Link>
                         </>
                     ) : (
                         <>

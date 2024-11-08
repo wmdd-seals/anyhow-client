@@ -48,7 +48,6 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     public static override importJSON(
         serializedNode: SerializedImageNode
     ): ImageNode {
-        console.log('import', serializedNode)
         return $createImageNode(serializedNode)
     }
 
