@@ -87,7 +87,11 @@ export const QuestionCreation = ({
                     </div>
                 ))}
 
-                <Button onClick={onAddOption} disabled={options.length >= 4}>
+                <Button
+                    kind="neutral"
+                    onClick={onAddOption}
+                    disabled={options.length >= 4}
+                >
                     Add option
                 </Button>
                 <p className="text-black text-md">
