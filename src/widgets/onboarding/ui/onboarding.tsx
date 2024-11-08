@@ -79,8 +79,7 @@ export function Onboarding(): ReactNode {
                 </div>
                 <div className="flex justify-center items-center grow pb-12">
                     <Button
-                        className={`w-full md:w-1/3 lg:w-1/4 py-2 px-4 rounded-lg text-white font-bold 
-                      ${isButtonEnabled ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-400'}`}
+                        className={`w-full md:w-1/3 lg:w-1/4`}
                         onClick={handleOnClick}
                         disabled={!isButtonEnabled || loading}
                     >

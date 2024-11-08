@@ -276,6 +276,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
 
                 <div className="flex gap-3 justify-center">
                     <Button
+                        kind="secondary"
                         onClick={form.handleSubmit(async data => {
                             const guide = await updateGuideMutation({
                                 variables: {
