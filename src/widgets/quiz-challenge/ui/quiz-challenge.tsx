@@ -10,10 +10,11 @@ interface QuizChallengeProp {
     guideId: string
     quizId: string
     handleCompleted: () => void
+    isGuideCompleted: boolean
 }
 
 export function QuizChallenge(props: QuizChallengeProp): ReactNode {
-    const { guideId, quizId, handleCompleted } = props
+    const { guideId, quizId, handleCompleted, isGuideCompleted } = props
 
     const { data: quizInfo, loading: quizLoading } = useQuery(GET_QUIZ_QUERY, {
         fetchPolicy: 'cache-and-network',
@@ -168,6 +169,7 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
                             setShowModal={setShowModal}
                             selectedOptions={selectedOptions}
                             handleCompleted={handleCompleted}
+                            isGuideCompleted={isGuideCompleted}
                         />
                     )}
                 </div>

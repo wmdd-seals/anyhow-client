@@ -33,6 +33,7 @@ const documents = {
     "\n    query ChatMessages($guideId: String!) {\n        res: chathistory(guideId: $guideId) {\n            content\n            role\n        }\n    }\n": types.ChatMessagesDocument,
     "\n    query Guides {\n        res: guides {\n            body\n            description\n            id\n            title\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n": types.GuidesDocument,
     "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n": types.SaveFavoriteTopicsDocument,
+    "\n    query GetGuideCompletedList {\n        res: guideCompletedList {\n            guideId\n        }\n    }\n": types.GetGuideCompletedListDocument,
     "\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n": types.GetQuizAnswersDocument,
     "\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n": types.SaveQuizAnswersDocument,
     "\n    mutation GenerateQuiz($input: GenerateQuizInput!) {\n        res: generateQuiz(input: $input) {\n            id\n            body {\n                quiz {\n                    questions {\n                        questionTitle\n                        options\n                        correctAnswerIndex\n                    }\n                }\n            }\n        }\n    }\n": types.GenerateQuizDocument,
@@ -131,6 +132,10 @@ export function graphql(source: "\n    query Guides {\n        res: guides {\n  
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n"): (typeof documents)["\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GetGuideCompletedList {\n        res: guideCompletedList {\n            guideId\n        }\n    }\n"): (typeof documents)["\n    query GetGuideCompletedList {\n        res: guideCompletedList {\n            guideId\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

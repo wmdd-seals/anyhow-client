@@ -12,6 +12,7 @@ import { GuideChat } from '@widgets/guide-chat'
 import { Transition, TransitionChild } from '@headlessui/react'
 import { getGuideProgress } from 'src/entities/guide'
 import { STORE_GUIDE_COMPLETED } from 'src/features/store-guide-completed/api/store-guide-completed'
+import { GET_GUIDE_COMPLETED_LIST } from '@widgets/quiz-challenge/api/get-guide-completed-list'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -42,13 +43,21 @@ export function GuidePage(): ReactNode {
 
     const [sidebar, setSidebar] = useState<boolean>(false)
 
-    const handleCompleted = (): void => {
+    const { data: guideCompletedList } = useQuery(GET_GUIDE_COMPLETED_LIST)
+
+    const isGuideCompleted = guideCompletedList?.res.some(
+        item => item.guideId === params.id
+    )
+
+    const handleCompleted = (guideId: string): void => {
         void storeGuideCompletedMutation({
             variables: {
-                input: { guideId: params.id! }
-            }
+                input: { guideId }
+            },
+            refetchQueries: [GET_GUIDE_COMPLETED_LIST]
         })
     }
+
     const { data: quizInfo } = useQuery(GET_QUIZ_ID_QUERY, {
         variables: {
             guideId: params.id
@@ -94,17 +103,22 @@ export function GuidePage(): ReactNode {
 
                     <div className="flex justify-center items-center gap-6 py-6">
                         {quizId && !showQuiz && (
-                            <Button onClick={() => setShowQuiz(true)}>
+                            <Button
+                                kind="secondary"
+                                onClick={() => setShowQuiz(true)}
+                            >
                                 Test your learning
                             </Button>
                         )}
 
-                        {!showQuiz && (
+                        {!showQuiz && !isGuideCompleted && (
                             <Button
-                                onClick={handleCompleted}
-                                className="max-w-80 ml-auto mt-3"
+                                onClick={() =>
+                                    handleCompleted(params.id as string)
+                                }
+                                className="max-w-80"
                             >
-                                Completed
+                                Mark as completed
                             </Button>
                         )}
                     </div>
@@ -113,7 +127,10 @@ export function GuidePage(): ReactNode {
                         <QuizChallenge
                             guideId={params.id}
                             quizId={quizId}
-                            handleCompleted={handleCompleted}
+                            handleCompleted={() =>
+                                handleCompleted(params.id as string)
+                            }
+                            isGuideCompleted={isGuideCompleted as boolean}
                         />
                     )}
                 </article>

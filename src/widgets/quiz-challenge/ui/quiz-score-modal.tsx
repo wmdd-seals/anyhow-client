@@ -1,6 +1,5 @@
 import { Button } from '@shared/ui'
 import { Check, X } from 'react-feather'
-import { useState } from 'react'
 
 interface ModalProps {
     Correctness: string[]
@@ -12,6 +11,7 @@ interface ModalProps {
     selectedOptions: number[]
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
     handleCompleted: () => void
+    isGuideCompleted: boolean
 }
 
 export const QuizScoreModal: React.FC<ModalProps> = ({
@@ -19,14 +19,14 @@ export const QuizScoreModal: React.FC<ModalProps> = ({
     questions,
     setShowModal,
     selectedOptions,
-    handleCompleted
+    handleCompleted,
+    isGuideCompleted
 }) => {
     const correctAnswers = Correctness.filter(
         result => result === 'Correct'
     ).length
     const totalQuestions = questions.length
     const score = (correctAnswers / totalQuestions) * 100
-    const [isCompleted, setIsCompleted] = useState(false)
 
     const getFeedbackMessage = (): string => {
         if (score === 100) return 'Your learning capacity is impressive!'
@@ -80,15 +80,17 @@ export const QuizScoreModal: React.FC<ModalProps> = ({
                     </div>
 
                     <div className="flex gap-4 justify-center">
-                        <Button onClick={() => setShowModal(false)}>
+                        <Button
+                            kind="secondary"
+                            onClick={() => setShowModal(false)}
+                        >
                             Try again
                         </Button>
-                        {!isCompleted && (
+                        {!isGuideCompleted && (
                             <Button
                                 onClick={() => {
                                     handleCompleted()
-                                    setShowModal(false)
-                                    setIsCompleted(true)
+                                    setTimeout(() => setShowModal(false), 100)
                                 }}
                             >
                                 Mark as completed
