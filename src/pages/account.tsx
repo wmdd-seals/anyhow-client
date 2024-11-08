@@ -1,6 +1,7 @@
 import { useAuth } from '@shared/lib'
 import { TextInput } from '@shared/ui'
 import { Button } from '@shared/ui'
+import { Footer } from '@widgets/footer/ui/footer'
 import { Header } from '@widgets/header/ui/header'
 import type { ReactNode } from 'react'
 
@@ -9,7 +10,7 @@ export function AccountPage(): ReactNode {
     return (
         <>
             <Header />
-            <section className="container mx-auto px-7 sm:px-0 box-border flex flex-col gap-4 max-w-[650px]">
+            <section className="container min-h-screen mx-auto px-7 sm:px-0 box-border flex flex-col gap-4 max-w-[650px]">
                 <h1 className="text-3xl font-bold">Account Setting</h1>
                 <div className="flex flex-col gap-6 bg-slate-100 p-8 rounded-lg">
                     <div className="flex gap-4 items-center">
@@ -27,6 +28,7 @@ export function AccountPage(): ReactNode {
                     </div>
                 </div>
             </section>
+            <Footer />
         </>
     )
 }
