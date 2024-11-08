@@ -106,7 +106,7 @@ export function TextEditor(props: TextEditorProps): ReactNode {
         <LexicalComposer initialConfig={config}>
             <div
                 className={cn('flex flex-col ', {
-                    'border-2 border-gray-300 rounded-lg focus-within:border-blue-700':
+                    'border-2 border-gray-300 rounded-lg focus-within:border-green-500':
                         editable
                 })}
             >
