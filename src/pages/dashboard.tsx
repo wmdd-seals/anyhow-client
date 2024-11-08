@@ -53,17 +53,15 @@ const Dashboard = (): ReactNode => {
     const { data } = useQuery(GUIDE_COMPLETED_COUNTS, {
         variables: {
             input: {
-                start: '2000/01/01',
+                start: '2023-01-01',
                 end: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
                     .toISOString()
                     .split('T')[0]
-                    .replaceAll('-', '/')
             }
         }
     })
 
     const { data: historyData, loading } = useQuery(GUIDE_COMPLETED_HISTORY)
-    console.log({ historyData })
 
     const totalGuideCount =
         data?.res.reduce((acc, curr) => acc + (curr.count || 0), 0) || 0
@@ -72,7 +70,7 @@ const Dashboard = (): ReactNode => {
     return (
         <div className="flex flex-col gap-4 ">
             <Header />
-            <main className="flex flex-col gap-10 px-10">
+            <main className="container mx-auto flex flex-col gap-10 px-10">
                 <section className="flex flex-col gap-4 p-8 rounded-3xl bg-gradient-to-r from-blue-950 from-60% to-90% to-green-800">
                     <section className="flex flex-col gap-4">
                         <h2 className="text-5xl leading-tight font-bold mb-5 text-white">
