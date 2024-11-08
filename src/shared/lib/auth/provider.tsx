@@ -1,12 +1,15 @@
 import { createContext, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
+import type { User } from '@gqlgen/graphql'
 
 export type UserContextType = {
     authToken: string | null
     loginUser: (token: string) => void
     logout: () => void
     isAuthenticated: boolean
+    user: User | null
+    setUser: (user: User | null) => void
 }
 
 type Props = { children: React.ReactNode }
@@ -28,6 +31,7 @@ const FETCH_USER = graphql(`
 
 export const AuthProvider = ({ children }: Props): React.ReactNode => {
     // const navigate = useNavigate()
+    const [user, setUser] = useState<User | null>(null)
     const [authToken, setToken] = useState<string | null>(
         localStorage.getItem('authToken')
     )
@@ -42,6 +46,7 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
                 return
             }
             setIsAuthenticated(!!data.user)
+            setUser(data.user)
         }
     })
 
@@ -71,7 +76,9 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
                 loginUser,
                 authToken,
                 logout,
-                isAuthenticated
+                isAuthenticated,
+                user,
+                setUser
             }}
         >
             {children}

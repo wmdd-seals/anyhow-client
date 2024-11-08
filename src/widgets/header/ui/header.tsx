@@ -1,9 +1,8 @@
 import { useAuth } from '@shared/lib'
-import { useContext, useState, type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { CreateGuideButton } from 'src/features/create-guide'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from 'src/shared/ui'
-import { UserContext } from '@shared/lib/auth/provider'
 import { Menu, X } from 'react-feather'
 
 function MobileMenu({
@@ -11,21 +10,19 @@ function MobileMenu({
 }: {
     isAuthenticated: boolean
 }): ReactNode {
+    const { user } = useAuth()
     const [isOpen, setIsOpen] = useState(false)
     const navigate = useNavigate()
 
     return (
         <>
-            {isAuthenticated ? (
+            {isAuthenticated && user ? (
                 <Link
                     to={'/account'}
-                    className="flex items-center rounded-full w-10 h-10 bg-slate-200"
+                    className="flex items-center justify-center rounded-full w-10 h-10 bg-slate-200 text-slate-800 space-x-1"
                 >
-                    <img
-                        src=""
-                        alt="Avatar"
-                        className="w-10 h-10 rounded-full"
-                    />
+                    {user.firstName[0].toUpperCase() +
+                        user.lastName[0].toUpperCase()}
                 </Link>
             ) : (
                 <button
@@ -71,14 +68,8 @@ function MobileMenu({
 }
 
 function Header(): ReactNode {
-    const { isAuthenticated } = useAuth()
-    const { logout } = useContext(UserContext)
+    const { isAuthenticated, user } = useAuth()
     const navigate = useNavigate()
-
-    const logoutHandler = (): void => {
-        logout()
-        navigate('/login')
-    }
 
     return (
         <header className="bg-white text-white p-4 sticky top-0 z-[1]">
@@ -102,13 +93,17 @@ function Header(): ReactNode {
                 <div className="lg:hidden">
                     <MobileMenu isAuthenticated={isAuthenticated} />
                 </div>
-                <div className="hidden lg:flex lg:space-x-4">
-                    {isAuthenticated ? (
+                <div className="hidden lg:flex lg:space-x-4 items-center">
+                    {isAuthenticated && user ? (
                         <>
                             <CreateGuideButton />
-                            <Button onClick={logoutHandler} kind="tertiary">
-                                Logout
-                            </Button>
+                            <Link
+                                to={'/account'}
+                                className="flex items-center justify-center rounded-full w-10 h-10 bg-slate-200 text-slate-800 space-x-1"
+                            >
+                                {user.firstName[0].toUpperCase() +
+                                    user.lastName[0].toUpperCase()}
+                            </Link>
                         </>
                     ) : (
                         <>
