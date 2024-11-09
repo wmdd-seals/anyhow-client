@@ -15,7 +15,7 @@ export function HomePage(): ReactNode {
         <>
             <Header />
             <section className="mx-auto md:px-0">
-                <HeroSectionPage />
+                <HeroSlider />
                 <section className="my-16 mx-auto">
                     <div className="container mx-auto px-6 md:px-0">
                         <h2 className="text-center text-2xl sm:text-3xl md:text-5xl font-bold">

@@ -1,1 +1,1 @@
-export * from './ui/hero-section'
+export * from './ui/hero-slider'
