@@ -2,7 +2,7 @@ import { Button as HeadlessButton } from '@headlessui/react'
 import type { ComponentPropsWithRef, PropsWithChildren, ReactNode } from 'react'
 import cn from 'clsx'
 
-type ButtonKind =
+export type ButtonKind =
     | 'primary'
     | 'secondary'
     | 'tertiary'

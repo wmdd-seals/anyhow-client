@@ -1,4 +1,4 @@
-import { Button } from '@shared/ui'
+import { Button, type ButtonKind } from '@shared/ui'
 import type { ReactNode } from 'react'
 import { useCreateGuide } from '../api/use-create-guide'
 import { useNavigate } from 'react-router-dom'
@@ -17,12 +17,24 @@ Share short, actionable advice
 
 Wrapping up the content`
 
-export function CreateGuideButton(): ReactNode {
+type CreateGuideButtonProps = {
+    className?: string
+    kind?: ButtonKind
+    children?: ReactNode
+}
+
+export function CreateGuideButton({
+    className,
+    kind,
+    children = 'Create Guide'
+}: CreateGuideButtonProps): ReactNode {
     const { create } = useCreateGuide()
     const navigate = useNavigate()
 
     return (
         <Button
+            className={className}
+            kind={kind}
             onClick={async (): Promise<void> => {
                 const id = await create({
                     body: DEFAULT_TEMPLATE,
@@ -36,7 +48,7 @@ export function CreateGuideButton(): ReactNode {
                 navigate(`/${id}/edit`)
             }}
         >
-            Create Guide
+            {children}
         </Button>
     )
 }
