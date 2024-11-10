@@ -16,7 +16,7 @@ type User = {
 }
 
 export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, logout } = useAuth()
     const [open, setOpen] = useState(false)
     const navigate = useNavigate()
     return (
@@ -60,7 +60,7 @@ export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
                                     </li>
                                     <li>
                                         <Link
-                                            to={'/'}
+                                            to={'/dashboard'}
                                             className="text-start w-full px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
                                         >
                                             <Clock />
@@ -69,7 +69,7 @@ export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
                                     </li>
                                     <li>
                                         <Link
-                                            to={'/'}
+                                            to={'/dashboard'}
                                             className="text-start w-full px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
                                         >
                                             <BarChart />
@@ -78,7 +78,7 @@ export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
                                     </li>
                                     <li>
                                         <Link
-                                            to={'/'}
+                                            to={'/account'}
                                             className="text-start w-full px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
                                         >
                                             <User />
@@ -86,13 +86,17 @@ export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link
-                                            to={'/'}
-                                            className="text-start w-full px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
+                                        <AhButton
+                                            className="!justify-start hover:bg-any-gray-50 active:bg-any-gray-100 !px-7 !py-[1.175rem] !font-normal"
+                                            onClick={() => {
+                                                logout()
+                                                setOpen(false)
+                                            }}
+                                            kind="destructive"
                                         >
                                             <LogOut />
                                             Sign Out
-                                        </Link>
+                                        </AhButton>
                                     </li>
                                 </>
                             ) : (

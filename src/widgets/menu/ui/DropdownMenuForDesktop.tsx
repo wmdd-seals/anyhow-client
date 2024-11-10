@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { CreateGuideButton } from 'src/features/create-guide'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Edit, Clock, BarChart, User, LogOut } from 'react-feather'
+import { useAuth } from '@shared/lib'
+import { Button } from '@shared/ui'
 
 type DropdownMenuProps = {
     thumbnail: ReactNode
@@ -11,6 +13,7 @@ type DropdownMenuProps = {
 export function DropdownMenuForDesktop({
     thumbnail
 }: DropdownMenuProps): ReactNode {
+    const { logout } = useAuth()
     return (
         <Menu>
             <MenuButton>{thumbnail}</MenuButton>
@@ -50,7 +53,7 @@ export function DropdownMenuForDesktop({
                 </MenuItem>
                 <MenuItem>
                     <Link
-                        to={'/'}
+                        to={'/account'}
                         className="text-start px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
                     >
                         <User />
@@ -58,13 +61,14 @@ export function DropdownMenuForDesktop({
                     </Link>
                 </MenuItem>
                 <MenuItem>
-                    <Link
-                        to={'/'}
-                        className="text-start px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
+                    <Button
+                        onClick={logout}
+                        className="!justify-start hover:bg-any-gray-50 active:bg-any-gray-100 !px-7 !py-[1.175rem] !font-normal"
+                        kind="destructive"
                     >
                         <LogOut />
                         Sign Out
-                    </Link>
+                    </Button>
                 </MenuItem>
             </MenuItems>
         </Menu>
