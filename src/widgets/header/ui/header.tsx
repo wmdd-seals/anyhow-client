@@ -1,5 +1,5 @@
 import { useAuth } from '@shared/lib'
-import { useState, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { CreateGuideButton } from 'src/features/create-guide'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from 'src/shared/ui'
@@ -7,7 +7,6 @@ import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen/gql'
 import { DropdownMenuForDesktop } from '@widgets/menu'
 import { PopupMenuForMobile } from '@widgets/menu'
-import { Menu as MenuIcon } from 'react-feather'
 const FETCH_USER = graphql(`
     query User {
         user {

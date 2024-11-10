@@ -7,13 +7,16 @@ import { useAuth } from '@shared/lib'
 import { X, Menu as MenuIcon } from 'react-feather'
 import { Button as AhButton } from '@shared/ui'
 
-type User = {
-    firstName: string
-    lastName: string
-    middleName: string
-    email: string
-    favoriteTopics: string[]
-}
+type User =
+    | {
+          id: string
+          firstName: string
+          lastName: string
+          middleName?: string | undefined | null
+          email: string
+          favoriteTopics?: string[]
+      }
+    | undefined
 
 export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
     const { isAuthenticated, logout } = useAuth()
@@ -24,8 +27,10 @@ export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
             <Button onClick={() => setOpen(true)} className="w-10 h-10">
                 {isAuthenticated ? (
                     <div className="flex items-center justify-center rounded-full w-10 h-10 bg-slate-200 text-slate-800 space-x-1">
-                        {user.firstName[0].toUpperCase() +
-                            user.lastName[0].toUpperCase()}
+                        {user
+                            ? user.firstName[0].toUpperCase() +
+                              user.lastName[0].toUpperCase()
+                            : null}
                     </div>
                 ) : (
                     <MenuIcon className="w-6 h-6 text-slate-700" />
