@@ -62,16 +62,13 @@ export function GuidePage(): ReactNode {
     const { data: guideCompletedList } = useQuery(GET_GUIDE_COMPLETED_LIST)
 
     const [reviewGuideMutation] = useMutation(REVIEW_GUIDE_MUTATION, {
-        update: (
-            cache,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            _,
-            {
-                variables: {
-                    input: { liked }
-                }
-            }
-        ) => {
+        update: (cache, _, { variables }) => {
+            if (!variables) return
+
+            const {
+                input: { liked }
+            } = variables
+
             cache.modify({
                 id: `Guide:${params.id!}`,
                 fields: {
