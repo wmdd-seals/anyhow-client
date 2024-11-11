@@ -81,7 +81,7 @@ const Card: React.FC<CardComponentProps> = ({
                     {markdownToTxt(guide.body ?? '')}
                 </p>
                 <div className="flex justify-between items-center">
-                    {guide.rating && guide.rating > 0 && (
+                    {!!guide.rating && guide.rating > 0 && (
                         <div className="flex items-center gap-2">
                             <ThumbsUp
                                 className="w-5 h-5"
