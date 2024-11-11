@@ -53,7 +53,9 @@ function Header(): ReactNode {
                 <div className="hidden lg:flex lg:space-x-4 items-center">
                     {isAuthenticated && user ? (
                         <>
-                            <CreateGuideButton />
+                            <CreateGuideButton kind="tertiary">
+                                Create a new guide
+                            </CreateGuideButton>
                             <DropdownMenuForDesktop
                                 thumbnail={
                                     <div className="flex items-center justify-center rounded-full w-10 h-10 bg-slate-200 text-slate-800 space-x-1">
