@@ -6,12 +6,14 @@ import { graphql } from '@gqlgen'
 import type { Guide } from '@gqlgen/graphql'
 
 const GET_GUIDES_WITH_USER = graphql(`
-    query Guides {
+    query SlideGuides {
         res: guides {
             body
             description
             id
             title
+            liked
+            rating
             tags
             user {
                 firstName

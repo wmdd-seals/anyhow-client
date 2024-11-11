@@ -14,12 +14,15 @@ import { getGuideProgress, Tag } from 'src/entities/guide'
 import { STORE_GUIDE_COMPLETED } from 'src/features/store-guide-completed/api/store-guide-completed'
 import { GET_GUIDE_COMPLETED_LIST } from '@widgets/quiz-challenge/api/get-guide-completed-list'
 import { ArrowRight, Zap } from 'react-feather'
+import { ThumbsUp, ThumbsDown } from 'react-feather'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
         res: guide(id: $id) {
             id
             title
+            liked
+            rating
             body
             tags
             user {
@@ -28,6 +31,18 @@ const GUIDE_QUERY = graphql(`
                 lastName
             }
         }
+    }
+`)
+
+const REVIEW_GUIDE_MUTATION = graphql(`
+    mutation ReviewGuide($input: ReviewGuideInput!) {
+        res: reviewGuide(input: $input)
+    }
+`)
+
+const REVOKE_GUIDE_REVIEW_MUTATION = graphql(`
+    mutation RevokeGuideReview($input: RevokeGuideReviewInput!) {
+        res: revokeGuideReview(input: $input)
     }
 `)
 
@@ -45,6 +60,67 @@ export function GuidePage(): ReactNode {
     const [sidebar, setSidebar] = useState<boolean>(false)
 
     const { data: guideCompletedList } = useQuery(GET_GUIDE_COMPLETED_LIST)
+
+    const [reviewGuideMutation] = useMutation(REVIEW_GUIDE_MUTATION, {
+        update: (
+            cache,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            _,
+            {
+                variables: {
+                    input: { liked }
+                }
+            }
+        ) => {
+            cache.modify({
+                id: `Guide:${params.id!}`,
+                fields: {
+                    liked: () => liked
+                }
+            })
+        }
+    })
+
+    const [revokeGuideReviewMutation] = useMutation(
+        REVOKE_GUIDE_REVIEW_MUTATION,
+        {
+            variables: { input: { id: params.id } },
+            update: cache => {
+                cache.modify({
+                    id: `Guide:${params.id!}`,
+                    fields: {
+                        liked: () => null
+                    }
+                })
+            }
+        }
+    )
+
+    const likeGuide = (): void => {
+        const isLiked = data?.res?.liked
+
+        if (typeof isLiked === 'boolean' && isLiked) {
+            void revokeGuideReviewMutation()
+            return
+        }
+
+        void reviewGuideMutation({
+            variables: { input: { liked: true, id: params.id! } }
+        })
+    }
+
+    const dislikeGuide = (): void => {
+        const isLiked = data?.res?.liked
+
+        if (typeof isLiked === 'boolean' && !isLiked) {
+            void revokeGuideReviewMutation()
+            return
+        }
+
+        void reviewGuideMutation({
+            variables: { input: { liked: false, id: params.id! } }
+        })
+    }
 
     const isGuideCompleted = guideCompletedList?.res.some(
         item => item.guideId === params.id
@@ -140,6 +216,31 @@ export function GuidePage(): ReactNode {
                             >
                                 Mark as completed
                             </Button>
+                        )}
+
+                        {isGuideCompleted && (
+                            <div className="flex items-center gap-2">
+                                <button onClick={likeGuide}>
+                                    <ThumbsUp
+                                        fill={
+                                            typeof data.res.liked ===
+                                                'boolean' && data.res.liked
+                                                ? '#000'
+                                                : '#fff'
+                                        }
+                                    />
+                                </button>
+                                <button onClick={dislikeGuide}>
+                                    <ThumbsDown
+                                        fill={
+                                            typeof data.res.liked ===
+                                                'boolean' && !data.res.liked
+                                                ? '#000'
+                                                : '#fff'
+                                        }
+                                    />
+                                </button>
+                            </div>
                         )}
                     </div>
 

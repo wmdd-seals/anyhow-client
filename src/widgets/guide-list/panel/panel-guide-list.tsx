@@ -5,12 +5,14 @@ import type { ReactNode } from 'react'
 import { Card } from 'src/entities/guide'
 
 const GET_GUIDES_WITH_USER = graphql(`
-    query Guides {
+    query PanelGuides {
         res: guides {
             body
             description
             id
             title
+            liked
+            rating
             tags
             user {
                 firstName

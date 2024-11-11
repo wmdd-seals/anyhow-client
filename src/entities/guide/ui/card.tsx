@@ -81,12 +81,22 @@ const Card: React.FC<CardComponentProps> = ({
                     {markdownToTxt(guide.body ?? '')}
                 </p>
                 <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                        <ThumbsUp className="w-5 h-5" />
-                        <p className="h-full mt-1 flex items-center text-xs align-middle text-gray-500">
-                            98% Positive
-                        </p>
-                    </div>
+                    {guide.rating && guide.rating > 0 && (
+                        <div className="flex items-center gap-2">
+                            <ThumbsUp
+                                className="w-5 h-5"
+                                fill={
+                                    typeof guide.liked === 'boolean' &&
+                                    guide.liked
+                                        ? '#000'
+                                        : '#fff'
+                                }
+                            />
+                            <p className="h-full mt-1 flex items-center text-xs align-middle text-gray-500">
+                                {guide.rating}% Positive
+                            </p>
+                        </div>
+                    )}
                     <div className="flex items-center gap-2">
                         <button>
                             <Bookmark className="w-5 h-5" />
