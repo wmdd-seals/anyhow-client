@@ -23,7 +23,7 @@ const carouselItems = [
         description:
             'Curious about who we are? Check out our story and learn how we’re changing the way people learn, one bite at a time!',
         imageUrl: '/bg-img3.jpeg',
-        link: '/about',
+        link: '/aboutus',
         linkText: 'About Us'
     }
 ]
