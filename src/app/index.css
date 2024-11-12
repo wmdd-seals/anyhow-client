@@ -60,7 +60,6 @@
         @apply py-4 px-6 text-xl;
     }
 }
-
 @layer utilities {
     .clip-path-top-right {
         clip-path: polygon(0 0, 90% 0, 100% 100%, 0 100%);
