@@ -3,16 +3,21 @@ import { Link } from 'react-router-dom'
 import { ThumbsUp, Bookmark, Share2 } from 'react-feather'
 import markdownToTxt from 'markdown-to-txt'
 import type { Guide } from '@gqlgen/graphql'
+import { copyToClipboard } from '../lib'
+import { useAuth } from '@shared/lib'
 
 interface CardComponentProps {
     guide: Guide
     cardType?: 'default' | 'simple'
+    isAuthenticated?: boolean
 }
 
 const Card: React.FC<CardComponentProps> = ({
     guide,
-    cardType = 'default'
+    cardType = 'default',
+    isAuthenticated = false
 }) => {
+    const { setToast } = useAuth()
     const [imageSrc, setImageSrc] = useState<string | null>(null)
     const coverImgUrl = `${import.meta.env.VITE_API_URL}/images/${guide.id}`
 
@@ -33,10 +38,7 @@ const Card: React.FC<CardComponentProps> = ({
     }, [coverImgUrl])
 
     return (
-        <Link
-            className="flex overflow-hidden flex-col bg-white rounded-2xl border-2 box-border border-gray-100 border-solid w-full"
-            to={`/${guide.id}`}
-        >
+        <div className="flex overflow-hidden flex-col bg-white rounded-2xl border-2 box-border border-gray-100 border-solid w-full">
             <div className="flex overflow-hidden flex-col justify-center items-center w-full bg-blue-900 bg-gradient-to-b from-blue-900 to-black h-36">
                 {imageSrc ? (
                     <div className="flex justify-center items-center w-full">
@@ -73,9 +75,12 @@ const Card: React.FC<CardComponentProps> = ({
                         </div>
                     </div>
                 )}
-                <h2 className="text-2xl font-bold leading-tight text-gray-700">
+                <Link
+                    to={`/${guide.id}`}
+                    className="text-2xl font-bold leading-tight text-gray-700"
+                >
                     {guide.title}
-                </h2>
+                </Link>
                 <p className="my-2 text-base tracking-normal leading-6 text-slate-500 line-clamp-3">
                     {markdownToTxt(guide.body ?? '')}
                 </p>
@@ -97,24 +102,36 @@ const Card: React.FC<CardComponentProps> = ({
                         </div>
                     )}
                     <div className="flex items-center gap-2">
-                        <button>
-                            <Bookmark
-                                className="w-5 h-5"
-                                fill={
-                                    typeof guide.bookmark === 'boolean' &&
-                                    guide.bookmark
-                                        ? '#000'
-                                        : '#fff'
-                                }
-                            />
-                        </button>
-                        <button>
+                        {isAuthenticated && (
+                            <button>
+                                <Bookmark
+                                    className="w-5 h-5"
+                                    fill={
+                                        typeof guide.bookmark === 'boolean' &&
+                                        guide.bookmark
+                                            ? '#000'
+                                            : '#fff'
+                                    }
+                                />
+                            </button>
+                        )}
+                        <button
+                            onClick={async () => {
+                                await copyToClipboard(
+                                    `${import.meta.env.VITE_APP_URL}/${guide.id}`
+                                )
+                                setToast({
+                                    visible: true,
+                                    message: 'Copied to clipboard'
+                                })
+                            }}
+                        >
                             <Share2 className="w-5 h-5" />
                         </button>
                     </div>
                 </div>
             </div>
-        </Link>
+        </div>
     )
 }
 
