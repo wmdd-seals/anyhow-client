@@ -11,6 +11,8 @@ export type UserContextType = {
     isAuthenticated: boolean
     user: User | null
     setUser: (user: User | null) => void
+    toast: { visible: boolean; message: string }
+    setToast: (toast: { visible: boolean; message: string }) => void
 }
 
 type Props = { children: React.ReactNode }
