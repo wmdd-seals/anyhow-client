@@ -31,6 +31,7 @@ const documents = {
     "\n    mutation RevokeGuideReview($input: RevokeGuideReviewInput!) {\n        res: revokeGuideReview(input: $input)\n    }\n": types.RevokeGuideReviewDocument,
     "\n    mutation AddBookmark($input: AddBookmarkInput!) {\n        res: addBookmark(input: $input)\n    }\n": types.AddBookmarkDocument,
     "\n    mutation RemoveBookmark($input: RemoveBookmarkInput!) {\n        res: removeBookmark(input: $input)\n    }\n": types.RemoveBookmarkDocument,
+    "\n    mutation StoreGuideView($input: GuideViewInput!) {\n        storeGuideView(input: $input) {\n            createdAt\n            guideId\n            id\n            userId\n        }\n    }\n": types.StoreGuideViewDocument,
     "\n    query SignIn($input: UserSignInInput) {\n        signIn(input: $input) {\n            message\n            token\n        }\n    }\n": types.SignInDocument,
     "\n    mutation SignupUser($input: UserCreateInput!) {\n        signupUser(input: $input) {\n            id\n        }\n    }\n": types.SignupUserDocument,
     "\n    query GetGuide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n        }\n    }\n": types.GetGuideDocument,
@@ -135,6 +136,10 @@ export function graphql(source: "\n    mutation AddBookmark($input: AddBookmarkI
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation RemoveBookmark($input: RemoveBookmarkInput!) {\n        res: removeBookmark(input: $input)\n    }\n"): (typeof documents)["\n    mutation RemoveBookmark($input: RemoveBookmarkInput!) {\n        res: removeBookmark(input: $input)\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation StoreGuideView($input: GuideViewInput!) {\n        storeGuideView(input: $input) {\n            createdAt\n            guideId\n            id\n            userId\n        }\n    }\n"): (typeof documents)["\n    mutation StoreGuideView($input: GuideViewInput!) {\n        storeGuideView(input: $input) {\n            createdAt\n            guideId\n            id\n            userId\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
