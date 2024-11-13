@@ -108,7 +108,7 @@ function ContributionCalendarChart({
     const [from, setFrom] = useState<number>(
         new Date(today.setDate(today.getDate() - 60)).getTime()
     )
-    const { data: counts } = useQuery(
+    const { data: counts, loading } = useQuery(
         isCreator ? GUIDE_CREATED_COUNTS : GUIDE_COMPLETED_COUNTS,
         {
             variables: {
@@ -133,10 +133,15 @@ function ContributionCalendarChart({
         setFrom(newFrom)
     }
 
-    if (!counts) return null
-
     return (
         <div className="relative flex flex-col items-center gap-2 border-solid rounded-md p-4 h-96 shadow-lg">
+            <div
+                className={`w-full h-full flex items-center justify-center absolute transition-all duration-[1500ms] ${
+                    loading ? 'opacity-100' : 'opacity-0'
+                }`}
+            >
+                <p>Loading</p>
+            </div>
             <button
                 onClick={handlePrev}
                 className="text-[#2D3648] absolute left-[10px] top-1/2"
@@ -153,14 +158,16 @@ function ContributionCalendarChart({
                 {isCreator ? 'Guides Created' : 'Completed Guides'}
             </label>
             <div className="w-11/12 mx-auto max-w-[350px] md:max-w-[450px] h-full">
-                <CalendarChart
-                    from={new Date(from)}
-                    to={new Date(to)}
-                    data={counts.res.map(item => ({
-                        day: item.date || '',
-                        value: item.count || 0
-                    }))}
-                />
+                {counts?.res.length && (
+                    <CalendarChart
+                        from={new Date(from)}
+                        to={new Date(to)}
+                        data={counts.res.map(item => ({
+                            day: item.date || '',
+                            value: item.count || 0
+                        }))}
+                    />
+                )}
             </div>
         </div>
     )
