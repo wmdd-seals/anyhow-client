@@ -9,6 +9,7 @@ import { graphql } from '@gqlgen'
 import { useQuery } from '@apollo/client'
 import { Slider } from '@shared/ui'
 import type { Guide } from '@gqlgen/graphql'
+import { useLocation } from 'react-router-dom'
 
 const GUIDE_COMPLETED_COUNTS = graphql(`
     query GuideCompletedCounts($input: GuideCompletedDateRange) {
@@ -50,6 +51,9 @@ const FETCH_USER = graphql(`
 
 const Dashboard = (): ReactNode => {
     const { data: user } = useQuery(FETCH_USER)
+    const location = useLocation()
+    const isCreator =
+        (location.state as { isCreator: boolean }).isCreator || false
     const { data } = useQuery(GUIDE_COMPLETED_COUNTS, {
         variables: {
             input: {
