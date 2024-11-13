@@ -21,9 +21,11 @@ const documents = {
     "\n    mutation StoreGuideCompleted($input: StoreGuideCompletedInput!) {\n        storeGuideCompleted(input: $input) {\n            id\n            guideId\n            userId\n            createdAt\n        }\n    }\n": types.StoreGuideCompletedDocument,
     "\n    query GuideCompletedCounts($input: GuideCompletedDateRange) {\n        res: guideCompletedCounts(input: $input) {\n            count\n            date\n        }\n    }\n": types.GuideCompletedCountsDocument,
     "\n    query GuideCompletedList {\n        res: guideCompletedList {\n            guide {\n                description\n                id\n                tags\n                title\n            }\n            createdAt\n            id\n            guideId\n        }\n    }\n": types.GuideCompletedListDocument,
-    "\n    query Guide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            liked\n            rating\n            body\n            tags\n            user {\n                id\n                firstName\n                lastName\n            }\n        }\n    }\n": types.GuideDocument,
+    "\n    query Guide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            liked\n            rating\n            body\n            bookmark\n            tags\n            user {\n                id\n                firstName\n                lastName\n            }\n        }\n    }\n": types.GuideDocument,
     "\n    mutation ReviewGuide($input: ReviewGuideInput!) {\n        res: reviewGuide(input: $input)\n    }\n": types.ReviewGuideDocument,
     "\n    mutation RevokeGuideReview($input: RevokeGuideReviewInput!) {\n        res: revokeGuideReview(input: $input)\n    }\n": types.RevokeGuideReviewDocument,
+    "\n    mutation AddBookmark($input: AddBookmarkInput!) {\n        res: addBookmark(input: $input)\n    }\n": types.AddBookmarkDocument,
+    "\n    mutation RemoveBookmark($input: RemoveBookmarkInput!) {\n        res: removeBookmark(input: $input)\n    }\n": types.RemoveBookmarkDocument,
     "\n    query SignIn($input: UserSignInInput) {\n        signIn(input: $input) {\n            message\n            token\n        }\n    }\n": types.SignInDocument,
     "\n    mutation SignupUser($input: UserCreateInput!) {\n        signupUser(input: $input) {\n            id\n        }\n    }\n": types.SignupUserDocument,
     "\n    query GetGuide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n        }\n    }\n": types.GetGuideDocument,
@@ -90,7 +92,7 @@ export function graphql(source: "\n    query GuideCompletedList {\n        res: 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query Guide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            liked\n            rating\n            body\n            tags\n            user {\n                id\n                firstName\n                lastName\n            }\n        }\n    }\n"): (typeof documents)["\n    query Guide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            liked\n            rating\n            body\n            tags\n            user {\n                id\n                firstName\n                lastName\n            }\n        }\n    }\n"];
+export function graphql(source: "\n    query Guide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            liked\n            rating\n            body\n            bookmark\n            tags\n            user {\n                id\n                firstName\n                lastName\n            }\n        }\n    }\n"): (typeof documents)["\n    query Guide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            liked\n            rating\n            body\n            bookmark\n            tags\n            user {\n                id\n                firstName\n                lastName\n            }\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -99,6 +101,14 @@ export function graphql(source: "\n    mutation ReviewGuide($input: ReviewGuideI
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation RevokeGuideReview($input: RevokeGuideReviewInput!) {\n        res: revokeGuideReview(input: $input)\n    }\n"): (typeof documents)["\n    mutation RevokeGuideReview($input: RevokeGuideReviewInput!) {\n        res: revokeGuideReview(input: $input)\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation AddBookmark($input: AddBookmarkInput!) {\n        res: addBookmark(input: $input)\n    }\n"): (typeof documents)["\n    mutation AddBookmark($input: AddBookmarkInput!) {\n        res: addBookmark(input: $input)\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation RemoveBookmark($input: RemoveBookmarkInput!) {\n        res: removeBookmark(input: $input)\n    }\n"): (typeof documents)["\n    mutation RemoveBookmark($input: RemoveBookmarkInput!) {\n        res: removeBookmark(input: $input)\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

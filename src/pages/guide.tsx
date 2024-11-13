@@ -13,7 +13,7 @@ import { Transition, TransitionChild } from '@headlessui/react'
 import { getGuideProgress, Tag } from 'src/entities/guide'
 import { STORE_GUIDE_COMPLETED } from 'src/features/store-guide-completed/api/store-guide-completed'
 import { GET_GUIDE_COMPLETED_LIST } from '@widgets/quiz-challenge/api/get-guide-completed-list'
-import { ArrowRight, Zap } from 'react-feather'
+import { ArrowRight, Bookmark, Zap } from 'react-feather'
 import { ThumbsUp, ThumbsDown } from 'react-feather'
 
 const GUIDE_QUERY = graphql(`
@@ -24,6 +24,7 @@ const GUIDE_QUERY = graphql(`
             liked
             rating
             body
+            bookmark
             tags
             user {
                 id
@@ -43,6 +44,18 @@ const REVIEW_GUIDE_MUTATION = graphql(`
 const REVOKE_GUIDE_REVIEW_MUTATION = graphql(`
     mutation RevokeGuideReview($input: RevokeGuideReviewInput!) {
         res: revokeGuideReview(input: $input)
+    }
+`)
+
+const ADD_BOOKMARK_MUTATION = graphql(`
+    mutation AddBookmark($input: AddBookmarkInput!) {
+        res: addBookmark(input: $input)
+    }
+`)
+
+const REMOVE_BOOKMARK_MUTATION = graphql(`
+    mutation RemoveBookmark($input: RemoveBookmarkInput!) {
+        res: removeBookmark(input: $input)
     }
 `)
 
@@ -77,6 +90,44 @@ export function GuidePage(): ReactNode {
             })
         }
     })
+
+    const [addBookmarkMutation, { loading: addingBookmarkLoading }] =
+        useMutation(ADD_BOOKMARK_MUTATION, {
+            variables: { input: { guideId: params.id } },
+            update: (cache, _, { variables }) => {
+                if (!variables) return
+
+                const {
+                    input: { guideId }
+                } = variables
+
+                cache.modify({
+                    id: `Guide:${guideId}`,
+                    fields: {
+                        bookmark: () => true
+                    }
+                })
+            }
+        })
+
+    const [removeBookmarkMutation, { loading: removingBookmarkLoading }] =
+        useMutation(REMOVE_BOOKMARK_MUTATION, {
+            variables: { input: { guideId: params.id } },
+            update: (cache, _, { variables }) => {
+                if (!variables) return
+
+                const {
+                    input: { guideId }
+                } = variables
+
+                cache.modify({
+                    id: `Guide:${guideId}`,
+                    fields: {
+                        bookmark: () => false
+                    }
+                })
+            }
+        })
 
     const [revokeGuideReviewMutation] = useMutation(
         REVOKE_GUIDE_REVIEW_MUTATION,
@@ -178,6 +229,43 @@ export function GuidePage(): ReactNode {
                             {data.res.user!.firstName} {data.res.user!.lastName}
                         </div>
                     </div>
+
+                    <div className="py-3 border-t border-b border-any-purple-100 flex items-center justify-between">
+                        {!!data.res.rating && data.res.rating > 0 && (
+                            <div className="flex items-center gap-2">
+                                <ThumbsUp className="w-5 h-5" />
+                                <p className="h-full mt-1 flex items-center text-xs align-middle text-gray-500">
+                                    {data.res.rating}% Positive
+                                </p>
+                            </div>
+                        )}
+
+                        <button
+                            onClick={(): void => {
+                                if (
+                                    addingBookmarkLoading ||
+                                    removingBookmarkLoading
+                                )
+                                    return
+
+                                if (data.res?.bookmark) {
+                                    void removeBookmarkMutation()
+                                } else {
+                                    void addBookmarkMutation()
+                                }
+                            }}
+                        >
+                            <Bookmark
+                                fill={
+                                    typeof data.res.bookmark === 'boolean' &&
+                                    data.res.bookmark
+                                        ? '#000'
+                                        : '#fff'
+                                }
+                            />
+                        </button>
+                    </div>
+
                     <TextEditor value={data.res.body || ''} editable={false} />
 
                     {!!data.res.tags.length && (

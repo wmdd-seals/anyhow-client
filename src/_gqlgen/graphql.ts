@@ -22,6 +22,10 @@ export type Scalars = {
   Stream: { input: any; output: any; }
 };
 
+export type AddBookmarkInput = {
+  guideId: Scalars['ID']['input'];
+};
+
 export type ChatResponse = {
   __typename?: 'ChatResponse';
   content?: Maybe<Scalars['String']['output']>;
@@ -30,6 +34,17 @@ export type ChatResponse = {
 
 export type CheckIfGuideCompletedInput = {
   guideId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type DateCount = {
+  __typename?: 'DateCount';
+  count?: Maybe<Scalars['Int']['output']>;
+  date?: Maybe<Scalars['String']['output']>;
+};
+
+export type DateRangeInput = {
+  end: Scalars['String']['input'];
+  start: Scalars['String']['input'];
 };
 
 export type File = {
@@ -63,10 +78,12 @@ export type GenreatedQuizInput = {
 export type Guide = {
   __typename?: 'Guide';
   body?: Maybe<Scalars['String']['output']>;
+  bookmark?: Maybe<Scalars['Boolean']['output']>;
   createdAt?: Maybe<Scalars['Date']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   liked?: Maybe<Scalars['Boolean']['output']>;
+  published?: Maybe<Scalars['Boolean']['output']>;
   quiz?: Maybe<Quiz>;
   rating?: Maybe<Scalars['Int']['output']>;
   tags?: Maybe<Scalars['JSON']['output']>;
@@ -109,23 +126,63 @@ export type GuideCreationInput = {
   title: Scalars['String']['input'];
 };
 
+export type GuideViewCountInDateRangeInput = {
+  end: Scalars['String']['input'];
+  start: Scalars['String']['input'];
+};
+
+export type GuideViewCountInDateRangeInputResult = {
+  __typename?: 'GuideViewCountInDateRangeInputResult';
+  count?: Maybe<Scalars['Int']['output']>;
+  date?: Maybe<Scalars['String']['output']>;
+};
+
+export type GuideViewInput = {
+  guideId: Scalars['ID']['input'];
+};
+
+export type GuideViewResult = {
+  __typename?: 'GuideViewResult';
+  count?: Maybe<Scalars['Int']['output']>;
+  guideId?: Maybe<Scalars['ID']['output']>;
+};
+
+export type GuideViews = {
+  __typename?: 'GuideViews';
+  createdAt?: Maybe<Scalars['String']['output']>;
+  guide?: Maybe<Guide>;
+  guideId?: Maybe<Scalars['ID']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
+  user?: Maybe<User>;
+  userId?: Maybe<Scalars['ID']['output']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  addBookmark: Scalars['Boolean']['output'];
   createGuide: Guide;
   createQuiz: Quiz;
   generateQuiz: Quiz;
   guideChat: ChatResponse;
+  removeBookmark: Scalars['Boolean']['output'];
+  removeGuide: Guide;
   removeImage?: Maybe<Scalars['Boolean']['output']>;
   reviewGuide: Scalars['Boolean']['output'];
   revokeGuideReview: Scalars['Boolean']['output'];
   saveQuizAnswers: QuizAnswers;
   signupUser: User;
   storeGuideCompleted: GuideCompleted;
+  storeGuideView: GuideViews;
   updateGuide: Guide;
   updateQuiz: Quiz;
   updateUserProfile: User;
   uploadCoverImage: File;
   uploadImage: File;
+};
+
+
+export type MutationAddBookmarkArgs = {
+  input: AddBookmarkInput;
 };
 
 
@@ -146,6 +203,16 @@ export type MutationGenerateQuizArgs = {
 
 export type MutationGuideChatArgs = {
   input?: InputMaybe<GuideChatRequest>;
+};
+
+
+export type MutationRemoveBookmarkArgs = {
+  input: RemoveBookmarkInput;
+};
+
+
+export type MutationRemoveGuideArgs = {
+  input: RemoveGuideInput;
 };
 
 
@@ -179,6 +246,11 @@ export type MutationStoreGuideCompletedArgs = {
 };
 
 
+export type MutationStoreGuideViewArgs = {
+  input: GuideViewInput;
+};
+
+
 export type MutationUpdateGuideArgs = {
   input: UpdateGuideInput;
 };
@@ -205,11 +277,16 @@ export type MutationUploadImageArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  bookmarks?: Maybe<Array<Maybe<Guide>>>;
   chathistory: Array<ChatResponse>;
   checkIfGuideCompleted: GuideCompleted;
   guide?: Maybe<Guide>;
   guideCompletedCounts: Array<GuideCompletedCountsResult>;
   guideCompletedList: Array<GuideCompleted>;
+  guideCreatedCountInDateRange: Array<Maybe<DateCount>>;
+  guideViewCount: GuideViewResult;
+  guideViewCountInDateRange: Array<GuideViewCountInDateRangeInputResult>;
+  guideViews: Array<GuideViews>;
   guides?: Maybe<Array<Maybe<Guide>>>;
   image: File;
   images: Array<File>;
@@ -239,7 +316,23 @@ export type QueryGuideCompletedCountsArgs = {
 };
 
 
+export type QueryGuideCreatedCountInDateRangeArgs = {
+  input: DateRangeInput;
+};
+
+
+export type QueryGuideViewCountArgs = {
+  input: GuideViewInput;
+};
+
+
+export type QueryGuideViewCountInDateRangeArgs = {
+  input: GuideViewCountInDateRangeInput;
+};
+
+
 export type QueryGuidesArgs = {
+  published?: InputMaybe<Scalars['Boolean']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   userId?: InputMaybe<Scalars['ID']['input']>;
 };
@@ -312,6 +405,14 @@ export type QuizObject = {
   __typename?: 'QuizObject';
   questions?: Maybe<Array<Maybe<Question>>>;
   title?: Maybe<Scalars['String']['output']>;
+};
+
+export type RemoveBookmarkInput = {
+  guideId: Scalars['ID']['input'];
+};
+
+export type RemoveGuideInput = {
+  id: Scalars['ID']['input'];
 };
 
 export type ReviewGuideInput = {
@@ -442,7 +543,7 @@ export type GuideQueryVariables = Exact<{
 }>;
 
 
-export type GuideQuery = { __typename?: 'Query', res?: { __typename?: 'Guide', id?: string | null, title?: string | null, liked?: boolean | null, rating?: number | null, body?: string | null, tags?: any | null, user?: { __typename?: 'User', id: string, firstName: string, lastName: string } | null } | null };
+export type GuideQuery = { __typename?: 'Query', res?: { __typename?: 'Guide', id?: string | null, title?: string | null, liked?: boolean | null, rating?: number | null, body?: string | null, bookmark?: boolean | null, tags?: any | null, user?: { __typename?: 'User', id: string, firstName: string, lastName: string } | null } | null };
 
 export type ReviewGuideMutationVariables = Exact<{
   input: ReviewGuideInput;
@@ -457,6 +558,20 @@ export type RevokeGuideReviewMutationVariables = Exact<{
 
 
 export type RevokeGuideReviewMutation = { __typename?: 'Mutation', res: boolean };
+
+export type AddBookmarkMutationVariables = Exact<{
+  input: AddBookmarkInput;
+}>;
+
+
+export type AddBookmarkMutation = { __typename?: 'Mutation', res: boolean };
+
+export type RemoveBookmarkMutationVariables = Exact<{
+  input: RemoveBookmarkInput;
+}>;
+
+
+export type RemoveBookmarkMutation = { __typename?: 'Mutation', res: boolean };
 
 export type SignInQueryVariables = Exact<{
   input?: InputMaybe<UserSignInInput>;
@@ -593,9 +708,11 @@ export const CreateGuideDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const StoreGuideCompletedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"StoreGuideCompleted"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"StoreGuideCompletedInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"storeGuideCompleted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"guideId"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<StoreGuideCompletedMutation, StoreGuideCompletedMutationVariables>;
 export const GuideCompletedCountsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GuideCompletedCounts"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"GuideCompletedDateRange"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"guideCompletedCounts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]}}]} as unknown as DocumentNode<GuideCompletedCountsQuery, GuideCompletedCountsQueryVariables>;
 export const GuideCompletedListDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GuideCompletedList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"guideCompletedList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"guide"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"tags"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"guideId"}}]}}]}}]} as unknown as DocumentNode<GuideCompletedListQuery, GuideCompletedListQueryVariables>;
-export const GuideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Guide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"guide"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"liked"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"tags"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}}]}}]} as unknown as DocumentNode<GuideQuery, GuideQueryVariables>;
+export const GuideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Guide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"guide"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"liked"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"bookmark"}},{"kind":"Field","name":{"kind":"Name","value":"tags"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}}]}}]} as unknown as DocumentNode<GuideQuery, GuideQueryVariables>;
 export const ReviewGuideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ReviewGuide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ReviewGuideInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"reviewGuide"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<ReviewGuideMutation, ReviewGuideMutationVariables>;
 export const RevokeGuideReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RevokeGuideReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RevokeGuideReviewInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"revokeGuideReview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<RevokeGuideReviewMutation, RevokeGuideReviewMutationVariables>;
+export const AddBookmarkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddBookmark"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddBookmarkInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"addBookmark"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<AddBookmarkMutation, AddBookmarkMutationVariables>;
+export const RemoveBookmarkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveBookmark"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RemoveBookmarkInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"removeBookmark"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<RemoveBookmarkMutation, RemoveBookmarkMutationVariables>;
 export const SignInDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SignIn"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UserSignInInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"signIn"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}},{"kind":"Field","name":{"kind":"Name","value":"token"}}]}}]}}]} as unknown as DocumentNode<SignInQuery, SignInQueryVariables>;
 export const SignupUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SignupUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"signupUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<SignupUserMutation, SignupUserMutationVariables>;
 export const GetGuideDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetGuide"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"res"},"name":{"kind":"Name","value":"guide"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"tags"}}]}}]}}]} as unknown as DocumentNode<GetGuideQuery, GetGuideQueryVariables>;
