@@ -12,6 +12,7 @@ const GET_GUIDES_WITH_USER = graphql(`
             description
             id
             title
+            bookmark
             liked
             rating
             tags

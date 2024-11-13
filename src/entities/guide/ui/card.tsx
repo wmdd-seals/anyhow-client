@@ -99,7 +99,15 @@ const Card: React.FC<CardComponentProps> = ({
                     )}
                     <div className="flex items-center gap-2">
                         <button>
-                            <Bookmark className="w-5 h-5" />
+                            <Bookmark
+                                className="w-5 h-5"
+                                fill={
+                                    typeof guide.bookmark === 'boolean' &&
+                                    guide.bookmark
+                                        ? '#000'
+                                        : '#fff'
+                                }
+                            />
                         </button>
                         <button>
                             <Share2 className="w-5 h-5" />
