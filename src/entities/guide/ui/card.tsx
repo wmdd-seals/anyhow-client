@@ -118,7 +118,7 @@ const Card: React.FC<CardComponentProps> = ({
                         <button
                             onClick={async () => {
                                 await copyToClipboard(
-                                    `${import.meta.env.VITE_APP_URL}/${guide.id}`
+                                    `${window.location.origin}/${guide.id}`
                                 )
                                 setToast({
                                     visible: true,
