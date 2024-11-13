@@ -24,6 +24,15 @@ const GUIDE_COMPLETED_COUNTS = graphql(`
     }
 `)
 
+const GUIDE_VIEWED_COUNTS = graphql(`
+    query GuideViewCountInDateRange($input: GuideViewCountInDateRangeInput!) {
+        res: guideViewCountInDateRange(input: $input) {
+            count
+            date
+        }
+    }
+`)
+
 function BarChart({ data, keys, indexBy }: BarChartProps): ReactNode {
     return (
         <ResponsiveBar
@@ -41,22 +50,28 @@ function BarChart({ data, keys, indexBy }: BarChartProps): ReactNode {
     )
 }
 
-function TimeSpentBarChart(): ReactNode {
-    const today = new Date()
+function TimeSpentBarChart({
+    isCreator = false
+}: {
+    isCreator: boolean
+}): ReactNode {
+    const today = new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
     const [to, setTo] = useState<number>(today.getTime())
     const [from, setFrom] = useState<number>(
-        new Date(today.setDate(today.getDate() - 7)).getTime()
+        new Date(today.setDate(today.getDate() - 6)).getTime()
     )
-    console.log({ today })
-    const { data: counts, loading } = useQuery(GUIDE_COMPLETED_COUNTS, {
-        variables: {
-            input: {
-                start: new Date(from).toISOString().split('T')[0],
-                end: new Date(to).toISOString().split('T')[0]
-            }
-        },
-        fetchPolicy: 'network-only'
-    })
+    const { data: counts, loading } = useQuery(
+        isCreator ? GUIDE_VIEWED_COUNTS : GUIDE_COMPLETED_COUNTS,
+        {
+            variables: {
+                input: {
+                    start: new Date(from).toISOString().split('T')[0],
+                    end: new Date(to).toISOString().split('T')[0]
+                }
+            },
+            fetchPolicy: 'network-only'
+        }
+    )
 
     const handlePrev = (): void => {
         const [newFrom, newTo] = adjustDateRange(from, to, -7)
@@ -91,7 +106,11 @@ function TimeSpentBarChart(): ReactNode {
                         <ArrowRight size={20} />
                     </button>
                     <div className="text-2xl w-full text-left absolute left-5 top-5 font-bold">
-                        <label>Completed Guides</label>
+                        <label>
+                            {isCreator
+                                ? 'View Count on Guides'
+                                : 'Completed Guides'}
+                        </label>
                         <p className="text-base">{`${new Date(from).toLocaleDateString()} - ${new Date(to).toLocaleDateString()}`}</p>
                     </div>
                     <div className="w-11/12 mx-auto max-w-[350px] md:max-w-[450px] h-full">

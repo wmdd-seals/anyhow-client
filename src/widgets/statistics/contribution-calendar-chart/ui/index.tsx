@@ -24,6 +24,15 @@ const GUIDE_COMPLETED_COUNTS = graphql(`
     }
 `)
 
+const GUIDE_CREATED_COUNTS = graphql(`
+    query GuideCreatedCountInDateRange($input: DateRangeInput!) {
+        res: guideCreatedCountInDateRange(input: $input) {
+            count
+            date
+        }
+    }
+`)
+
 function CalendarChart({ from, to, data }: CalendarChartProps): ReactNode {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
@@ -89,21 +98,28 @@ function CalendarChart({ from, to, data }: CalendarChartProps): ReactNode {
     )
 }
 
-function ContributionCalendarChart(): ReactNode {
+function ContributionCalendarChart({
+    isCreator = false
+}: {
+    isCreator: boolean
+}): ReactNode {
     const today = new Date()
     const [to, setTo] = useState<number>(today.getTime())
     const [from, setFrom] = useState<number>(
         new Date(today.setDate(today.getDate() - 60)).getTime()
     )
-    const { data: counts } = useQuery(GUIDE_COMPLETED_COUNTS, {
-        variables: {
-            input: {
-                start: new Date(from).toISOString().split('T')[0],
-                end: new Date(to).toISOString().split('T')[0]
-            }
-        },
-        fetchPolicy: 'network-only'
-    })
+    const { data: counts } = useQuery(
+        isCreator ? GUIDE_CREATED_COUNTS : GUIDE_COMPLETED_COUNTS,
+        {
+            variables: {
+                input: {
+                    start: new Date(from).toISOString().split('T')[0],
+                    end: new Date(to).toISOString().split('T')[0]
+                }
+            },
+            fetchPolicy: 'network-only'
+        }
+    )
 
     const handlePrev = (): void => {
         const [newFrom, newTo] = adjustDateRange(from, to, -60)
@@ -134,7 +150,7 @@ function ContributionCalendarChart(): ReactNode {
                 <ArrowRight size={20} />
             </button>
             <label className="text-2xl w-full text-left absolute left-5 top-5 font-bold">
-                Learning
+                {isCreator ? 'Guides Created' : 'Completed Guides'}
             </label>
             <div className="w-11/12 mx-auto max-w-[350px] md:max-w-[450px] h-full">
                 <CalendarChart
