@@ -55,7 +55,7 @@ function TimeSpentBarChart({
 }: {
     isCreator: boolean
 }): ReactNode {
-    const today = new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
+    const today = new Date(new Date().getTime())
     const [to, setTo] = useState<number>(today.getTime())
     const [from, setFrom] = useState<number>(
         new Date(today.setDate(today.getDate() - 6)).getTime()
