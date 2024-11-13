@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Icon, TextEditor } from '@shared/ui'
 import { useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/client'
@@ -60,10 +60,22 @@ const REMOVE_BOOKMARK_MUTATION = graphql(`
     }
 `)
 
+const STORE_GUIDE_VIEW_MUTATION = graphql(`
+    mutation StoreGuideView($input: GuideViewInput!) {
+        storeGuideView(input: $input) {
+            createdAt
+            guideId
+            id
+            userId
+        }
+    }
+`)
+
 export function GuidePage(): ReactNode {
     const { isAuthenticated } = useAuth()
     const params = useParams<{ id: string }>()
     const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
+    const [storeGuideViewMutation] = useMutation(STORE_GUIDE_VIEW_MUTATION)
 
     if (!params.id) return 'Guide not found'
 
@@ -194,6 +206,14 @@ export function GuidePage(): ReactNode {
     const quizId = quizInfo?.res?.quiz?.id
 
     const [showQuiz, setShowQuiz] = useState<boolean>(false)
+
+    useEffect(() => {
+        if (!params.id) return
+
+        void storeGuideViewMutation({
+            variables: { input: { guideId: params.id } }
+        })
+    }, [params.id])
 
     if (loading) return 'Loading...'
 
