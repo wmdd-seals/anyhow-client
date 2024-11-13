@@ -1,2 +1,2 @@
-export * from './ui/DropdownMenuForDesktop'
-export * from './ui/PopupMenuForMobile'
+export * from './ui/dropdown-menu-for-desktop'
+export * from './ui/popup-menu-for-mobile'
