@@ -126,8 +126,8 @@ const Dashboard = (): ReactNode => {
                         </h3>
                         {isCreator ? (
                             <Slider
-                                desktopItems={2}
-                                smallDesktopItems={2}
+                                desktopItems={3}
+                                smallDesktopItems={3}
                                 tabletItems={1}
                                 mobileItems={1}
                                 showDots={false}
@@ -143,12 +143,14 @@ const Dashboard = (): ReactNode => {
                                 </ScoreCard>
                                 <ScoreCard title="Total hours spent on guides">
                                     {guidesCreated?.res?.reduce((acc, curr) => {
-                                        return (acc +
+                                        return (
+                                            acc +
                                             getTimeSpentOnCreatingGuide(
                                                 getGuideProgress(
-                                                    (curr!.body as string) || ''
+                                                    curr!.body || ''
                                                 )
-                                            )) as number
+                                            )
+                                        )
                                     }, 0)}
                                 </ScoreCard>
                                 <ScoreCard title="Totalws on guides">
@@ -212,14 +214,9 @@ const Dashboard = (): ReactNode => {
                     <h3 className="text-3xl font-bold">My learning history</h3>
                     {isCreator ? (
                         <div className="flex flex-col gap-y-3 md:gap-y-0">
-                            {guidesCreated?.res &&
-                                guidesCreated?.res.length > 0 &&
-                                guidesCreated?.res.map((h, index) => (
-                                    <CardStrip
-                                        key={index as number}
-                                        guide={h as Guide}
-                                    />
-                                ))}
+                            {guidesCreated?.res?.map((h, index) => (
+                                <CardStrip key={index} guide={h as Guide} />
+                            ))}
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
