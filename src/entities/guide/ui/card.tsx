@@ -10,12 +10,14 @@ interface CardComponentProps {
     guide: Guide
     cardType?: 'default' | 'simple'
     isAuthenticated?: boolean
+    minutes: number
 }
 
 const Card: React.FC<CardComponentProps> = ({
     guide,
     cardType = 'default',
-    isAuthenticated = false
+    isAuthenticated = false,
+    minutes
 }) => {
     const { setToast } = useAuth()
     const [imageSrc, setImageSrc] = useState<string | null>(null)
@@ -82,6 +84,7 @@ const Card: React.FC<CardComponentProps> = ({
                 >
                     {guide.title}
                 </Link>
+
                 <p className="my-2 text-base tracking-normal leading-6 text-slate-500 line-clamp-3">
                     {markdownToTxt(guide.body ?? '')}
                 </p>
