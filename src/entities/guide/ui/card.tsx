@@ -8,11 +8,13 @@ import type { Guide } from '@gqlgen/graphql'
 interface CardComponentProps {
     guide: Guide
     cardType?: 'default' | 'simple'
+    minutes: number
 }
 
 const Card: React.FC<CardComponentProps> = ({
     guide,
-    cardType = 'default'
+    cardType = 'default',
+    minutes
 }) => {
     const [imageSrc, setImageSrc] = React.useState<string | null>(null)
     const coverImgUrl = `${import.meta.env.VITE_API_URL}/images/${guide.id}`
@@ -67,16 +69,18 @@ const Card: React.FC<CardComponentProps> = ({
             <div className="flex flex-col p-4 w-full">
                 {cardType === 'default' && (
                     <div className="flex flex-col w-full">
-                        <div className="flex w-full min-h-[32px]">
+                        <div className="flex justify-between w-full min-h-[32px]">
                             <div>
                                 {guide.user?.firstName} {guide.user?.lastName}
                             </div>
+                            <p className="text-any-gray-500">{minutes} min</p>
                         </div>
                     </div>
                 )}
                 <h2 className="text-2xl font-bold leading-tight text-gray-700">
                     {guide.title}
                 </h2>
+
                 <p className="my-2 text-base tracking-normal leading-6 text-slate-500 line-clamp-3">
                     {markdownToTxt(guide.body ?? '')}
                 </p>
