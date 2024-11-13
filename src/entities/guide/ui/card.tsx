@@ -5,23 +5,25 @@ import markdownToTxt from 'markdown-to-txt'
 import type { Guide } from '@gqlgen/graphql'
 import { copyToClipboard } from '../lib'
 import { useAuth } from '@shared/lib'
+import { getGuideProgress } from 'src/entities/guide'
 
 interface CardComponentProps {
     guide: Guide
     cardType?: 'default' | 'simple'
     isAuthenticated?: boolean
-    minutes: number
 }
 
 const Card: React.FC<CardComponentProps> = ({
     guide,
     cardType = 'default',
-    isAuthenticated = false,
-    minutes
+    isAuthenticated = false
 }) => {
     const { setToast } = useAuth()
     const [imageSrc, setImageSrc] = useState<string | null>(null)
     const coverImgUrl = `${import.meta.env.VITE_API_URL}/images/${guide.id}`
+    const readingTime = Math.ceil(
+        (getGuideProgress(guide.body || '') * 60) / 100
+    )
 
     useEffect(() => {
         const fetchImage = async (): Promise<void> => {
@@ -74,7 +76,9 @@ const Card: React.FC<CardComponentProps> = ({
                             <div>
                                 {guide.user?.firstName} {guide.user?.lastName}
                             </div>
-                            <p className="text-any-gray-500">{minutes} min</p>
+                            <p className="text-any-gray-500">
+                                {readingTime} min
+                            </p>
                         </div>
                     </div>
                 )}

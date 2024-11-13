@@ -31,12 +31,12 @@ export function PanelGuideList(): ReactNode {
 
     const [sortOption, setSortOption] = useState<string>('Newest First')
 
-    const guidesWithMinutes = data?.res?.map(guide => ({
+    const guidesWithReadingTime = data?.res?.map(guide => ({
         ...guide,
-        minutes: Math.ceil((getGuideProgress(guide?.body || '') * 60) / 100)
+        readingTime: Math.ceil((getGuideProgress(guide?.body || '') * 60) / 100)
     }))
 
-    const sortedGuides = guidesWithMinutes?.sort((a, b) => {
+    const sortedGuides = guidesWithReadingTime?.sort((a, b) => {
         switch (sortOption) {
             case 'Newest First':
                 return (
@@ -49,9 +49,9 @@ export function PanelGuideList(): ReactNode {
                     new Date(b.createdAt as string).getTime()
                 )
             case 'Longest Reading Time':
-                return b.minutes - a.minutes
+                return b.readingTime - a.readingTime
             case 'Shortest Reading Time':
-                return a.minutes - b.minutes
+                return a.readingTime - b.readingTime
 
             // make the guide with no ("null") rating to be at the end
             case 'Highest Rated':
@@ -98,11 +98,7 @@ export function PanelGuideList(): ReactNode {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-10">
                     {sortedGuides?.map((guide, index) => (
                         <div key={index}>
-                            <Card
-                                key={index}
-                                guide={guide as Guide}
-                                minutes={guide.minutes}
-                            />
+                            <Card key={index} guide={guide as Guide} />
                         </div>
                     ))}
                 </div>
