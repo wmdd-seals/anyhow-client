@@ -2,6 +2,7 @@ import { createContext, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import type { User } from '@gqlgen/graphql'
+import Toast from '@shared/ui/toast'
 
 export type UserContextType = {
     authToken: string | null
@@ -31,6 +32,10 @@ const FETCH_USER = graphql(`
 
 export const AuthProvider = ({ children }: Props): React.ReactNode => {
     // const navigate = useNavigate()
+    const [toast, setToast] = useState<{ visible: boolean; message: string }>({
+        visible: false,
+        message: ''
+    })
     const [user, setUser] = useState<User | null>(null)
     const [authToken, setToken] = useState<string | null>(
         localStorage.getItem('authToken')
@@ -78,10 +83,13 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
                 logout,
                 isAuthenticated,
                 user,
-                setUser
+                setUser,
+                toast,
+                setToast
             }}
         >
             {children}
+            <Toast toast={toast} setToast={setToast} />
         </UserContext.Provider>
     )
 }
