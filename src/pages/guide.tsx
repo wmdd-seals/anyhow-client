@@ -15,6 +15,7 @@ import { STORE_GUIDE_COMPLETED } from 'src/features/store-guide-completed/api/st
 import { GET_GUIDE_COMPLETED_LIST } from '@widgets/quiz-challenge/api/get-guide-completed-list'
 import { ArrowRight, Bookmark, Zap } from 'react-feather'
 import { ThumbsUp, ThumbsDown } from 'react-feather'
+import { useAuth } from '@shared/lib'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -60,6 +61,7 @@ const REMOVE_BOOKMARK_MUTATION = graphql(`
 `)
 
 export function GuidePage(): ReactNode {
+    const { isAuthenticated } = useAuth()
     const params = useParams<{ id: string }>()
     const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
 
@@ -283,7 +285,7 @@ export function GuidePage(): ReactNode {
                     <hr />
 
                     <div className="flex flex-col md:flex-row justify-center items-center gap-6 py-6">
-                        {quizId && !showQuiz && (
+                        {isAuthenticated && quizId && !showQuiz && (
                             <Button
                                 onClick={() => setShowQuiz(true)}
                                 kind="secondary"
@@ -293,7 +295,7 @@ export function GuidePage(): ReactNode {
                             </Button>
                         )}
 
-                        {!showQuiz && !isGuideCompleted && (
+                        {isAuthenticated && !showQuiz && !isGuideCompleted && (
                             <Button
                                 onClick={() =>
                                     handleCompleted(params.id as string)
