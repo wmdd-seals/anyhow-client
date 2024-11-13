@@ -48,9 +48,7 @@ export function HomePage(): ReactNode {
                             </div>
                         </div>
                     )}
-                    <div className="container px-6 md:px-0 mx-auto my-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-10">
-                        <PanelGuideList />
-                    </div>
+                    <PanelGuideList />
                 </section>
             </section>
             <Footer />
