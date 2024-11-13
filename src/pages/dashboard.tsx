@@ -103,12 +103,13 @@ const Dashboard = (): ReactNode => {
         }
     )
 
-    const { data: guidesCreated, loading: loadingGuidesCreated } = useQuery(
-        GUIDES_CREATED,
-        {
-            variables: { userId: user?.user.id }
-        }
-    )
+    const {
+        data: guidesCreated,
+        refetch,
+        loading: loadingGuidesCreated
+    } = useQuery(GUIDES_CREATED, {
+        variables: { userId: user?.user.id }
+    })
 
     const { data: quizAnswersByUser } = useQuery(QUIZ_ANSWERS_BY_USER)
 
@@ -234,6 +235,7 @@ const Dashboard = (): ReactNode => {
                         <div className="flex flex-col gap-y-3 md:gap-y-0">
                             {guidesCreated?.res?.map((h, index) => (
                                 <CardStrip
+                                    refetch={refetch}
                                     key={index}
                                     guide={
                                         h as Omit<Guide, 'createdAt'> & {

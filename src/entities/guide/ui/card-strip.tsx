@@ -9,6 +9,7 @@ import type { Guide } from '@gqlgen/graphql'
 
 type CardStripProps = {
     guide: Omit<Guide, 'createdAt'> & { createdAt: string }
+    refetch: () => Promise<void>
 }
 const REMOVE_GUIDE = graphql(`
     mutation Mutation($input: RemoveGuideInput!) {
@@ -39,7 +40,7 @@ const GUIDE_VIEW_COUNT_BY_GUIDE_ID = graphql(`
     }
 `)
 
-export function CardStrip({ guide }: CardStripProps): ReactNode {
+export function CardStrip({ guide, refetch }: CardStripProps): ReactNode {
     const { id, title, createdAt, published, rating } = guide
     const [imageSrc, setImageSrc] = useState<string | null>(null)
     const coverImgUrl = `${import.meta.env.VITE_API_URL}/images/${id}`
@@ -151,9 +152,12 @@ export function CardStrip({ guide }: CardStripProps): ReactNode {
                 <Button
                     kind="secondary"
                     className="h-fit py-2 px-4"
-                    onClick={() =>
-                        removeGuide({ variables: { input: { id: id! } } })
-                    }
+                    onClick={async () => {
+                        await removeGuide({
+                            variables: { input: { id: id! } }
+                        })
+                        void refetch()
+                    }}
                 >
                     Delete
                 </Button>
