@@ -25,6 +25,7 @@ const documents = {
     "\n    query GuideCompletedList {\n        res: guideCompletedList {\n            guide {\n                description\n                id\n                tags\n                title\n            }\n            createdAt\n            id\n            guideId\n        }\n    }\n": types.GuideCompletedListDocument,
     "\n    query QuizAnswersByUser {\n        quizAnswersByUser {\n            id\n        }\n    }\n": types.QuizAnswersByUserDocument,
     "\n    query GuidesCreated($userId: ID) {\n        res: guides(userId: $userId) {\n            description\n            id\n            published\n            rating\n            title\n            body\n            createdAt\n        }\n    }\n": types.GuidesCreatedDocument,
+    "\n    query GuideViewCountInDateRange($input: GuideViewCountInDateRangeInput!) {\n        res: guideViewCountInDateRange(input: $input) {\n            count\n            date\n        }\n    }\n": types.GuideViewCountInDateRangeDocument,
     "\n    query Guide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            liked\n            rating\n            body\n            bookmark\n            tags\n            user {\n                id\n                firstName\n                lastName\n            }\n        }\n    }\n": types.GuideDocument,
     "\n    mutation ReviewGuide($input: ReviewGuideInput!) {\n        res: reviewGuide(input: $input)\n    }\n": types.ReviewGuideDocument,
     "\n    mutation RevokeGuideReview($input: RevokeGuideReviewInput!) {\n        res: revokeGuideReview(input: $input)\n    }\n": types.RevokeGuideReviewDocument,
@@ -50,7 +51,6 @@ const documents = {
     "\n    mutation PublishQuiz($input: UpdateQuizInput!) {\n        res: updateQuiz(input: $input) {\n            id\n        }\n    }\n": types.PublishQuizDocument,
     "\n    mutation UpdateQuiz($input: UpdateQuizInput!) {\n        res: updateQuiz(input: $input) {\n            id\n        }\n    }\n": types.UpdateQuizDocument,
     "\n    query GuideCreatedCountInDateRange($input: DateRangeInput!) {\n        res: guideCreatedCountInDateRange(input: $input) {\n            count\n            date\n        }\n    }\n": types.GuideCreatedCountInDateRangeDocument,
-    "\n    query GuideViewCountInDateRange($input: GuideViewCountInDateRangeInput!) {\n        res: guideViewCountInDateRange(input: $input) {\n            count\n            date\n        }\n    }\n": types.GuideViewCountInDateRangeDocument,
 };
 
 /**
@@ -111,6 +111,10 @@ export function graphql(source: "\n    query QuizAnswersByUser {\n        quizAn
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    query GuidesCreated($userId: ID) {\n        res: guides(userId: $userId) {\n            description\n            id\n            published\n            rating\n            title\n            body\n            createdAt\n        }\n    }\n"): (typeof documents)["\n    query GuidesCreated($userId: ID) {\n        res: guides(userId: $userId) {\n            description\n            id\n            published\n            rating\n            title\n            body\n            createdAt\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GuideViewCountInDateRange($input: GuideViewCountInDateRangeInput!) {\n        res: guideViewCountInDateRange(input: $input) {\n            count\n            date\n        }\n    }\n"): (typeof documents)["\n    query GuideViewCountInDateRange($input: GuideViewCountInDateRangeInput!) {\n        res: guideViewCountInDateRange(input: $input) {\n            count\n            date\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -211,10 +215,6 @@ export function graphql(source: "\n    mutation UpdateQuiz($input: UpdateQuizInp
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    query GuideCreatedCountInDateRange($input: DateRangeInput!) {\n        res: guideCreatedCountInDateRange(input: $input) {\n            count\n            date\n        }\n    }\n"): (typeof documents)["\n    query GuideCreatedCountInDateRange($input: DateRangeInput!) {\n        res: guideCreatedCountInDateRange(input: $input) {\n            count\n            date\n        }\n    }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n    query GuideViewCountInDateRange($input: GuideViewCountInDateRangeInput!) {\n        res: guideViewCountInDateRange(input: $input) {\n            count\n            date\n        }\n    }\n"): (typeof documents)["\n    query GuideViewCountInDateRange($input: GuideViewCountInDateRangeInput!) {\n        res: guideViewCountInDateRange(input: $input) {\n            count\n            date\n        }\n    }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
