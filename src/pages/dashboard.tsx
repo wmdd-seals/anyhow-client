@@ -73,21 +73,35 @@ const GUIDES_CREATED = graphql(`
     }
 `)
 
+const GUIDE_VIEWED_COUNTS = graphql(`
+    query GuideViewCountInDateRange($input: GuideViewCountInDateRangeInput!) {
+        res: guideViewCountInDateRange(input: $input) {
+            count
+            date
+        }
+    }
+`)
+
 const Dashboard = (): ReactNode => {
     const { data: user } = useQuery(FETCH_USER)
+
+    const VALUE_PER_VIEW = 0.01
     const location = useLocation()
     const isCreator =
         (location.state as { isCreator: boolean }).isCreator || false
-    const { data } = useQuery(GUIDE_COMPLETED_COUNTS, {
-        variables: {
-            input: {
-                start: '2023-01-01',
-                end: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
-                    .toISOString()
-                    .split('T')[0]
+    const { data } = useQuery(
+        isCreator ? GUIDE_VIEWED_COUNTS : GUIDE_COMPLETED_COUNTS,
+        {
+            variables: {
+                input: {
+                    start: '2023-01-01',
+                    end: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+                        .toISOString()
+                        .split('T')[0]
+                }
             }
         }
-    })
+    )
 
     const { data: guidesCreated, loading: loadingGuidesCreated } = useQuery(
         GUIDES_CREATED,
@@ -133,31 +147,35 @@ const Dashboard = (): ReactNode => {
                                 showDots={false}
                                 itemClass="p-4"
                             >
+                                <ScoreCard title="Total hours spent on guides creation">
+                                    {Number(
+                                        guidesCreated?.res?.reduce(
+                                            (acc, curr) => {
+                                                return (
+                                                    acc +
+                                                    getTimeSpentOnCreatingGuide(
+                                                        getGuideProgress(
+                                                            curr!.body || ''
+                                                        )
+                                                    )
+                                                )
+                                            },
+                                            0
+                                        )
+                                    ).toFixed(2)}{' '}
+                                    hrs
+                                </ScoreCard>
+                                <ScoreCard title="Total guides created">
+                                    {guidesCreated?.res?.length}
+                                </ScoreCard>
                                 <ScoreCard title="Total views on guides">
+                                    $
                                     {totalCount(
                                         data?.res as {
                                             count: number
                                             data: string
                                         }[]
-                                    )}
-                                </ScoreCard>
-                                <ScoreCard title="Total hours spent on guides">
-                                    {guidesCreated?.res?.reduce((acc, curr) => {
-                                        return (
-                                            acc +
-                                            getTimeSpentOnCreatingGuide(
-                                                getGuideProgress(
-                                                    curr!.body || ''
-                                                )
-                                            )
-                                        )
-                                    }, 0)}
-                                </ScoreCard>
-                                <ScoreCard title="Totalws on guides">
-                                    {
-                                        quizAnswersByUser?.quizAnswersByUser
-                                            .length
-                                    }
+                                    ) * VALUE_PER_VIEW}
                                 </ScoreCard>
                             </Slider>
                         ) : (
@@ -215,7 +233,14 @@ const Dashboard = (): ReactNode => {
                     {isCreator ? (
                         <div className="flex flex-col gap-y-3 md:gap-y-0">
                             {guidesCreated?.res?.map((h, index) => (
-                                <CardStrip key={index} guide={h as Guide} />
+                                <CardStrip
+                                    key={index}
+                                    guide={
+                                        h as Omit<Guide, 'createdAt'> & {
+                                            createdAt: string
+                                        }
+                                    }
+                                />
                             ))}
                         </div>
                     ) : (

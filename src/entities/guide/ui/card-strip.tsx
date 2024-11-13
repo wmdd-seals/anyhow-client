@@ -8,7 +8,7 @@ import { Eye, ThumbsUp } from 'react-feather'
 import type { Guide } from '@gqlgen/graphql'
 
 type CardStripProps = {
-    guide: Guide
+    guide: Omit<Guide, 'createdAt'> & { createdAt: string }
 }
 const REMOVE_GUIDE = graphql(`
     mutation Mutation($input: RemoveGuideInput!) {
@@ -109,7 +109,7 @@ export function CardStrip({ guide }: CardStripProps): ReactNode {
             </div>
             <div className="flex justify-start gap-4 w-full md:w-1/4 text-sm md:text-base">
                 <div className="flex justify-start md:justify-end w-20">
-                    {new Date(createdAt!).toLocaleDateString()}
+                    {new Date(createdAt).toLocaleDateString()}
                 </div>
                 <div className="flex justify-start w-14 ml-auto md:ml-0">
                     {minutes} min
