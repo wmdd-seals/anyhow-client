@@ -66,6 +66,7 @@ export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
                                     <li>
                                         <Link
                                             to={'/dashboard'}
+                                            state={{ isCreator: false }}
                                             className="text-start w-full px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
                                         >
                                             <Clock />
@@ -75,6 +76,7 @@ export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
                                     <li>
                                         <Link
                                             to={'/dashboard'}
+                                            state={{ isCreator: true }}
                                             className="text-start w-full px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
                                         >
                                             <BarChart />

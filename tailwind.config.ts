@@ -2,6 +2,9 @@ import type { Config } from 'tailwindcss'
 
 export default {
     content: ['./src/**/*.{ts,tsx}'],
+    corePlugins: {
+        lineClamp: true
+    },
     theme: {
         extend: {
             fontFamily: {

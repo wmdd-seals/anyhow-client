@@ -35,7 +35,8 @@ export function DropdownMenuForDesktop({
                 </MenuItem>
                 <MenuItem>
                     <Link
-                        to={'/'}
+                        to={'/dashboard'}
+                        state={{ isCreator: false }}
                         className="text-start px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
                     >
                         <Clock />
@@ -44,7 +45,8 @@ export function DropdownMenuForDesktop({
                 </MenuItem>
                 <MenuItem>
                     <Link
-                        to={'/'}
+                        to={'/dashboard'}
+                        state={{ isCreator: true }}
                         className="text-start px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
                     >
                         <BarChart />

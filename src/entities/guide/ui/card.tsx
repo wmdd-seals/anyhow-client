@@ -1,5 +1,4 @@
-import React from 'react'
-// import { TagList } from './tag-list'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ThumbsUp, Bookmark, Share2 } from 'react-feather'
 import markdownToTxt from 'markdown-to-txt'
@@ -16,10 +15,10 @@ const Card: React.FC<CardComponentProps> = ({
     cardType = 'default',
     minutes
 }) => {
-    const [imageSrc, setImageSrc] = React.useState<string | null>(null)
+    const [imageSrc, setImageSrc] = useState<string | null>(null)
     const coverImgUrl = `${import.meta.env.VITE_API_URL}/images/${guide.id}`
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchImage = async (): Promise<void> => {
             try {
                 const response = await fetch(coverImgUrl)
