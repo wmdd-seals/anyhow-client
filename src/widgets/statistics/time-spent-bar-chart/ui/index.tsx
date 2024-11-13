@@ -87,11 +87,14 @@ function TimeSpentBarChart({
 
     return (
         <div className="relative flex flex-col items-center gap-2 border-solid rounded-md p-4 h-96 shadow-md shadow-lg">
-            {loading || !counts?.res.length ? (
-                <div className="w-full h-full flex items-center justify-center">
-                    <p>Loading</p>
-                </div>
-            ) : (
+            <div
+                className={`w-full h-full flex items-center justify-center absolute transition-all duration-[1500ms] ${
+                    loading ? 'opacity-100' : 'opacity-0'
+                }`}
+            >
+                <p>Loading</p>
+            </div>
+            {!loading && counts?.res.length && (
                 <>
                     <button
                         onClick={handlePrev}

@@ -168,7 +168,7 @@ const Dashboard = (): ReactNode => {
                                 <ScoreCard title="Total guides created">
                                     {guidesCreated?.res?.length}
                                 </ScoreCard>
-                                <ScoreCard title="Total views on guides">
+                                <ScoreCard title="Total earnings">
                                     $
                                     {totalCount(
                                         data?.res as {
