@@ -2,14 +2,14 @@ import { type ReactNode, useState, useEffect } from 'react'
 import { Button } from '@shared/ui'
 import { Link, useNavigate } from 'react-router-dom'
 import { graphql } from '@gqlgen'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery, type ApolloQueryResult } from '@apollo/client'
 import { getGuideProgress } from '../lib'
 import { Eye, ThumbsUp } from 'react-feather'
-import type { Guide } from '@gqlgen/graphql'
+import type { Guide, GuidesCreatedQuery } from '@gqlgen/graphql'
 
 type CardStripProps = {
     guide: Omit<Guide, 'createdAt'> & { createdAt: string }
-    refetch: () => Promise<void>
+    refetch: () => Promise<ApolloQueryResult<GuidesCreatedQuery>>
 }
 const REMOVE_GUIDE = graphql(`
     mutation Mutation($input: RemoveGuideInput!) {
