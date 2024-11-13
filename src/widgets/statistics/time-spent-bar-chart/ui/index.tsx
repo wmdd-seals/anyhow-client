@@ -96,11 +96,6 @@ function TimeSpentBarChart({
             </div>
             {!loading && counts?.res.length && (
                 <>
-                    {counts?.res.length === 0 && (
-                        <div className="w-full h-full flex items-center justify-center absolute">
-                            <p>No data</p>
-                        </div>
-                    )}
                     <button
                         onClick={handlePrev}
                         className="text-[#2D3648] absolute left-[10px] top-1/2"
