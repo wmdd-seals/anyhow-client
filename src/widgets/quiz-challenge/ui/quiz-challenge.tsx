@@ -5,6 +5,7 @@ import { Button } from '@shared/ui'
 import { GET_QUIZ_ANSWERS } from '@widgets/quiz-challenge/api/get-quiz-answers'
 import { useSaveQuizAnswer } from '@widgets/quiz-challenge/api/use-save-answers'
 import { GET_QUIZ_QUERY } from '../../../entities/quiz'
+import { SmallLoading } from '@widgets/loading'
 
 interface QuizChallengeProp {
     guideId: string
@@ -103,7 +104,11 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
                 <div className="p-4 flex flex-col gap-3">
                     <h1 className="text-3xl font-bold">Test your learning</h1>
                     <ul className="flex flex-col gap-5">
-                        {quizLoading && <h1 className="text-lg">Loading...</h1>}
+                        {quizLoading && (
+                            <h1 className="text-lg">
+                                <SmallLoading /> Loading...
+                            </h1>
+                        )}
 
                         {!quizLoading &&
                             formattedQuizData.map((question, questionIndex) => (

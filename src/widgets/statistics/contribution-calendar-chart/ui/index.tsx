@@ -5,6 +5,7 @@ import { ResponsiveWrapper } from '@nivo/core'
 import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import { ArrowLeft, ArrowRight } from 'react-feather'
+import { SmallLoading } from '@widgets/loading'
 
 type CalendarChartProps = {
     from: Date
@@ -140,7 +141,7 @@ function ContributionCalendarChart({
                     loading ? 'opacity-100' : 'opacity-0'
                 }`}
             >
-                <p>Loading</p>
+                <SmallLoading />
             </div>
             <button
                 onClick={handlePrev}

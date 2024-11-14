@@ -13,6 +13,7 @@ import { useLocation } from 'react-router-dom'
 import { CardStrip, getGuideProgress } from 'src/entities/guide'
 import { getTimeSpentOnCreatingGuide } from 'src/entities/guide/lib/get-time-spent-on-creating-guide'
 import { useAuth } from '@shared/lib'
+import { Loading } from '@widgets/loading'
 
 const GUIDE_COMPLETED_COUNTS = graphql(`
     query GuideCompletedCounts($input: GuideCompletedDateRange) {
@@ -120,7 +121,7 @@ const Dashboard = (): ReactNode => {
         return data?.reduce((acc, curr) => acc + (curr.count || 0), 0) || 0
     }
 
-    if (loading || loadingGuidesCreated) return <div>Loading...</div>
+    if (loading || loadingGuidesCreated) return <Loading />
     return (
         <div className="flex flex-col gap-4 ">
             <Header />

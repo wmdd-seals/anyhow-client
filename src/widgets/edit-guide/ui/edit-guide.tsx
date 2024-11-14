@@ -13,6 +13,7 @@ import { toBase64 } from '@shared/lib/file'
 import { UPLOAD_GUIDE_IMAGE } from '../api/upload-guide-image'
 import { getGuideProgress, Tag } from 'src/entities/guide'
 import { X, Check } from 'react-feather'
+import { Loading, SmallLoading } from '@widgets/loading'
 
 type UseCreateGuideForm = {
     title: string
@@ -78,7 +79,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
         [id]
     )
 
-    if (loading) return 'Loading...'
+    if (loading) return <Loading />
 
     if (!data?.res) return 'Something went wrong...'
 
@@ -315,7 +316,12 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                     </Button>
                 </div>
                 {generateQuizLoading && (
-                    <p className="text-center text-xl">Generating quiz...</p>
+                    <p className="text-center text-xl flex items-center gap-2 justify-center">
+                        <div className="flex items-center gap-2 w-16 h-16">
+                            <SmallLoading />
+                        </div>
+                        <span>Generating quiz...</span>
+                    </p>
                 )}
             </div>
         </FormProvider>
