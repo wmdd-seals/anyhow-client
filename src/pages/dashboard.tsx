@@ -12,6 +12,7 @@ import type { Guide } from '@gqlgen/graphql'
 import { useLocation } from 'react-router-dom'
 import { CardStrip, getGuideProgress } from 'src/entities/guide'
 import { getTimeSpentOnCreatingGuide } from 'src/entities/guide/lib/get-time-spent-on-creating-guide'
+import { useAuth } from '@shared/lib'
 
 const GUIDE_COMPLETED_COUNTS = graphql(`
     query GuideCompletedCounts($input: GuideCompletedDateRange) {
@@ -34,19 +35,6 @@ const GUIDE_COMPLETED_HISTORY = graphql(`
             createdAt
             id
             guideId
-        }
-    }
-`)
-
-const FETCH_USER = graphql(`
-    query User {
-        user {
-            email
-            favoriteTopics
-            firstName
-            id
-            lastName
-            middleName
         }
     }
 `)
@@ -83,7 +71,7 @@ const GUIDE_VIEWED_COUNTS = graphql(`
 `)
 
 const Dashboard = (): ReactNode => {
-    const { data: user } = useQuery(FETCH_USER)
+    const { user } = useAuth()
 
     const VALUE_PER_VIEW = 0.01
     const location = useLocation()
@@ -108,7 +96,7 @@ const Dashboard = (): ReactNode => {
         refetch,
         loading: loadingGuidesCreated
     } = useQuery(GUIDES_CREATED, {
-        variables: { userId: user?.user.id }
+        variables: { userId: user?.id }
     })
 
     const { data: quizAnswersByUser } = useQuery(QUIZ_ANSWERS_BY_USER)
@@ -132,7 +120,7 @@ const Dashboard = (): ReactNode => {
                     <section className="flex flex-col gap-4">
                         <h2 className="text-5xl leading-tight font-bold mb-5 text-white">
                             Welcome back! <br />
-                            {`${user?.user.firstName} ${user?.user.lastName}`}
+                            {`${user?.firstName} ${user?.lastName}`}
                         </h2>
                     </section>
                     <div className="flex flex-col gap-4">
