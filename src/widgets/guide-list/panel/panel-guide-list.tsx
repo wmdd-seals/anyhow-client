@@ -6,7 +6,7 @@ import { useAuth } from '@shared/lib'
 import { Card } from 'src/entities/guide'
 import { getGuideProgress } from 'src/entities/guide'
 import { ChevronDown } from 'react-feather'
-import { Loading, MediumLoading } from '@widgets/loading'
+import { MediumLoading } from '@widgets/loading'
 
 const GET_GUIDES_WITH_USER = graphql(`
     query PanelGuides {
