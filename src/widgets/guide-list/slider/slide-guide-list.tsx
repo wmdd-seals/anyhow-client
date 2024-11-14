@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import { Slider } from 'src/shared/ui'
 import { graphql } from '@gqlgen'
 import type { Guide } from '@gqlgen/graphql'
-import { Loading } from '@widgets/loading'
+import { MediumLoading } from '@widgets/loading'
 
 const GET_GUIDES_WITH_USER = graphql(`
     query SlideGuides {
@@ -28,7 +28,12 @@ const GET_GUIDES_WITH_USER = graphql(`
 export function SliderGuideList(): ReactNode {
     const { data, loading, error } = useQuery(GET_GUIDES_WITH_USER)
 
-    if (loading) return <Loading />
+    if (loading)
+        return (
+            <div className="h-full w-full flex items-center justify-center py-20">
+                <MediumLoading />
+            </div>
+        )
     if (error || !data?.res || data.res.length === 0)
         return <div>Error: {error?.message}</div>
 
