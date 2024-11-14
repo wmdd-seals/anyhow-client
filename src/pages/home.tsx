@@ -16,7 +16,7 @@ export function HomePage(): ReactNode {
             <Header />
             <section className="mx-auto md:px-0">
                 <HeroSlider />
-                <section className="my-16 mx-auto">
+                <section className="flex flex-col my-16 mx-auto gap-y-16">
                     <div className="container mx-auto px-6 md:px-0">
                         <h2 className="text-center text-2xl sm:text-3xl md:text-5xl font-bold">
                             Guides of the week
@@ -27,7 +27,7 @@ export function HomePage(): ReactNode {
                         <SliderGuideList />
                     </div>
                     {!isAuthenticated && (
-                        <div className="mt-20 w-full aspect-square md:aspect-[3/2] lg:aspect-[3/1] xl:aspect-[4/1] relative max-w-[1500px] mx-auto">
+                        <div className="mt-20 w-full aspect-square md:aspect-[3/2] lg:aspect-[3/1] xl:aspect-[4/1] max-h-[550px] relative mx-auto">
                             <img
                                 src="/bg-img4.jpeg"
                                 alt="bg-img"

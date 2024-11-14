@@ -14,6 +14,7 @@ import { CardStrip, getGuideProgress } from 'src/entities/guide'
 import { getTimeSpentOnCreatingGuide } from 'src/entities/guide/lib/get-time-spent-on-creating-guide'
 import { useAuth } from '@shared/lib'
 import { Loading } from '@widgets/loading'
+import { PanelGuideList } from '@widgets/guide-list'
 
 const GUIDE_COMPLETED_COUNTS = graphql(`
     query GuideCompletedCounts($input: GuideCompletedDateRange) {
@@ -83,7 +84,6 @@ const GUIDE_VIEWED_COUNTS = graphql(`
 const Dashboard = (): ReactNode => {
     const { user, isAuthenticated } = useAuth()
 
-    const VALUE_PER_VIEW = 0.01
     const location = useLocation()
     const isCreator =
         (location.state as { isCreator: boolean }).isCreator || false
@@ -123,9 +123,9 @@ const Dashboard = (): ReactNode => {
 
     if (loading || loadingGuidesCreated) return <Loading />
     return (
-        <div className="flex flex-col gap-4 ">
+        <div className="flex flex-col gap-10 ">
             <Header />
-            <main className="container mx-auto flex flex-col gap-10 px-10">
+            <main className="container mx-auto flex flex-col gap-10 px-10 gap-y-16">
                 <section className="flex flex-col gap-4 p-8 rounded-3xl bg-gradient-to-r from-blue-950 from-60% to-90% to-green-800">
                     <section className="flex flex-col gap-4">
                         <h2 className="text-5xl leading-tight font-bold mb-5 text-white">
@@ -139,8 +139,8 @@ const Dashboard = (): ReactNode => {
                         </h3>
                         {isCreator ? (
                             <Slider
-                                desktopItems={3}
-                                smallDesktopItems={3}
+                                desktopItems={2}
+                                smallDesktopItems={2}
                                 tabletItems={1}
                                 mobileItems={1}
                                 showDots={false}
@@ -166,15 +166,6 @@ const Dashboard = (): ReactNode => {
                                 </ScoreCard>
                                 <ScoreCard title="Total guides created">
                                     {guidesCreated?.res?.length}
-                                </ScoreCard>
-                                <ScoreCard title="Total earnings">
-                                    $
-                                    {totalCount(
-                                        data?.res as {
-                                            count: number
-                                            data: string
-                                        }[]
-                                    ) * VALUE_PER_VIEW}
                                 </ScoreCard>
                             </Slider>
                         ) : (
@@ -255,6 +246,14 @@ const Dashboard = (): ReactNode => {
                         </div>
                     )}
                 </section>
+                {!isCreator && (
+                    <section className="flex flex-col gap-4">
+                        <h3 className="text-3xl font-bold">
+                            Bookmarked guides
+                        </h3>
+                        <PanelGuideList filter="bookmarked" />
+                    </section>
+                )}
             </main>
             <Footer />
         </div>

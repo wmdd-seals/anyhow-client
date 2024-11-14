@@ -68,11 +68,15 @@ function Header(): ReactNode {
                         </>
                     ) : (
                         <>
-                            <Button className="bg-none text-slate-700 underline">
-                                About us
-                            </Button>
-                            <Button
+                            <Link
+                                to="/aboutus"
                                 className="bg-none text-slate-700 underline"
+                            >
+                                About us
+                            </Link>
+                            <Button
+                                kind="destructive"
+                                className="bg-none text-slate-700 underline font-normal"
                                 onClick={() => navigate('/login')}
                             >
                                 Login
