@@ -1,7 +1,7 @@
 import { Button } from 'src/shared/ui'
 import type { ReactNode } from 'react'
 import { useAuth } from '@shared/lib'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 export function Footer(): ReactNode {
     const { isAuthenticated } = useAuth()
     const navigate = useNavigate()
@@ -16,24 +16,25 @@ export function Footer(): ReactNode {
                     />
                 </div>
                 <div className="flex flex-col sm:flex-row w-full sm:w-1/2 sm:justify-end sm:pr-12 gap-4">
-                    <Button onClick={() => navigate('/aboutus')}>
+                    <Link
+                        to="/aboutus"
+                        className="underline flex items-center font-semibold    "
+                    >
                         About Us
-                    </Button>
+                    </Link>
                     {!isAuthenticated && (
-                        <>
+                        <div className="flex gap-4 items-center font-semibold">
                             <Button
-                                onClick={() => navigate('/signup')}
-                                className="bg-none text-white underline"
-                            >
-                                Sign up
-                            </Button>
-                            <Button
+                                kind="destructive"
                                 onClick={() => navigate('/login')}
                                 className="bg-none text-white underline"
                             >
                                 Sign in
                             </Button>
-                        </>
+                            <Button onClick={() => navigate('/signup')}>
+                                Sign up
+                            </Button>
+                        </div>
                     )}
                 </div>
             </div>
