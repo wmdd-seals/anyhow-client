@@ -27,7 +27,7 @@ export function HomePage(): ReactNode {
                         <SliderGuideList />
                     </div>
                     {!isAuthenticated && (
-                        <div className="mt-20 w-full aspect-square md:aspect-[3/2] lg:aspect-[3/1] xl:aspect-[4/1] relative max-w-[1500px] mx-auto">
+                        <div className="mt-20 w-full aspect-square md:aspect-[3/2] lg:aspect-[3/1] xl:aspect-[4/1] max-h-[550px] relative mx-auto">
                             <img
                                 src="/bg-img4.jpeg"
                                 alt="bg-img"
