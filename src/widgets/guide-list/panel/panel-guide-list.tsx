@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import type { Guide } from '@gqlgen/graphql'
 import { type ReactNode, useState } from 'react'
+import { useAuth } from '@shared/lib'
 import { Card } from 'src/entities/guide'
 import { getGuideProgress } from 'src/entities/guide'
 import { ChevronDown } from 'react-feather'
@@ -27,6 +28,7 @@ const GET_GUIDES_WITH_USER = graphql(`
 `)
 
 export function PanelGuideList(): ReactNode {
+    const { isAuthenticated } = useAuth()
     const { data, loading, error } = useQuery(GET_GUIDES_WITH_USER)
 
     const [sortOption, setSortOption] = useState<string>('Newest First')
@@ -98,7 +100,11 @@ export function PanelGuideList(): ReactNode {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-10">
                     {sortedGuides?.map((guide, index) => (
                         <div key={index}>
-                            <Card key={index} guide={guide as Guide} />
+                            <Card
+                                isAuthenticated={isAuthenticated}
+                                key={index}
+                                guide={guide as Guide}
+                            />
                         </div>
                     ))}
                 </div>
