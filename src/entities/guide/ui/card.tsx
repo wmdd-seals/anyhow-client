@@ -5,6 +5,7 @@ import markdownToTxt from 'markdown-to-txt'
 import type { Guide } from '@gqlgen/graphql'
 import { copyToClipboard } from '../lib'
 import { useAuth } from '@shared/lib'
+import { getGuideProgress } from 'src/entities/guide'
 
 interface CardComponentProps {
     guide: Guide
@@ -20,6 +21,9 @@ const Card: React.FC<CardComponentProps> = ({
     const { setToast } = useAuth()
     const [imageSrc, setImageSrc] = useState<string | null>(null)
     const coverImgUrl = `${import.meta.env.VITE_API_URL}/images/${guide.id}`
+    const readingTime = Math.ceil(
+        (getGuideProgress(guide.body || '') * 60) / 100
+    )
 
     useEffect(() => {
         const fetchImage = async (): Promise<void> => {
@@ -68,10 +72,13 @@ const Card: React.FC<CardComponentProps> = ({
             <div className="flex flex-col p-4 w-full">
                 {cardType === 'default' && (
                     <div className="flex flex-col w-full">
-                        <div className="flex w-full min-h-[32px]">
+                        <div className="flex justify-between w-full min-h-[32px]">
                             <div>
                                 {guide.user?.firstName} {guide.user?.lastName}
                             </div>
+                            <p className="text-any-gray-500">
+                                {readingTime} min
+                            </p>
                         </div>
                     </div>
                 )}
@@ -81,6 +88,7 @@ const Card: React.FC<CardComponentProps> = ({
                 >
                     {guide.title}
                 </Link>
+
                 <p className="my-2 text-base tracking-normal leading-6 text-slate-500 line-clamp-3">
                     {markdownToTxt(guide.body ?? '')}
                 </p>
