@@ -15,7 +15,8 @@
         "graphql:watch": "graphql-codegen --watch",
         "types:check": "tsc --noEmit",
         "lint:check": "eslint .",
-        "format:check": "prettier ./src --check"
+        "format:check": "prettier ./src --check",
+        "start": "npm run build & vite preview"
     },
     "author": "",
     "license": "ISC",
