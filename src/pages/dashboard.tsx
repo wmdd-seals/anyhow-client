@@ -83,7 +83,6 @@ const GUIDE_VIEWED_COUNTS = graphql(`
 const Dashboard = (): ReactNode => {
     const { user, isAuthenticated } = useAuth()
 
-    const VALUE_PER_VIEW = 0.01
     const location = useLocation()
     const isCreator =
         (location.state as { isCreator: boolean }).isCreator || false
