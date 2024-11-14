@@ -5,10 +5,10 @@ export function TeamIntroduction(): ReactNode {
         { name: 'Luis Perez', role: 'Lead Designer' },
         { name: 'Rasul Omarov', role: 'Lead Developer' },
         { name: 'Ziruo Zhang', role: 'Designer - Project Manager' },
-        { name: 'Tomoki Kaneko', role: 'Designer' },
+        { name: 'Tomoki Kaneko', role: 'Developer' },
         { name: 'Carolina Gomes', role: 'Designer' },
         { name: 'Natsuko Ogata', role: 'Developer' },
-        { name: 'Raul Diaz', role: 'Developer' },
+        { name: 'Raul Diaz', role: 'Designer' },
         { name: 'Uma Voleti', role: 'Developer' },
         { name: 'Hanbee Choi', role: 'Designer' }
     ]
