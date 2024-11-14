@@ -6,7 +6,7 @@ import { useAuth } from '@shared/lib'
 import { Card } from 'src/entities/guide'
 import { getGuideProgress } from 'src/entities/guide'
 import { ChevronDown } from 'react-feather'
-import { Loading } from '@widgets/loading'
+import { Loading, MediumLoading } from '@widgets/loading'
 
 const GET_GUIDES_WITH_USER = graphql(`
     query PanelGuides {
@@ -68,7 +68,12 @@ export function PanelGuideList(): ReactNode {
         }
     })
 
-    if (loading) return <Loading />
+    if (loading)
+        return (
+            <div className="h-full w-full flex items-center justify-center py-20">
+                <MediumLoading />
+            </div>
+        )
     if (error || !data?.res || data.res.length === 0)
         return <div>Error: {error?.message}</div>
 
