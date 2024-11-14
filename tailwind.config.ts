@@ -55,6 +55,12 @@ export default {
                         950: '#202224'
                     }
                 }
+            },
+            clipPath: {
+                'top-right': 'polygon(0 0, 90% 0, 100% 100%, 0 100%)',
+                'top-left': 'polygon(0 10%, 100% 0, 100% 100%, 0 100%)',
+                'bottom-left': 'polygon(0 0, 100% 0, 100% 100%, 10% 100%)',
+                'bottom-right': 'polygon(0 0, 100% 0, 100% 90%, 0 100%)'
             }
         }
     },

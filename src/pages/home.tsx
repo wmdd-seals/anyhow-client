@@ -6,7 +6,7 @@ import { SliderGuideList } from '@widgets/guide-list'
 import { PanelGuideList } from '@widgets/guide-list'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@shared/lib'
-import { HeroSlider } from '@widgets/hero-section'
+import { HeroSlider } from '@widgets/hero-slider'
 
 export function HomePage(): ReactNode {
     const { isAuthenticated } = useAuth()
