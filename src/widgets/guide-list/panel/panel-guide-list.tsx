@@ -28,7 +28,11 @@ const GET_GUIDES_WITH_USER = graphql(`
     }
 `)
 
-export function PanelGuideList(): ReactNode {
+type PanelGuideListProps = {
+    filter?: 'bookmarked' | 'all'
+}
+
+export function PanelGuideList({ filter }: PanelGuideListProps): ReactNode {
     const { isAuthenticated } = useAuth()
     const { data, loading, error } = useQuery(GET_GUIDES_WITH_USER)
 
@@ -68,6 +72,11 @@ export function PanelGuideList(): ReactNode {
         }
     })
 
+    const filteredGuides =
+        filter === 'bookmarked'
+            ? sortedGuides?.filter(guide => guide.bookmark)
+            : sortedGuides
+
     if (loading)
         return (
             <div className="h-full w-full flex items-center justify-center py-20">
@@ -80,7 +89,7 @@ export function PanelGuideList(): ReactNode {
     return (
         <>
             {/* dropdown menu for sorting*/}
-            <div className="container px-6 md:px-0 mx-auto my-16 flex flex-col gap-5">
+            <div className="container px-6 md:px-0 mx-auto flex flex-col gap-5">
                 <div className="flex justify-end">
                     <span className="relative">
                         <select
@@ -104,7 +113,7 @@ export function PanelGuideList(): ReactNode {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-10">
-                    {sortedGuides?.map((guide, index) => (
+                    {filteredGuides?.map((guide, index) => (
                         <Card
                             isAuthenticated={isAuthenticated}
                             key={index}
