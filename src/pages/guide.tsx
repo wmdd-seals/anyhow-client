@@ -16,6 +16,7 @@ import { GET_GUIDE_COMPLETED_LIST } from '@widgets/quiz-challenge/api/get-guide-
 import { ArrowRight, Bookmark, Zap } from 'react-feather'
 import { ThumbsUp, ThumbsDown } from 'react-feather'
 import { useAuth } from '@shared/lib'
+import { Loading } from '@widgets/loading'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -215,7 +216,7 @@ export function GuidePage(): ReactNode {
         })
     }, [params.id])
 
-    if (loading) return 'Loading...'
+    if (loading) return <Loading />
 
     if (error || !data?.res) return 'Something went wrong...'
 

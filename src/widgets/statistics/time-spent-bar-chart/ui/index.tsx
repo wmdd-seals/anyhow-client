@@ -5,6 +5,7 @@ import { ResponsiveBar } from '@nivo/bar'
 import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import { ArrowLeft, ArrowRight } from 'react-feather'
+import { SmallLoading } from '@widgets/loading'
 
 type BarChartProps = {
     data: {
@@ -92,7 +93,7 @@ function TimeSpentBarChart({
                     loading ? 'opacity-100' : 'opacity-0'
                 }`}
             >
-                <p>Loading</p>
+                <SmallLoading />
             </div>
             {!loading && counts?.res.length && (
                 <>

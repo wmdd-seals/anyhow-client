@@ -6,6 +6,7 @@ import { useAuth } from '@shared/lib'
 import { Card } from 'src/entities/guide'
 import { getGuideProgress } from 'src/entities/guide'
 import { ChevronDown } from 'react-feather'
+import { Loading } from '@widgets/loading'
 
 const GET_GUIDES_WITH_USER = graphql(`
     query PanelGuides {
@@ -67,7 +68,7 @@ export function PanelGuideList(): ReactNode {
         }
     })
 
-    if (loading) return <div>Loading...</div>
+    if (loading) return <Loading />
     if (error || !data?.res || data.res.length === 0)
         return <div>Error: {error?.message}</div>
 

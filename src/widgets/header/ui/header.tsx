@@ -7,6 +7,7 @@ import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen/gql'
 import { DropdownMenuForDesktop } from '@widgets/menu'
 import { PopupMenuForMobile } from '@widgets/menu'
+import { Loading } from '@widgets/loading'
 const FETCH_USER = graphql(`
     query User {
         user {
@@ -26,7 +27,7 @@ function Header(): ReactNode {
     const { data, loading } = useQuery(FETCH_USER)
     const user = data?.user
 
-    if (loading) return <div>Loading...</div>
+    if (loading) return <Loading />
 
     return (
         <header className="bg-white text-white p-4 sticky top-0 z-[1]">

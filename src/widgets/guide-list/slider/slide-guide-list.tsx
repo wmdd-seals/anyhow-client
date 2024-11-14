@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client'
 import { Slider } from 'src/shared/ui'
 import { graphql } from '@gqlgen'
 import type { Guide } from '@gqlgen/graphql'
+import { Loading } from '@widgets/loading'
 
 const GET_GUIDES_WITH_USER = graphql(`
     query SlideGuides {
@@ -27,7 +28,7 @@ const GET_GUIDES_WITH_USER = graphql(`
 export function SliderGuideList(): ReactNode {
     const { data, loading, error } = useQuery(GET_GUIDES_WITH_USER)
 
-    if (loading) return <div>Loading...</div>
+    if (loading) return <Loading />
     if (error || !data?.res || data.res.length === 0)
         return <div>Error: {error?.message}</div>
 

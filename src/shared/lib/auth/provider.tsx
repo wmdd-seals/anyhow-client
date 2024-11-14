@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client'
 import { graphql } from '@gqlgen'
 import type { User } from '@gqlgen/graphql'
 import Toast from '@shared/ui/toast'
+import { Loading } from '@widgets/loading'
 
 export type UserContextType = {
     authToken: string | null
@@ -69,13 +70,7 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
         setIsAuthenticated(false)
     }
 
-    if (loading)
-        // TODO Switch it to svg which Bee created
-        return (
-            <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-900 to-green-300">
-                <img src="/logo.svg" alt="logo" className="w-96 h-96" />
-            </div>
-        )
+    if (loading) return <Loading />
 
     return (
         <UserContext.Provider
