@@ -8,5 +8,8 @@ export default defineConfig({
     test: {
         globals: true,
         environment: 'jsdom'
+    },
+    server: {
+        port: parseInt(process.env.PORT ?? '5173')
     }
 })
