@@ -42,7 +42,7 @@ const Card: React.FC<CardComponentProps> = ({
     }, [coverImgUrl])
 
     return (
-        <div className="flex overflow-hidden flex-col bg-white rounded-2xl border-2 box-border border-gray-100 border-solid w-full">
+        <div className="grid grid-cols-1 grid-rows-subgrid  row-span-2 overflow-hidden bg-white rounded-2xl border-2 box-border border-gray-100 border-solid relative pb-11 gap-3">
             <div className="flex overflow-hidden flex-col justify-center items-center w-full bg-blue-900 bg-gradient-to-b from-blue-900 to-black h-36">
                 {imageSrc ? (
                     <div className="flex justify-center items-center w-full h-full">
@@ -69,9 +69,9 @@ const Card: React.FC<CardComponentProps> = ({
                     </div>
                 )}
             </div>
-            <div className="flex flex-col p-4 w-full">
+            <div className="grid auto-rows-auto grid-flow-row-dense p-4 w-full">
                 {cardType === 'default' && (
-                    <div className="flex flex-col w-full">
+                    <div className="w-full">
                         <div className="flex justify-between w-full min-h-[32px]">
                             <div>
                                 {guide.user?.firstName} {guide.user?.lastName}
@@ -84,59 +84,56 @@ const Card: React.FC<CardComponentProps> = ({
                 )}
                 <Link
                     to={`/${guide.id}`}
-                    className="text-2xl font-bold leading-tight text-gray-700"
+                    className="text-2xl font-bold leading-tight text-gray-700 h-fit line-clamp-1"
                 >
                     {guide.title}
                 </Link>
 
-                <p className="my-2 text-base tracking-normal leading-6 text-slate-500 line-clamp-3">
+                <p className="my-2 text-base tracking-normal leading-6 text-slate-500 h-[72px] line-clamp-3">
                     {markdownToTxt(guide.body ?? '')}
                 </p>
-                <div className="flex justify-between items-center">
-                    {!!guide.rating && guide.rating > 0 && (
-                        <div className="flex items-center gap-2">
-                            <ThumbsUp
+                {!!guide.rating && guide.rating > 0 && (
+                    <div className="flex items-center gap-2 absolute left-4 bottom-4">
+                        <ThumbsUp
+                            className="w-5 h-5"
+                            fill={
+                                typeof guide.liked === 'boolean' && guide.liked
+                                    ? '#000'
+                                    : '#fff'
+                            }
+                        />
+                        <p className="h-full mt-1 flex items-center text-xs align-middle text-gray-500">
+                            {guide.rating}% Positive
+                        </p>
+                    </div>
+                )}
+                <div className="flex items-center gap-2 absolute bottom-4 right-4">
+                    {isAuthenticated && (
+                        <button>
+                            <Bookmark
                                 className="w-5 h-5"
                                 fill={
-                                    typeof guide.liked === 'boolean' &&
-                                    guide.liked
+                                    typeof guide.bookmark === 'boolean' &&
+                                    guide.bookmark
                                         ? '#000'
                                         : '#fff'
                                 }
                             />
-                            <p className="h-full mt-1 flex items-center text-xs align-middle text-gray-500">
-                                {guide.rating}% Positive
-                            </p>
-                        </div>
-                    )}
-                    <div className="flex items-center gap-2">
-                        {isAuthenticated && (
-                            <button>
-                                <Bookmark
-                                    className="w-5 h-5"
-                                    fill={
-                                        typeof guide.bookmark === 'boolean' &&
-                                        guide.bookmark
-                                            ? '#000'
-                                            : '#fff'
-                                    }
-                                />
-                            </button>
-                        )}
-                        <button
-                            onClick={async () => {
-                                await copyToClipboard(
-                                    `${window.location.origin}/${guide.id}`
-                                )
-                                setToast({
-                                    visible: true,
-                                    message: 'Copied to clipboard'
-                                })
-                            }}
-                        >
-                            <Share2 className="w-5 h-5" />
                         </button>
-                    </div>
+                    )}
+                    <button
+                        onClick={async () => {
+                            await copyToClipboard(
+                                `${window.location.origin}/${guide.id}`
+                            )
+                            setToast({
+                                visible: true,
+                                message: 'Copied to clipboard'
+                            })
+                        }}
+                    >
+                        <Share2 className="w-5 h-5" />
+                    </button>
                 </div>
             </div>
         </div>

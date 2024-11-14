@@ -27,10 +27,19 @@ const GUIDE_COMPLETED_HISTORY = graphql(`
     query GuideCompletedList {
         res: guideCompletedList {
             guide {
+                body
+                createdAt
                 description
                 id
+                bookmark
+                liked
+                rating
                 tags
                 title
+                user {
+                    firstName
+                    lastName
+                }
             }
             createdAt
             id
@@ -71,7 +80,7 @@ const GUIDE_VIEWED_COUNTS = graphql(`
 `)
 
 const Dashboard = (): ReactNode => {
-    const { user } = useAuth()
+    const { user, isAuthenticated } = useAuth()
 
     const VALUE_PER_VIEW = 0.01
     const location = useLocation()
@@ -238,8 +247,8 @@ const Dashboard = (): ReactNode => {
                             {historyData?.res.map((h, index) => (
                                 <Card
                                     key={index}
-                                    cardType="simple"
                                     guide={h.guide as Guide}
+                                    isAuthenticated={isAuthenticated}
                                 />
                             ))}
                         </div>
