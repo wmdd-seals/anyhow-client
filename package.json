@@ -1,7 +1,7 @@
 {
     "name": "anyhow-client",
     "version": "0.1.0",
-    "description": "",
+    "description": "anyhow",
     "main": "index.js",
     "type": "module",
     "scripts": {
