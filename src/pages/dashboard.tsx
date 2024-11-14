@@ -139,8 +139,8 @@ const Dashboard = (): ReactNode => {
                         </h3>
                         {isCreator ? (
                             <Slider
-                                desktopItems={3}
-                                smallDesktopItems={3}
+                                desktopItems={2}
+                                smallDesktopItems={2}
                                 tabletItems={1}
                                 mobileItems={1}
                                 showDots={false}
@@ -166,15 +166,6 @@ const Dashboard = (): ReactNode => {
                                 </ScoreCard>
                                 <ScoreCard title="Total guides created">
                                     {guidesCreated?.res?.length}
-                                </ScoreCard>
-                                <ScoreCard title="Total earnings">
-                                    $
-                                    {totalCount(
-                                        data?.res as {
-                                            count: number
-                                            data: string
-                                        }[]
-                                    ) * VALUE_PER_VIEW}
                                 </ScoreCard>
                             </Slider>
                         ) : (
