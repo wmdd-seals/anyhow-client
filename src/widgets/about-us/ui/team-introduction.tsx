@@ -29,7 +29,7 @@ export function TeamIntroduction(): ReactNode {
                         className="flex md:flex-col rounded-lg shadow-lg "
                     >
                         <img
-                            src={`../../avatar-${member.name.toLowerCase().replace(' ', '-')}.webp`}
+                            src={`/avatar-${member.name.toLowerCase().replace(' ', '-')}.webp`}
                             alt={member.name}
                             className="w-1/2 md:w-full h-auto md:h-1/2 object-contain rounded-lg bg-gray-100 p-10"
                         />

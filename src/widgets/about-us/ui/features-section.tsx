@@ -5,7 +5,7 @@ export function FeaturesSection(): ReactNode {
         <section
             className=" bg-any-purple-500 text-white flex flex-col gap-10 items-center py-16 px-5"
             style={{
-                backgroundImage: `linear-gradient(rgba(30, 22, 71, 0.8), rgba(30,22, 71, 0.8)), url('../../features-bg-pattern.webp')`
+                backgroundImage: `linear-gradient(rgba(30, 22, 71, 0.8), rgba(30,22, 71, 0.8)), url('/features-bg-pattern.webp')`
             }}
         >
             <h2 className="text-center text-3xl md:text-5xl font-bold">
@@ -16,7 +16,7 @@ export function FeaturesSection(): ReactNode {
                 <div className="flex flex-col lg:flex-row lg:justify-center  rounded-lg">
                     <div className="relative lg:w-1/2">
                         <img
-                            src="../../feature1.webp"
+                            src="/feature1.webp"
                             alt="user photo"
                             className="h-auto object-cover rounded-lg relative clip-path-bottom-right lg:clip-path-top-right"
                         />
@@ -53,7 +53,7 @@ export function FeaturesSection(): ReactNode {
                         </p>
                     </div>
                     <img
-                        src="../../feature2.webp"
+                        src="/feature2.webp"
                         alt="user photo"
                         className="h-auto object-cover rounded-lg clip-path-bottom-right lg:clip-path-top-right lg:w-1/2"
                     />
@@ -62,7 +62,7 @@ export function FeaturesSection(): ReactNode {
                 {/* 3rd Feature */}
                 <div className="flex flex-col lg:flex-row lg:justify-center rounded-lg">
                     <img
-                        src="../../feature3.webp"
+                        src="/feature3.webp"
                         alt="user photo"
                         className="lg:w-1/2 h-auto object-cover rounded-lg clip-path-bottom-right lg:clip-path-top-right"
                     />
@@ -97,7 +97,7 @@ export function FeaturesSection(): ReactNode {
                         </p>
                     </div>
                     <img
-                        src="../../feature4.webp"
+                        src="/feature4.webp"
                         alt="user photo"
                         className="lg:w-1/2 h-auto object-cover rounded-lg clip-path-bottom-right lg:clip-path-top-right"
                     />

@@ -18,7 +18,7 @@ export function DescriptionSection(): ReactNode {
                 {/* 1st image */}
                 <div className="flex-1 relative overflow-hidden rounded-lg">
                     <img
-                        src="../../bg-img5.webp"
+                        src="/bg-img5.webp"
                         alt="Quick learning"
                         className="w-full object-cover aspect-[2/3] md:aspect-[7/5] lg:aspect-[6/5] lg:clip-path-top-right clip-path-bottom-right"
                     />
@@ -39,7 +39,7 @@ export function DescriptionSection(): ReactNode {
                 {/* 2nd image */}
                 <div className="flex-1 relative">
                     <img
-                        src="../../bg-img6.webp"
+                        src="/bg-img6.webp"
                         alt="Share knowledge"
                         className="rounded-lg w-full object-cover aspect-[2/3] md:aspect-[7/5] lg:aspect-[6/5] clip-path-top-left lg:clip-path-bottom-left"
                     />
