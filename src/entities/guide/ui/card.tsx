@@ -20,7 +20,7 @@ const Card: React.FC<CardComponentProps> = ({
 }) => {
     const { setToast } = useAuth()
     const [imageSrc, setImageSrc] = useState<string | null>(null)
-    const coverImgUrl = `${import.meta.env.VITE_API_URL}/images/${guide.id}`
+    const coverImgUrl = `${import.meta.env.VITE_API_URL}images/${guide.id}`
     const readingTime = Math.ceil(
         (getGuideProgress(guide.body || '') * 60) / 100
     )
@@ -45,12 +45,12 @@ const Card: React.FC<CardComponentProps> = ({
         <div className="flex overflow-hidden flex-col bg-white rounded-2xl border-2 box-border border-gray-100 border-solid w-full">
             <div className="flex overflow-hidden flex-col justify-center items-center w-full bg-blue-900 bg-gradient-to-b from-blue-900 to-black h-36">
                 {imageSrc ? (
-                    <div className="flex justify-center items-center w-full">
+                    <div className="flex justify-center items-center w-full h-full">
                         <img
                             loading="lazy"
                             src={imageSrc}
                             alt=""
-                            className="object-contain w-36 aspect-square"
+                            className="object-cover w-full"
                         />
                     </div>
                 ) : (

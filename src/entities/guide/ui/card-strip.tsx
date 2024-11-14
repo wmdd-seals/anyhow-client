@@ -43,7 +43,7 @@ const GUIDE_VIEW_COUNT_BY_GUIDE_ID = graphql(`
 export function CardStrip({ guide, refetch }: CardStripProps): ReactNode {
     const { id, title, createdAt, published, rating } = guide
     const [imageSrc, setImageSrc] = useState<string | null>(null)
-    const coverImgUrl = `${import.meta.env.VITE_API_URL}/images/${id}`
+    const coverImgUrl = `${import.meta.env.VITE_API_URL}images/${id}`
     const navigate = useNavigate()
     const { data: viewCount } = useQuery(GUIDE_VIEW_COUNT_BY_GUIDE_ID, {
         variables: { input: { guideId: id! } }
@@ -70,14 +70,14 @@ export function CardStrip({ guide, refetch }: CardStripProps): ReactNode {
 
     return (
         <div className="flex flex-col md:flex-row items-center justify-between w-full border-b-0 md:border-b rounded-lg md:rounded-none border-any-gray-200 gap-y-3 md:gap-y-0 p-4 md:py-4 md:px-0 shadow-xl md:shadow-none">
-            <div className="h-16 w-full md:w-1/3 flex items-center gap-4 overflow-y-hidden">
+            <div className="h-16 w-full md:w-1/3 flex items-center gap-4 overflow-hidden">
                 {imageSrc ? (
                     <div className="flex justify-center items-center h-full aspect-[1/0.64] rounded-md overflow-hidden relative">
                         <img
                             loading="lazy"
                             src={imageSrc}
                             alt=""
-                            className="object-contain w-36 aspect-square"
+                            className="object-cover w-full h-full"
                         />
                     </div>
                 ) : (
