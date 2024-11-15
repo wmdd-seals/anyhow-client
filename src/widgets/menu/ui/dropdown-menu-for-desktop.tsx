@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { CreateGuideButton } from 'src/features/create-guide'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Edit, Clock, BarChart, User, LogOut } from 'react-feather'
+import { Edit, Clock, BarChart, LogOut } from 'react-feather'
 import { useAuth } from '@shared/lib'
 import { Button } from '@shared/ui'
 
