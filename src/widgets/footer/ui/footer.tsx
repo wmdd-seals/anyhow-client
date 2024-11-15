@@ -6,7 +6,7 @@ export function Footer(): ReactNode {
     const { isAuthenticated } = useAuth()
     const navigate = useNavigate()
     return (
-        <footer className="flex flex-col justify-between bg-ah-bg-purple text-white items-center px-4 py-12 gap-4">
+        <footer className="flex flex-col justify-between bg-ah-bg-purple text-white items-center px-4 py-12 gap-4 mt-auto">
             <div className="container mx-auto flex flex-col sm:flex-row justify-between w-full gap-4">
                 <div className="flex items-center mb-4 sm:mb-0 justify-center sm:justify-start w-full md:w-1/2">
                     <img
