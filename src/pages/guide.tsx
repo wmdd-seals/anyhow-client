@@ -247,7 +247,10 @@ export function GuidePage(): ReactNode {
                     </span>
 
                     <div className="flex items-center gap-3 font-bold mb-8">
-                        <div className="size-10 rounded-full bg-gray-200" />
+                        <div className="flex items-center justify-center rounded-full w-10 h-10 bg-slate-200 text-slate-800 space-x-1">
+                            {data.res.user!.firstName[0].toUpperCase() +
+                                data.res.user!.lastName[0].toUpperCase()}
+                        </div>
                         <div>
                             {data.res.user!.firstName} {data.res.user!.lastName}
                         </div>
