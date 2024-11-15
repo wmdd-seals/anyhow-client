@@ -61,6 +61,15 @@ const REMOVE_BOOKMARK_MUTATION = graphql(`
     }
 `)
 
+const GUIDE_VIEWS_QUERY = graphql(`
+    query GuideViewCountByGuide($input: GuideViewCountByGuideIdInput!) {
+        res: guideViewCountByGuideId(input: $input) {
+            count
+            guideId
+        }
+    }
+`)
+
 const STORE_GUIDE_VIEW_MUTATION = graphql(`
     mutation StoreGuideView($input: GuideViewInput!) {
         storeGuideView(input: $input) {
@@ -78,12 +87,17 @@ export function GuidePage(): ReactNode {
     const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
     const [storeGuideViewMutation] = useMutation(STORE_GUIDE_VIEW_MUTATION)
 
-    if (!params.id) return 'Guide not found'
-
     const { data, loading, error } = useQuery(GUIDE_QUERY, {
-        variables: { id: params.id },
+        variables: { id: params.id! },
         skip: !params.id
     })
+
+    const { data: guideViewsData } = useQuery(GUIDE_VIEWS_QUERY, {
+        variables: { input: { guideId: params.id! } },
+        skip: !params.id
+    })
+
+    const guideViews = guideViewsData?.res.count || 0
 
     const [sidebar, setSidebar] = useState<boolean>(false)
 
@@ -108,7 +122,7 @@ export function GuidePage(): ReactNode {
 
     const [addBookmarkMutation, { loading: addingBookmarkLoading }] =
         useMutation(ADD_BOOKMARK_MUTATION, {
-            variables: { input: { guideId: params.id } },
+            variables: { input: { guideId: params.id! } },
             update: (cache, _, { variables }) => {
                 if (!variables) return
 
@@ -127,7 +141,7 @@ export function GuidePage(): ReactNode {
 
     const [removeBookmarkMutation, { loading: removingBookmarkLoading }] =
         useMutation(REMOVE_BOOKMARK_MUTATION, {
-            variables: { input: { guideId: params.id } },
+            variables: { input: { guideId: params.id! } },
             update: (cache, _, { variables }) => {
                 if (!variables) return
 
@@ -147,7 +161,7 @@ export function GuidePage(): ReactNode {
     const [revokeGuideReviewMutation] = useMutation(
         REVOKE_GUIDE_REVIEW_MUTATION,
         {
-            variables: { input: { id: params.id } },
+            variables: { input: { id: params.id! } },
             update: cache => {
                 cache.modify({
                     id: `Guide:${params.id!}`,
@@ -200,7 +214,7 @@ export function GuidePage(): ReactNode {
 
     const { data: quizInfo } = useQuery(GET_QUIZ_ID_QUERY, {
         variables: {
-            guideId: params.id
+            guideId: params.id!
         },
         skip: !params
     })
@@ -214,7 +228,9 @@ export function GuidePage(): ReactNode {
         void storeGuideViewMutation({
             variables: { input: { guideId: params.id } }
         })
-    }, [params.id])
+    }, [])
+
+    if (!params.id) return 'Guide not found'
 
     if (loading) return <Loading />
 
@@ -229,14 +245,16 @@ export function GuidePage(): ReactNode {
 
             <main className="grow p-6">
                 <article className="max-w-[50rem] w-full mx-auto flex flex-col py-16">
-                    <Button
-                        onClick={(): void => setSidebar(true)}
-                        size="small"
-                        className="max-sm:fixed sticky right-5 max-sm:bottom-5 md:top-[10rem] ml-auto w-fit border-2 border-white"
-                    >
-                        Ask Any
-                        <Zap className="size-5" />
-                    </Button>
+                    {isAuthenticated && (
+                        <Button
+                            onClick={(): void => setSidebar(true)}
+                            size="small"
+                            className="max-sm:fixed sticky right-5 max-sm:bottom-5 md:top-[10rem] ml-auto w-fit border-2 border-white"
+                        >
+                            Ask Any
+                            <Zap className="size-5" />
+                        </Button>
+                    )}
 
                     <h1 className="text-5xl font-bold mb-8 text-center">
                         {data.res.title}
@@ -253,6 +271,10 @@ export function GuidePage(): ReactNode {
                         </div>
                         <div>
                             {data.res.user!.firstName} {data.res.user!.lastName}
+                        </div>
+
+                        <div className="ml-auto text-sm font-normal">
+                            {guideViews} views
                         </div>
                     </div>
 
