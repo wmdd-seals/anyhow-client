@@ -4,7 +4,7 @@ import { useSaveFavoriteTopics } from '../api/use-save-favorite-topics'
 import { useNavigate } from 'react-router-dom'
 
 const popularTags = [
-    'Arts',
+    'Art',
     'Photography',
     'Data Science',
     'Software Development',
@@ -13,7 +13,7 @@ const popularTags = [
     'Health & Wellness',
     'Foreign Languages',
     'Fashion Design',
-    'Pet Care & Training',
+    'Pet & Training',
     'Travel & Tourism',
     'Childcare & Early Education',
     'Psychology',

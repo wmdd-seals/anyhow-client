@@ -42,6 +42,7 @@ const documents = {
     "\n    mutation UploadGuideImage($input: FileInfo!) {\n        res: uploadImage(input: $input) {\n            id\n        }\n    }\n": types.UploadGuideImageDocument,
     "\n    mutation GuideChat($input: GuideChatRequest) {\n        res: guideChat(input: $input) {\n            content\n            role\n        }\n    }\n": types.GuideChatDocument,
     "\n    query ChatMessages($guideId: String!) {\n        res: chathistory(guideId: $guideId) {\n            content\n            role\n        }\n    }\n": types.ChatMessagesDocument,
+    "\n    query GetFavoriteTopics {\n        res: user {\n            favoriteTopics\n        }\n    }\n": types.GetFavoriteTopicsDocument,
     "\n    query PanelGuides {\n        res: guides(published: true) {\n            body\n            createdAt\n            description\n            id\n            bookmark\n            liked\n            rating\n            tags\n            title\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n": types.PanelGuidesDocument,
     "\n    query SlideGuides {\n        res: guides(published: true) {\n            body\n            description\n            id\n            title\n            bookmark\n            liked\n            rating\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n": types.SlideGuidesDocument,
     "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n": types.SaveFavoriteTopicsDocument,
@@ -188,7 +189,10 @@ export function graphql(source: "\n    query PanelGuides {\n        res: guides(
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+
+export function graphql(source: "\n    query GetFavoriteTopics {\n        res: user {\n            favoriteTopics\n        }\n    }\n"): (typeof documents)["\n    query GetFavoriteTopics {\n        res: user {\n            favoriteTopics\n        }\n    }\n"];
 export function graphql(source: "\n    query SlideGuides {\n        res: guides(published: true) {\n            body\n            description\n            id\n            title\n            bookmark\n            liked\n            rating\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n"): (typeof documents)["\n    query SlideGuides {\n        res: guides(published: true) {\n            body\n            description\n            id\n            title\n            bookmark\n            liked\n            rating\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n"];
+
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
