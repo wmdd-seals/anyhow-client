@@ -8,7 +8,7 @@ import { MediumLoading } from '@widgets/loading'
 
 const GET_GUIDES_WITH_USER = graphql(`
     query SlideGuides {
-        res: guides {
+        res: guides(published: true) {
             body
             description
             id
