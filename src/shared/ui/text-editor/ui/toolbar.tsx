@@ -255,12 +255,12 @@ function BlockFormatDropDown({
 
 export function ToolbarPlugin(props: {
     className?: string
-    blockEditing?: boolean
     onImageUpload(image: File): Promise<string>
 }): JSX.Element {
     const { className, onImageUpload } = props
 
     const [editor] = useLexicalComposerContext()
+
     const [activeEditor, setActiveEditor] = useState(editor)
     const [blockType, setBlockType] =
         useState<keyof typeof blockTypeToBlockName>('paragraph')

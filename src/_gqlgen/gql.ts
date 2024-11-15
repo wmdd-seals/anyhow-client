@@ -32,18 +32,19 @@ const documents = {
     "\n    mutation RevokeGuideReview($input: RevokeGuideReviewInput!) {\n        res: revokeGuideReview(input: $input)\n    }\n": types.RevokeGuideReviewDocument,
     "\n    mutation AddBookmark($input: AddBookmarkInput!) {\n        res: addBookmark(input: $input)\n    }\n": types.AddBookmarkDocument,
     "\n    mutation RemoveBookmark($input: RemoveBookmarkInput!) {\n        res: removeBookmark(input: $input)\n    }\n": types.RemoveBookmarkDocument,
+    "\n    query GuideViewCountByGuide($input: GuideViewCountByGuideIdInput!) {\n        res: guideViewCountByGuideId(input: $input) {\n            count\n            guideId\n        }\n    }\n": types.GuideViewCountByGuideDocument,
     "\n    mutation StoreGuideView($input: GuideViewInput!) {\n        storeGuideView(input: $input) {\n            createdAt\n            guideId\n            id\n            userId\n        }\n    }\n": types.StoreGuideViewDocument,
     "\n    query SignIn($input: UserSignInInput) {\n        signIn(input: $input) {\n            message\n            token\n        }\n    }\n": types.SignInDocument,
     "\n    mutation SignupUser($input: UserCreateInput!) {\n        signupUser(input: $input) {\n            id\n        }\n    }\n": types.SignupUserDocument,
     "\n    query User {\n        user {\n            email\n            favoriteTopics\n            firstName\n            id\n            lastName\n            middleName\n        }\n    }\n": types.UserDocument,
-    "\n    query GetGuide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n        }\n    }\n": types.GetGuideDocument,
+    "\n    query GetGuide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n            quiz {\n                id\n            }\n        }\n    }\n": types.GetGuideDocument,
     "\n    mutation UpdateGuide($input: UpdateGuideInput!) {\n        res: updateGuide(input: $input) {\n            id\n        }\n    }\n": types.UpdateGuideDocument,
     "\n    mutation UploadGuideImage($input: FileInfo!) {\n        res: uploadImage(input: $input) {\n            id\n        }\n    }\n": types.UploadGuideImageDocument,
     "\n    mutation GuideChat($input: GuideChatRequest) {\n        res: guideChat(input: $input) {\n            content\n            role\n        }\n    }\n": types.GuideChatDocument,
     "\n    query ChatMessages($guideId: String!) {\n        res: chathistory(guideId: $guideId) {\n            content\n            role\n        }\n    }\n": types.ChatMessagesDocument,
-    "\n    query PanelGuides {\n        res: guides {\n            body\n            createdAt\n            description\n            id\n            bookmark\n            liked\n            rating\n            tags\n            title\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n": types.PanelGuidesDocument,
     "\n    query GetFavoriteTopics {\n        res: user {\n            favoriteTopics\n        }\n    }\n": types.GetFavoriteTopicsDocument,
-    "\n    query SlideGuides {\n        res: guides {\n            body\n            description\n            id\n            title\n            bookmark\n            liked\n            rating\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n": types.SlideGuidesDocument,
+    "\n    query PanelGuides {\n        res: guides(published: true) {\n            body\n            createdAt\n            description\n            id\n            bookmark\n            liked\n            rating\n            tags\n            title\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n": types.PanelGuidesDocument,
+    "\n    query SlideGuides {\n        res: guides(published: true) {\n            body\n            description\n            id\n            title\n            bookmark\n            liked\n            rating\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n": types.SlideGuidesDocument,
     "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n": types.SaveFavoriteTopicsDocument,
     "\n    query GetGuideCompletedList {\n        res: guideCompletedList {\n            guideId\n        }\n    }\n": types.GetGuideCompletedListDocument,
     "\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n": types.GetQuizAnswersDocument,
@@ -144,6 +145,10 @@ export function graphql(source: "\n    mutation RemoveBookmark($input: RemoveBoo
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n    query GuideViewCountByGuide($input: GuideViewCountByGuideIdInput!) {\n        res: guideViewCountByGuideId(input: $input) {\n            count\n            guideId\n        }\n    }\n"): (typeof documents)["\n    query GuideViewCountByGuide($input: GuideViewCountByGuideIdInput!) {\n        res: guideViewCountByGuideId(input: $input) {\n            count\n            guideId\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n    mutation StoreGuideView($input: GuideViewInput!) {\n        storeGuideView(input: $input) {\n            createdAt\n            guideId\n            id\n            userId\n        }\n    }\n"): (typeof documents)["\n    mutation StoreGuideView($input: GuideViewInput!) {\n        storeGuideView(input: $input) {\n            createdAt\n            guideId\n            id\n            userId\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -160,7 +165,7 @@ export function graphql(source: "\n    query User {\n        user {\n           
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query GetGuide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n        }\n    }\n"): (typeof documents)["\n    query GetGuide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n        }\n    }\n"];
+export function graphql(source: "\n    query GetGuide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n            quiz {\n                id\n            }\n        }\n    }\n"): (typeof documents)["\n    query GetGuide($id: ID!) {\n        res: guide(id: $id) {\n            id\n            title\n            body\n            tags\n            quiz {\n                id\n            }\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -180,15 +185,14 @@ export function graphql(source: "\n    query ChatMessages($guideId: String!) {\n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query PanelGuides {\n        res: guides {\n            body\n            createdAt\n            description\n            id\n            bookmark\n            liked\n            rating\n            tags\n            title\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n"): (typeof documents)["\n    query PanelGuides {\n        res: guides {\n            body\n            createdAt\n            description\n            id\n            bookmark\n            liked\n            rating\n            tags\n            title\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n"];
+export function graphql(source: "\n    query PanelGuides {\n        res: guides(published: true) {\n            body\n            createdAt\n            description\n            id\n            bookmark\n            liked\n            rating\n            tags\n            title\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n"): (typeof documents)["\n    query PanelGuides {\n        res: guides(published: true) {\n            body\n            createdAt\n            description\n            id\n            bookmark\n            liked\n            rating\n            tags\n            title\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+
 export function graphql(source: "\n    query GetFavoriteTopics {\n        res: user {\n            favoriteTopics\n        }\n    }\n"): (typeof documents)["\n    query GetFavoriteTopics {\n        res: user {\n            favoriteTopics\n        }\n    }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n    query SlideGuides {\n        res: guides {\n            body\n            description\n            id\n            title\n            bookmark\n            liked\n            rating\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n"): (typeof documents)["\n    query SlideGuides {\n        res: guides {\n            body\n            description\n            id\n            title\n            bookmark\n            liked\n            rating\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n"];
+export function graphql(source: "\n    query SlideGuides {\n        res: guides(published: true) {\n            body\n            description\n            id\n            title\n            bookmark\n            liked\n            rating\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n"): (typeof documents)["\n    query SlideGuides {\n        res: guides(published: true) {\n            body\n            description\n            id\n            title\n            bookmark\n            liked\n            rating\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n"];
+
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

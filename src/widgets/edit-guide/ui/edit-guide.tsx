@@ -72,6 +72,8 @@ export function EditGuide(props: EditGuideProps): ReactNode {
     const body = form.watch('body')
     const progress = getGuideProgress(body)
 
+    const wordsLeft = Math.max(1500 - Math.round(body.length / 6), 0)
+
     const syncGuide = useCallback(
         debounce((body: string) => {
             void updateGuideMutation({ variables: { input: { id, body } } })
@@ -98,12 +100,18 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                 <div className="flex flex-col">
                     <span className="mb-2">Progress</span>
 
-                    <div
-                        className="h-4 rounded-lg border border-any-purple-400"
-                        style={{
-                            background: `linear-gradient(to right, #32d430 0% ${progress}%, #fff ${progress}%)`
-                        }}
-                    />
+                    <div className="relative border border-any-gray-100 h-4 w-full rounded-lg overflow-hidden">
+                        <div
+                            className="absolute inset-0"
+                            style={{
+                                background: `linear-gradient(to right, ${progress !== 100 ? '#32d430' : '#ef4444'} 0% ${progress}%, #fff ${progress}%)`
+                            }}
+                        />
+                    </div>
+
+                    <div className="self-end text-sm font-medium mt-2">
+                        ≈ {wordsLeft} words left
+                    </div>
                 </div>
 
                 <Controller<UseCreateGuideForm, 'title'>
@@ -117,11 +125,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                     }): ReactElement => {
                         return (
                             <div>
-                                <TextInput
-                                    label={'Title'}
-                                    labelClassName="font-bold"
-                                    {...field}
-                                />
+                                <TextInput label={'Title'} {...field} />
                                 {error?.message && (
                                     <span className="text-red-500">
                                         {error.message}
@@ -149,7 +153,10 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                                 <span className="font-bold mb-2">Content</span>
                                 <TextEditor
                                     editable
-                                    blockEditing={progress !== 100}
+                                    className={cn(
+                                        progress === 100 && '!border-red-500'
+                                    )}
+                                    maxLength={Math.round(1500 * 6) + 1}
                                     initialValue={data.res!.body!}
                                     onChange={body => {
                                         field.onChange(body)
@@ -290,30 +297,34 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                         Publish
                     </Button>
 
-                    <Button
-                        onClick={form.handleSubmit(async data => {
-                            const guide = await updateGuideMutation({
-                                variables: {
-                                    input: {
-                                        id,
-                                        title: data.title,
-                                        body: data.body,
-                                        tags: data.tags,
-                                        published: true
+                    {!data.res.quiz && (
+                        <Button
+                            onClick={form.handleSubmit(async data => {
+                                const guide = await updateGuideMutation({
+                                    variables: {
+                                        input: {
+                                            id,
+                                            title: data.title,
+                                            body: data.body,
+                                            tags: data.tags,
+                                            published: true
+                                        }
                                     }
-                                }
-                            })
-                            if (!guide.data?.res) return
+                                })
+                                if (!guide.data?.res) return
 
-                            if (!id) return
-                            const result = await generateQuiz({ guideId: id })
-                            if (!result) return
+                                if (!id) return
+                                const result = await generateQuiz({
+                                    guideId: id
+                                })
+                                if (!result) return
 
-                            navigate(`/${id}/edit/quiz`)
-                        })}
-                    >
-                        Generate Quiz
-                    </Button>
+                                navigate(`/${id}/edit/quiz`)
+                            })}
+                        >
+                            Generate Quiz
+                        </Button>
+                    )}
                 </div>
                 {generateQuizLoading && (
                     <p className="text-center text-xl flex items-center gap-2 justify-center">

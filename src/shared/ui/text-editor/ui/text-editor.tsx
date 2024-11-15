@@ -13,6 +13,7 @@ import {
     TRANSFORMERS
 } from '@lexical/markdown'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
+import { OverflowNode } from '@lexical/overflow'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
@@ -26,12 +27,15 @@ import { IMAGE_TRANSFORMER, ImagePlugin } from './image-plugin'
 
 const MARKDOWN_TRANSFORMERS = [IMAGE_TRANSFORMER, ...TRANSFORMERS]
 
-type TextEditorProps = EditableTextEditorProps | ReadonlyTextEditorProps
+type TextEditorProps = { className?: string } & (
+    | EditableTextEditorProps
+    | ReadonlyTextEditorProps
+)
 
 type EditableTextEditorProps = {
     editable: true
-    blockEditing?: boolean
     initialValue?: string
+    maxLength?: number
     onChange: (state: string) => void
     onImageUpload(image: File): Promise<string>
 }
@@ -42,7 +46,7 @@ type ReadonlyTextEditorProps = {
 }
 
 export function TextEditor(props: TextEditorProps): ReactNode {
-    const { editable } = props
+    const { editable, className } = props
 
     const config: InitialConfigType = useMemo(() => {
         return {
@@ -79,6 +83,7 @@ export function TextEditor(props: TextEditorProps): ReactNode {
                 ListItemNode,
                 AutoLinkNode,
                 LinkNode,
+                OverflowNode,
                 ImageNode
             ],
             editable,
@@ -105,24 +110,33 @@ export function TextEditor(props: TextEditorProps): ReactNode {
     return (
         <LexicalComposer initialConfig={config}>
             <div
-                className={cn('flex flex-col ', {
-                    'border border-any-purple-400 rounded-lg focus-within:border-green-500':
-                        editable
-                })}
+                className={cn(
+                    'flex flex-col ',
+                    {
+                        'border border-any-purple-400 rounded-lg focus-within:border-green-500':
+                            editable
+                    },
+                    className
+                )}
             >
                 {editable && (
-                    <ToolbarPlugin
-                        blockEditing={props.blockEditing}
-                        className="border-b border-any-purple-400 p-3"
-                        onImageUpload={props.onImageUpload}
-                    />
+                    <>
+                        <ToolbarPlugin
+                            className="border-b border-any-purple-400 p-3"
+                            onImageUpload={props.onImageUpload}
+                        />
+                        {props.maxLength && (
+                            <MaxLengthPlugin maxLength={props.maxLength} />
+                        )}
+                    </>
                 )}
                 <RichTextPlugin
                     contentEditable={
                         <ContentEditable
                             className={cn(
                                 'p-4 focus:border-none focus:outline-none',
-                                editable && 'min-h-96'
+                                editable &&
+                                    'min-h-96 max-h-[50rem] overflow-auto'
                             )}
                         />
                     }
@@ -151,4 +165,37 @@ export function TextEditor(props: TextEditorProps): ReactNode {
             </div>
         </LexicalComposer>
     )
+}
+
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { $trimTextContentFromAnchor } from '@lexical/selection'
+import { $getSelection, $isRangeSelection, RootNode } from 'lexical'
+import { useEffect } from 'react'
+
+export function MaxLengthPlugin({ maxLength }: { maxLength: number }): null {
+    const [editor] = useLexicalComposerContext()
+
+    useEffect(() => {
+        return editor.registerNodeTransform(RootNode, (rootNode: RootNode) => {
+            const selection = $getSelection()
+            if (!$isRangeSelection(selection) || !selection.isCollapsed()) {
+                return
+            }
+            const prevTextContent = editor
+                .getEditorState()
+                .read(() => rootNode.getTextContent())
+            const textContent = rootNode.getTextContent()
+            if (prevTextContent !== textContent) {
+                const textLength = textContent.length
+                const delCount = textLength - maxLength
+                const anchor = selection.anchor
+
+                if (delCount > 0) {
+                    $trimTextContentFromAnchor(editor, anchor, delCount)
+                }
+            }
+        })
+    }, [editor, maxLength])
+
+    return null
 }

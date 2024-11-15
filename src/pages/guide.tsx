@@ -61,6 +61,15 @@ const REMOVE_BOOKMARK_MUTATION = graphql(`
     }
 `)
 
+const GUIDE_VIEWS_QUERY = graphql(`
+    query GuideViewCountByGuide($input: GuideViewCountByGuideIdInput!) {
+        res: guideViewCountByGuideId(input: $input) {
+            count
+            guideId
+        }
+    }
+`)
+
 const STORE_GUIDE_VIEW_MUTATION = graphql(`
     mutation StoreGuideView($input: GuideViewInput!) {
         storeGuideView(input: $input) {
@@ -78,12 +87,17 @@ export function GuidePage(): ReactNode {
     const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
     const [storeGuideViewMutation] = useMutation(STORE_GUIDE_VIEW_MUTATION)
 
-    if (!params.id) return 'Guide not found'
-
     const { data, loading, error } = useQuery(GUIDE_QUERY, {
-        variables: { id: params.id },
+        variables: { id: params.id! },
         skip: !params.id
     })
+
+    const { data: guideViewsData } = useQuery(GUIDE_VIEWS_QUERY, {
+        variables: { input: { guideId: params.id! } },
+        skip: !params.id
+    })
+
+    const guideViews = guideViewsData?.res.count || 0
 
     const [sidebar, setSidebar] = useState<boolean>(false)
 
@@ -108,7 +122,7 @@ export function GuidePage(): ReactNode {
 
     const [addBookmarkMutation, { loading: addingBookmarkLoading }] =
         useMutation(ADD_BOOKMARK_MUTATION, {
-            variables: { input: { guideId: params.id } },
+            variables: { input: { guideId: params.id! } },
             update: (cache, _, { variables }) => {
                 if (!variables) return
 
@@ -127,7 +141,7 @@ export function GuidePage(): ReactNode {
 
     const [removeBookmarkMutation, { loading: removingBookmarkLoading }] =
         useMutation(REMOVE_BOOKMARK_MUTATION, {
-            variables: { input: { guideId: params.id } },
+            variables: { input: { guideId: params.id! } },
             update: (cache, _, { variables }) => {
                 if (!variables) return
 
@@ -147,7 +161,7 @@ export function GuidePage(): ReactNode {
     const [revokeGuideReviewMutation] = useMutation(
         REVOKE_GUIDE_REVIEW_MUTATION,
         {
-            variables: { input: { id: params.id } },
+            variables: { input: { id: params.id! } },
             update: cache => {
                 cache.modify({
                     id: `Guide:${params.id!}`,
@@ -200,7 +214,7 @@ export function GuidePage(): ReactNode {
 
     const { data: quizInfo } = useQuery(GET_QUIZ_ID_QUERY, {
         variables: {
-            guideId: params.id
+            guideId: params.id!
         },
         skip: !params
     })
@@ -214,7 +228,9 @@ export function GuidePage(): ReactNode {
         void storeGuideViewMutation({
             variables: { input: { guideId: params.id } }
         })
-    }, [params.id])
+    }, [])
+
+    if (!params.id) return 'Guide not found'
 
     if (loading) return <Loading />
 
@@ -229,30 +245,35 @@ export function GuidePage(): ReactNode {
 
             <main className="grow p-6">
                 <article className="max-w-[50rem] w-full mx-auto flex flex-col py-16">
-                    <Button
-                        onClick={(): void => setSidebar(true)}
-                        size="small"
-                        className="max-sm:fixed sticky right-5 max-sm:bottom-5 md:top-[10rem] ml-auto w-fit border-2 border-white"
-                    >
-                        Ask Any
-                        <Zap className="size-5" />
-                    </Button>
-
+                    {isAuthenticated && (
+                        <Button
+                            onClick={(): void => setSidebar(true)}
+                            size="small"
+                            className="max-sm:fixed sticky right-5 max-sm:bottom-5 md:top-[10rem] ml-auto w-fit border-2 border-white"
+                        >
+                            Ask Any
+                            <Zap className="size-5" />
+                        </Button>
+                    )}
                     <h1 className="text-5xl font-bold mb-8 text-center">
                         {data.res.title}
                     </h1>
-
                     <span className="text-center font-medium">
                         {minutes} minute{minutes === 1 ? '' : 's'} guide
                     </span>
-
                     <div className="flex items-center gap-3 font-bold mb-8">
-                        <div className="size-10 rounded-full bg-gray-200" />
+                        <div className="flex items-center justify-center rounded-full w-10 h-10 bg-slate-200 text-slate-800 space-x-1">
+                            {data.res.user!.firstName[0].toUpperCase() +
+                                data.res.user!.lastName[0].toUpperCase()}
+                        </div>
                         <div>
                             {data.res.user!.firstName} {data.res.user!.lastName}
                         </div>
-                    </div>
 
+                        <div className="ml-auto text-sm font-normal">
+                            {guideViews} views
+                        </div>
+                    </div>
                     <div className="py-3 border-t border-b border-any-purple-100 flex items-center justify-between">
                         {!!data.res.rating && data.res.rating > 0 && (
                             <div className="flex items-center gap-2">
@@ -288,9 +309,16 @@ export function GuidePage(): ReactNode {
                             />
                         </button>
                     </div>
-
+                    <img
+                        src={`${import.meta.env.VITE_API_URL}${import.meta.env.VITE_IMAGES_ENDPOINT}/${data.res.id}`}
+                        onError={(e): void => {
+                            // if not loaded for any reason, remove it
+                            e.currentTarget.remove()
+                        }}
+                        alt="Guide Cover Thumbnail"
+                        className="w-full object-cover object-center mx-auto rounded-3xl mt-6 mb-4"
+                    />
                     <TextEditor value={data.res.body || ''} editable={false} />
-
                     {!!data.res.tags.length && (
                         <div className="flex items-center flex-wrap gap-4 my-16">
                             {(data.res.tags as string[]).map((tag, index) => {
@@ -302,9 +330,7 @@ export function GuidePage(): ReactNode {
                             })}
                         </div>
                     )}
-
                     <hr />
-
                     <div className="flex flex-col md:flex-row justify-center items-center gap-6 py-6">
                         {isAuthenticated && quizId && !showQuiz && (
                             <Button
@@ -351,7 +377,6 @@ export function GuidePage(): ReactNode {
                             </div>
                         )}
                     </div>
-
                     {quizId && showQuiz && (
                         <QuizChallenge
                             guideId={params.id}
@@ -365,22 +390,12 @@ export function GuidePage(): ReactNode {
                 </article>
 
                 <Transition show={sidebar}>
-                    {/* Backdrop effect */}
                     <TransitionChild>
                         <div
-                            className="z-[2] fixed inset-0 transition bg-gray-900/30 data-[closed]:opacity-0"
-                            onClick={(): void => {
-                                setSidebar(false)
-                            }}
-                        />
-                    </TransitionChild>
-
-                    <TransitionChild>
-                        <div
-                            className={`transition bg-white h-screen fixed
-                                max-w-[30rem] w-full rounded-l-3xl top-0 right-0 z-[2]
+                            className={`transition bg-any-gray-50 h-screen fixed
+                                max-w-[25rem] w-full rounded-l-3xl top-0 right-0 z-[2]
                                 data-[closed]:translate-x-full py-8 px-5
-                                flex flex-col`}
+                                flex flex-col border shadow-md`}
                         >
                             <button
                                 className="p-1 ml-auto"

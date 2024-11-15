@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { CreateGuideButton } from 'src/features/create-guide'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Edit, Clock, BarChart, User, LogOut } from 'react-feather'
+import { Edit, Clock, BarChart, LogOut } from 'react-feather'
 import { useAuth } from '@shared/lib'
 import { Button } from '@shared/ui'
 
@@ -51,15 +51,6 @@ export function DropdownMenuForDesktop({
                     >
                         <BarChart />
                         My content creations
-                    </Link>
-                </MenuItem>
-                <MenuItem>
-                    <Link
-                        to={'/account'}
-                        className="text-start px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
-                    >
-                        <User />
-                        Account
                     </Link>
                 </MenuItem>
                 <MenuItem>

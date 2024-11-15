@@ -11,7 +11,7 @@ import { type Maybe } from '@shared/types'
 
 const GET_GUIDES_WITH_USER = graphql(`
     query PanelGuides {
-        res: guides {
+        res: guides(published: true) {
             body
             createdAt
             description

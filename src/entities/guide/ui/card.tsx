@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ThumbsUp, Bookmark, Share2 } from 'react-feather'
 import markdownToTxt from 'markdown-to-txt'
 import type { Guide } from '@gqlgen/graphql'
@@ -19,55 +18,34 @@ const Card: React.FC<CardComponentProps> = ({
     isAuthenticated = false
 }) => {
     const { setToast } = useAuth()
-    const [imageSrc, setImageSrc] = useState<string | null>(null)
-    const coverImgUrl = `${import.meta.env.VITE_API_URL}images/${guide.id}`
+    const navigate = useNavigate()
     const readingTime = Math.ceil(
         (getGuideProgress(guide.body || '') * 60) / 100
     )
 
-    useEffect(() => {
-        const fetchImage = async (): Promise<void> => {
-            try {
-                const response = await fetch(coverImgUrl)
-                if (response.ok) {
-                    setImageSrc(coverImgUrl)
-                } else {
-                    setImageSrc(null)
-                }
-            } catch {
-                setImageSrc(null)
-            }
-        }
-        void fetchImage()
-    }, [coverImgUrl])
-
     return (
-        <div className="grid grid-cols-1 grid-rows-subgrid  row-span-2 overflow-hidden bg-white rounded-2xl border-2 box-border border-gray-100 border-solid relative pb-11 gap-3">
-            <div className="flex overflow-hidden flex-col justify-center items-center w-full bg-blue-900 bg-gradient-to-b from-blue-900 to-black h-36">
-                {imageSrc ? (
-                    <div className="flex justify-center items-center w-full h-full">
-                        <img
-                            loading="lazy"
-                            src={imageSrc}
-                            alt=""
-                            className="object-cover w-full"
-                        />
-                    </div>
-                ) : (
-                    <div className="flex justify-center items-center w-full relative object-fit">
-                        <img
-                            src="/pattern.svg"
-                            alt=""
-                            className="object-fit w-full h-full opacity-50"
-                        />
-                        <img
-                            loading="lazy"
-                            src="/logo.svg"
-                            alt=""
-                            className="object-contain w-36 aspect-square absolute"
-                        />
-                    </div>
-                )}
+        <div
+            onClick={(): void => navigate(`/${guide.id}`)}
+            className="w-full cursor-pointer grid grid-cols-1 grid-rows-subgrid  row-span-2 overflow-hidden bg-white rounded-2xl border-2 box-border border-gray-100 border-solid relative pb-11 gap-3"
+        >
+            <div className="relative flex overflow-hidden flex-col justify-center items-center w-full bg-blue-900 bg-gradient-to-b from-blue-900 to-black h-36">
+                <img
+                    src="/pattern.svg"
+                    className="object-cover w-full h-full opacity-50 absolute inset-0"
+                />
+                <img
+                    loading="lazy"
+                    src={`${import.meta.env.VITE_API_URL}${import.meta.env.VITE_IMAGES_ENDPOINT}/${guide.id}`}
+                    onError={e => {
+                        e.currentTarget.src = `/logo.svg`
+                        e.currentTarget.classList.add(
+                            '!w-36',
+                            '!object-contain'
+                        )
+                    }}
+                    alt="Guide cover"
+                    className="object-cover w-full h-full"
+                />
             </div>
             <div className="grid auto-rows-auto grid-flow-row-dense p-4 w-full">
                 {cardType === 'default' && (
@@ -82,12 +60,9 @@ const Card: React.FC<CardComponentProps> = ({
                         </div>
                     </div>
                 )}
-                <Link
-                    to={`/${guide.id}`}
-                    className="text-2xl font-bold leading-tight text-gray-700 h-fit line-clamp-1"
-                >
+                <div className="text-2xl font-bold leading-tight text-gray-700 h-fit line-clamp-1">
                     {guide.title}
-                </Link>
+                </div>
 
                 <p className="my-2 text-base tracking-normal leading-6 text-slate-500 h-[72px] line-clamp-3">
                     {markdownToTxt(guide.body ?? '')}
@@ -122,7 +97,8 @@ const Card: React.FC<CardComponentProps> = ({
                         </button>
                     )}
                     <button
-                        onClick={async () => {
+                        onClick={async e => {
+                            e.stopPropagation()
                             await copyToClipboard(
                                 `${window.location.origin}/${guide.id}`
                             )

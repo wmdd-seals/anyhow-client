@@ -57,7 +57,7 @@ export function GuideChat(props: GuideChatProps): ReactNode {
     return (
         <div
             className={cn(
-                'grow bg-white flex flex-col overflow-hidden',
+                'grow bg-any-gray-50 flex flex-col overflow-hidden',
                 className
             )}
         >
