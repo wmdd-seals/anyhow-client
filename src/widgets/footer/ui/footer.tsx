@@ -11,7 +11,7 @@ export function Footer(): ReactNode {
                 <div className="flex items-center mb-4 sm:mb-0 justify-center sm:justify-start w-full md:w-1/2">
                     <img
                         src="/logo-white.svg"
-                        alt="AnyHow"
+                        alt="anyhow"
                         className="w-80 h-full"
                     />
                 </div>
@@ -39,7 +39,7 @@ export function Footer(): ReactNode {
                 </div>
             </div>
             <div className="mt-4 sm:mt-0 w-full text-center flex flex-col sm:flex-row justify-center">
-                <p className="text-sm">© 2024 AnyHow.</p>
+                <p className="text-sm">© 2024 anyhow.</p>
             </div>
         </footer>
     )
