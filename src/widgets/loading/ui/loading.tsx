@@ -5,7 +5,7 @@ function Loading(): ReactElement {
         <div className="h-screen w-screen flex items-center justify-center">
             <img
                 src="/book-bouncing.gif"
-                className="img-fluid rounded-circle"
+                className="img-fluid rounded-circle w-32"
                 alt="loading"
             />
         </div>
