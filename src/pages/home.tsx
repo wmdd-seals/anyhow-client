@@ -71,14 +71,12 @@ export function HomePage(): ReactNode {
                         <Search className="w-6 h-6" />
                     </div>
 
-                    {!location.state?.search && (
-                        <h2 className="text-center text-2xl sm:text-3xl md:text-5xl">
-                            Search Results for{' '}
-                            <span className="text-any-purple-800 font-bold">
-                                "{location.state?.search}"
-                            </span>
-                        </h2>
-                    )}
+                    <h2 className="text-center text-2xl sm:text-3xl md:text-5xl">
+                        Search Results for{' '}
+                        <span className="text-any-purple-800 font-bold">
+                            "{location.state?.search}"
+                        </span>
+                    </h2>
                     <PanelGuideList
                         search={location.state?.search as string | null}
                     />
