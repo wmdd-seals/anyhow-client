@@ -57,7 +57,7 @@ export function HomePage(): ReactNode {
                         )}
                         <div className="flex flex-col container mx-auto px-6 md:px-0">
                             {location.state?.onboarding && (
-                                <h2 className="flex justify-start text-xl sm:text-2xl md:text-3xl font-bold w-full">
+                                <h2 className="flex justify-start text-xl sm:text-2xl md:text-3xl font-bold w-full mb-6 sm:mb-0">
                                     Recommended for you
                                 </h2>
                             )}
