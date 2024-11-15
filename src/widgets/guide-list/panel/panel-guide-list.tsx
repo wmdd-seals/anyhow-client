@@ -10,8 +10,8 @@ import { MediumLoading } from '@widgets/loading'
 import { type Maybe } from '@shared/types'
 
 const GET_GUIDES_WITH_USER = graphql(`
-    query PanelGuides {
-        res: guides(published: true) {
+    query PanelGuides($search: String) {
+        res: guides(search: $search, published: true) {
             body
             createdAt
             description
@@ -31,6 +31,7 @@ const GET_GUIDES_WITH_USER = graphql(`
 
 type PanelGuideListProps = {
     filter?: 'bookmarked' | 'all'
+    search?: string | null | undefined
 }
 
 const GET_FAVORITE_TOPICS = graphql(`
@@ -47,9 +48,16 @@ interface FavoriteTopicsData {
     }
 }
 
-export function PanelGuideList({ filter }: PanelGuideListProps): ReactNode {
+export function PanelGuideList({
+    filter,
+    search = undefined
+}: PanelGuideListProps): ReactNode {
     const { isAuthenticated } = useAuth()
-    const { data, loading, error } = useQuery(GET_GUIDES_WITH_USER)
+    const { data, loading } = useQuery(GET_GUIDES_WITH_USER, {
+        variables: {
+            search: search
+        }
+    })
 
     const { data: favoriteTopicsData } = useQuery(GET_FAVORITE_TOPICS, {
         fetchPolicy: 'cache-and-network'
@@ -121,6 +129,7 @@ export function PanelGuideList({ filter }: PanelGuideListProps): ReactNode {
         filter === 'bookmarked'
             ? sortedGuides?.filter(guide => guide.bookmark)
             : sortedGuides
+    console.log({ sortedGuides, filteredGuides })
 
     if (loading)
         return (
@@ -128,48 +137,62 @@ export function PanelGuideList({ filter }: PanelGuideListProps): ReactNode {
                 <MediumLoading />
             </div>
         )
-    if (error || !data?.res || data.res.length === 0)
-        return <div>Error: {error?.message}</div>
 
     return (
         <>
-            {/* dropdown menu for sorting*/}
-
-            <div className="container px-6 md:px-0 mx-auto my-20 flex flex-col gap-8">
-                <div className={'flex justify-end'}>
-                    <span className="relative">
-                        <select
-                            className="border border-black rounded-3xl px-7 py-2 appearance-none cursor-pointer text-center"
-                            value={sortOption}
-                            onChange={e => setSortOption(e.target.value)}
-                        >
-                            <option value="" disabled>
-                                Sorting Option
-                            </option>
-                            <option value="Newest First">Newest First</option>
-                            <option value="Oldest First">Oldest First</option>
-                            <option value="Longest Reading Time">
-                                Longest Reading Time
-                            </option>
-                            <option value="Shortest Reading Time">
-                                Shortest Reading Time
-                            </option>
-                            <option value="Highest Rated">Highest Rated</option>
-                            <option value="Lowest Rated">Lowest Rated</option>
-                        </select>
-                        <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
-                    </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-10">
-                    {filteredGuides?.map((guide, index) => (
-                        <Card
-                            isAuthenticated={isAuthenticated}
-                            key={index}
-                            guide={guide as Guide}
-                        />
-                    ))}
-                </div>
+            <div className="container px-6 md:px-0 mx-auto flex flex-col gap-5">
+                {!filteredGuides || filteredGuides?.length === 0 ? (
+                    <div className="text-center text-2xl w-full flex flex-col items-center justify-center my-10">
+                        No guides found
+                    </div>
+                ) : (
+                    <>
+                        {/* dropdown menu for sorting*/}
+                        <div className={'flex justify-end'}>
+                            <span className="relative">
+                                <select
+                                    className="border border-black rounded-3xl px-7 py-2 appearance-none cursor-pointer text-center"
+                                    value={sortOption}
+                                    onChange={e =>
+                                        setSortOption(e.target.value)
+                                    }
+                                >
+                                    <option value="" disabled>
+                                        Sorting Option
+                                    </option>
+                                    <option value="Newest First">
+                                        Newest First
+                                    </option>
+                                    <option value="Oldest First">
+                                        Oldest First
+                                    </option>
+                                    <option value="Longest Reading Time">
+                                        Longest Reading Time
+                                    </option>
+                                    <option value="Shortest Reading Time">
+                                        Shortest Reading Time
+                                    </option>
+                                    <option value="Highest Rated">
+                                        Highest Rated
+                                    </option>
+                                    <option value="Lowest Rated">
+                                        Lowest Rated
+                                    </option>
+                                </select>
+                                <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+                            </span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-10">
+                            {filteredGuides?.map((guide, index) => (
+                                <Card
+                                    isAuthenticated={isAuthenticated}
+                                    key={index}
+                                    guide={guide as Guide}
+                                />
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
         </>
     )

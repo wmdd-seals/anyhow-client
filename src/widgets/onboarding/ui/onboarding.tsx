@@ -41,7 +41,7 @@ export function Onboarding(): ReactNode {
             favoriteTopics: selectedTags
         })
 
-        navigate('/')
+        navigate('/', { state: { onboarding: true } })
     }
 
     return (
@@ -62,7 +62,7 @@ export function Onboarding(): ReactNode {
                         {popularTags.map(tag => (
                             <div
                                 key={tag}
-                                className={`flex items-center px-4 py-2 rounded-full cursor-pointer border 
+                                className={`flex items-center px-4 py-2 rounded-full cursor-pointer border
                               ${selectedTags.includes(tag) ? 'bg-gray-800 text-white border-none' : 'border-gray-400 text-gray-800'}`}
                                 onClick={() => handleTagClick(tag)}
                             >

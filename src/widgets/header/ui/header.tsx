@@ -8,6 +8,8 @@ import { graphql } from '@gqlgen/gql'
 import { DropdownMenuForDesktop } from '@widgets/menu'
 import { PopupMenuForMobile } from '@widgets/menu'
 import { Loading } from '@widgets/loading'
+import { SearchBar } from 'src/features/search'
+import { MobileSearch } from 'src/features/search/ui/mobile-search'
 const FETCH_USER = graphql(`
     query User {
         user {
@@ -48,7 +50,11 @@ function Header(): ReactNode {
                         />
                     </Link>
                 </div>
-                <div className="lg:hidden">
+                <div className="hidden lg:flex mr-auto ml-16">
+                    <SearchBar />
+                </div>
+                <div className="lg:hidden flex gap-6 items-center">
+                    <MobileSearch />
                     <PopupMenuForMobile user={user} />
                 </div>
                 <div className="hidden lg:flex lg:space-x-4 items-center">
