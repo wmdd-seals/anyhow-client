@@ -56,11 +56,13 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
     const loginUser = (token: string): void => {
         localStorage.setItem('authToken', token)
         setToken(token)
+        location.href = '/'
     }
 
     const logout = (): void => {
         localStorage.removeItem('authToken')
         setToken('')
+        location.href = '/'
     }
 
     if (loading) return <Loading />
