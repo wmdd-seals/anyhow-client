@@ -5,12 +5,26 @@ import type { Guide } from '@gqlgen/graphql'
 import { copyToClipboard } from '../lib'
 import { useAuth } from '@shared/lib'
 import { getGuideProgress } from 'src/entities/guide'
+import { graphql } from '@gqlgen'
+import { useMutation } from '@apollo/client'
 
 interface CardComponentProps {
     guide: Guide
     cardType?: 'default' | 'simple'
     isAuthenticated?: boolean
 }
+
+const ADD_BOOKMARK_MUTATION = graphql(`
+    mutation AddBookmarkOnCard($input: AddBookmarkInput!) {
+        res: addBookmark(input: $input)
+    }
+`)
+
+const REMOVE_BOOKMARK_MUTATION = graphql(`
+    mutation RemoveBookmarkOnCard($input: RemoveBookmarkInput!) {
+        res: removeBookmark(input: $input)
+    }
+`)
 
 const Card: React.FC<CardComponentProps> = ({
     guide,
@@ -23,6 +37,43 @@ const Card: React.FC<CardComponentProps> = ({
         (getGuideProgress(guide.body || '') * 60) / 100
     )
 
+    const [addBookmarkMutation, { loading: addingBookmarkLoading }] =
+        useMutation(ADD_BOOKMARK_MUTATION, {
+            variables: { input: { guideId: guide.id! } },
+            update: (cache, _, { variables }) => {
+                if (!variables) return
+
+                const {
+                    input: { guideId }
+                } = variables
+
+                cache.modify({
+                    id: `Guide:${guideId}`,
+                    fields: {
+                        bookmark: () => true
+                    }
+                })
+            }
+        })
+
+    const [removeBookmarkMutation, { loading: removingBookmarkLoading }] =
+        useMutation(REMOVE_BOOKMARK_MUTATION, {
+            variables: { input: { guideId: guide.id! } },
+            update: (cache, _, { variables }) => {
+                if (!variables) return
+
+                const {
+                    input: { guideId }
+                } = variables
+
+                cache.modify({
+                    id: `Guide:${guideId}`,
+                    fields: {
+                        bookmark: () => false
+                    }
+                })
+            }
+        })
     return (
         <div
             onClick={(): void => navigate(`/${guide.id}`)}
@@ -44,7 +95,7 @@ const Card: React.FC<CardComponentProps> = ({
                         )
                     }}
                     alt="Guide cover"
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full relative"
                 />
             </div>
             <div className="grid auto-rows-auto grid-flow-row-dense p-4 w-full">
@@ -84,7 +135,23 @@ const Card: React.FC<CardComponentProps> = ({
                 )}
                 <div className="flex items-center gap-2 absolute bottom-4 right-4">
                     {isAuthenticated && (
-                        <button>
+                        <button
+                            onClick={(e): void => {
+                                e.stopPropagation()
+
+                                if (
+                                    addingBookmarkLoading ||
+                                    removingBookmarkLoading
+                                )
+                                    return
+
+                                if (guide.bookmark) {
+                                    void removeBookmarkMutation()
+                                } else {
+                                    void addBookmarkMutation()
+                                }
+                            }}
+                        >
                             <Bookmark
                                 className="w-5 h-5"
                                 fill={

@@ -16,6 +16,8 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
 const documents = {
     "\n    mutation Mutation($input: RemoveGuideInput!) {\n        removeGuide(input: $input) {\n            bookmark\n            createdAt\n            description\n            id\n            published\n            rating\n            tags\n            title\n            user {\n                firstName\n                id\n                lastName\n            }\n        }\n    }\n": types.MutationDocument,
     "\n    query GuideViewCountByGuideId($input: GuideViewCountByGuideIdInput!) {\n        res: guideViewCountByGuideId(input: $input) {\n            count\n            guideId\n        }\n    }\n": types.GuideViewCountByGuideIdDocument,
+    "\n    mutation AddBookmarkOnCard($input: AddBookmarkInput!) {\n        res: addBookmark(input: $input)\n    }\n": types.AddBookmarkOnCardDocument,
+    "\n    mutation RemoveBookmarkOnCard($input: RemoveBookmarkInput!) {\n        res: removeBookmark(input: $input)\n    }\n": types.RemoveBookmarkOnCardDocument,
     "\n    query GetQuizId($guideId: ID!) {\n        res: guide(id: $guideId) {\n            id\n            quiz {\n                id\n            }\n        }\n    }\n": types.GetQuizIdDocument,
     "\n    query GetQuiz($guideId: ID!) {\n        res: guide(id: $guideId) {\n            quiz {\n                id\n                body {\n                    quiz {\n                        questions {\n                            questionTitle\n                            options\n                            correctAnswerIndex\n                        }\n                    }\n                }\n            }\n        }\n    }\n": types.GetQuizDocument,
     "\n    mutation CreateGuide($input: GuideCreationInput!) {\n        res: createGuide(input: $input) {\n            id\n            title\n            tags\n            description\n            body\n        }\n    }\n": types.CreateGuideDocument,
@@ -78,6 +80,14 @@ export function graphql(source: "\n    mutation Mutation($input: RemoveGuideInpu
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    query GuideViewCountByGuideId($input: GuideViewCountByGuideIdInput!) {\n        res: guideViewCountByGuideId(input: $input) {\n            count\n            guideId\n        }\n    }\n"): (typeof documents)["\n    query GuideViewCountByGuideId($input: GuideViewCountByGuideIdInput!) {\n        res: guideViewCountByGuideId(input: $input) {\n            count\n            guideId\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation AddBookmarkOnCard($input: AddBookmarkInput!) {\n        res: addBookmark(input: $input)\n    }\n"): (typeof documents)["\n    mutation AddBookmarkOnCard($input: AddBookmarkInput!) {\n        res: addBookmark(input: $input)\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation RemoveBookmarkOnCard($input: RemoveBookmarkInput!) {\n        res: removeBookmark(input: $input)\n    }\n"): (typeof documents)["\n    mutation RemoveBookmarkOnCard($input: RemoveBookmarkInput!) {\n        res: removeBookmark(input: $input)\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
