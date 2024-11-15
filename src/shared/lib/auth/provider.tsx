@@ -11,9 +11,9 @@ export type UserContextType = {
     logout: () => void
     isAuthenticated: boolean
     user: User | null
-    setUser: (user: User | null) => void
     toast: { visible: boolean; message: string }
     setToast: (toast: { visible: boolean; message: string }) => void
+    loading: boolean
 }
 
 type Props = { children: React.ReactNode }
@@ -39,35 +39,28 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
         visible: false,
         message: ''
     })
-    const [user, setUser] = useState<User | null>(null)
     const [authToken, setToken] = useState<string | null>(
         localStorage.getItem('authToken')
     )
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const { loading } = useQuery(FETCH_USER, {
+    const { data, loading } = useQuery(FETCH_USER, {
         fetchPolicy: 'cache-and-network',
         onCompleted: data => {
             if (!data.user.id) {
-                setIsAuthenticated(false)
                 logout()
                 return
             }
-            setIsAuthenticated(!!data.user)
-            setUser(data.user)
         }
     })
 
     const loginUser = (token: string): void => {
         localStorage.setItem('authToken', token)
         setToken(token)
-        setIsAuthenticated(true)
     }
 
     const logout = (): void => {
         localStorage.removeItem('authToken')
         setToken('')
-        setIsAuthenticated(false)
     }
 
     if (loading) return <Loading />
@@ -78,11 +71,11 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
                 loginUser,
                 authToken,
                 logout,
-                isAuthenticated,
-                user,
-                setUser,
+                isAuthenticated: !!data?.user.id,
+                user: data?.user || null,
                 toast,
-                setToast
+                setToast,
+                loading
             }}
         >
             {children}

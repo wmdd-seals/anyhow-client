@@ -4,12 +4,13 @@ import { useAuth } from '@shared/lib'
 
 const ProtectedRoute = (): ReactElement => {
     const context = useAuth()
+    const { isAuthenticated, loading } = context
 
-    return context.isAuthenticated ? (
-        <Outlet context={context} />
-    ) : (
-        <Navigate to="/login" replace />
-    )
+    if (!loading && !isAuthenticated) {
+        return <Navigate to="/login" replace />
+    }
+
+    return <Outlet context={context} />
 }
 
 export default ProtectedRoute
