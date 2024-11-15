@@ -390,22 +390,12 @@ export function GuidePage(): ReactNode {
                 </article>
 
                 <Transition show={sidebar}>
-                    {/* Backdrop effect */}
                     <TransitionChild>
                         <div
-                            className="z-[2] fixed inset-0 transition bg-gray-900/30 data-[closed]:opacity-0"
-                            onClick={(): void => {
-                                setSidebar(false)
-                            }}
-                        />
-                    </TransitionChild>
-
-                    <TransitionChild>
-                        <div
-                            className={`transition bg-white h-screen fixed
-                                max-w-[30rem] w-full rounded-l-3xl top-0 right-0 z-[2]
+                            className={`transition bg-any-gray-50 h-screen fixed
+                                max-w-[25rem] w-full rounded-l-3xl top-0 right-0 z-[2]
                                 data-[closed]:translate-x-full py-8 px-5
-                                flex flex-col`}
+                                flex flex-col border shadow-md`}
                         >
                             <button
                                 className="p-1 ml-auto"
