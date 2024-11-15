@@ -44,7 +44,7 @@ export function HeroSlider(): ReactNode {
                                 alt={item.title}
                             />
                             <div className="absolute inset-0 bg-gradient-to-r from-any-purple-800/60 to-white/10 from-0%  to-80%"></div>
-                            <div className="absolute inset-0 bg-gradient-to-br from-any-purple-800/80 via-transparent to-any-green-300/70 from-10% via-50% to-90% w-full h-full" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-any-purple-800/80 via-transparent to-any-green-300/70 from-10% via-50% to-90% w-full h-full"></div>
                         </div>
                         <div className="absolute inset-x-0 bottom-0 md:bottom-8 gap-6 flex flex-col justify-end p-6 pb-8 md:pl-11 md:pb-8 w-full md:w-2/3 lg:w-1/2">
                             <h2 className="font-bold text-3xl md:text-6xl text-white w-full text-wrap">
