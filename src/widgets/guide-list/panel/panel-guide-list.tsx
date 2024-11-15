@@ -141,7 +141,7 @@ export function PanelGuideList({
     return (
         <>
             <div className="container px-6 md:px-0 mx-auto flex flex-col gap-5">
-                {!filteredGuides || filteredGuides?.length === 0 ? (
+                {!filteredGuides || filteredGuides.length === 0 ? (
                     <div className="text-center text-2xl w-full flex flex-col items-center justify-center my-10">
                         No guides found
                     </div>
@@ -183,7 +183,7 @@ export function PanelGuideList({
                             </span>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-10">
-                            {filteredGuides?.map((guide, index) => (
+                            {filteredGuides.map((guide, index) => (
                                 <Card
                                     isAuthenticated={isAuthenticated}
                                     key={index}
