@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ThumbsUp, Bookmark, Share2 } from 'react-feather'
 import markdownToTxt from 'markdown-to-txt'
@@ -20,58 +19,33 @@ const Card: React.FC<CardComponentProps> = ({
 }) => {
     const { setToast } = useAuth()
     const navigate = useNavigate()
-    const [imageSrc, setImageSrc] = useState<string | null>(null)
-    const coverImgUrl = `${import.meta.env.VITE_API_URL}images/${guide.id}`
     const readingTime = Math.ceil(
         (getGuideProgress(guide.body || '') * 60) / 100
     )
 
-    useEffect(() => {
-        const fetchImage = async (): Promise<void> => {
-            try {
-                const response = await fetch(coverImgUrl)
-                if (response.ok) {
-                    setImageSrc(coverImgUrl)
-                } else {
-                    setImageSrc(null)
-                }
-            } catch {
-                setImageSrc(null)
-            }
-        }
-        void fetchImage()
-    }, [coverImgUrl])
-
     return (
         <div
             onClick={(): void => navigate(`/${guide.id}`)}
-            className="cursor-pointer grid grid-cols-1 grid-rows-subgrid  row-span-2 overflow-hidden bg-white rounded-2xl border-2 box-border border-gray-100 border-solid relative pb-11 gap-3"
+            className="w-full cursor-pointer grid grid-cols-1 grid-rows-subgrid  row-span-2 overflow-hidden bg-white rounded-2xl border-2 box-border border-gray-100 border-solid relative pb-11 gap-3"
         >
-            <div className="flex overflow-hidden flex-col justify-center items-center w-full bg-blue-900 bg-gradient-to-b from-blue-900 to-black h-36">
-                {imageSrc ? (
-                    <div className="flex justify-center items-center w-full h-full">
-                        <img
-                            loading="lazy"
-                            src={imageSrc}
-                            alt=""
-                            className="object-cover w-full"
-                        />
-                    </div>
-                ) : (
-                    <div className="flex justify-center items-center w-full relative object-fit">
-                        <img
-                            src="/pattern.svg"
-                            alt=""
-                            className="object-fit w-full h-full opacity-50"
-                        />
-                        <img
-                            loading="lazy"
-                            src="/logo.svg"
-                            alt=""
-                            className="object-contain w-36 aspect-square absolute"
-                        />
-                    </div>
-                )}
+            <div className="relative flex overflow-hidden flex-col justify-center items-center w-full bg-blue-900 bg-gradient-to-b from-blue-900 to-black h-36">
+                <img
+                    src="/pattern.svg"
+                    className="object-cover w-full h-full opacity-50 absolute inset-0"
+                />
+                <img
+                    loading="lazy"
+                    src={`${import.meta.env.VITE_API_URL}${import.meta.env.VITE_IMAGES_ENDPOINT}/${guide.id}`}
+                    onError={e => {
+                        e.currentTarget.src = `/logo.svg`
+                        e.currentTarget.classList.add(
+                            '!w-36',
+                            '!object-contain'
+                        )
+                    }}
+                    alt="Guide cover"
+                    className="object-cover w-full h-full"
+                />
             </div>
             <div className="grid auto-rows-auto grid-flow-row-dense p-4 w-full">
                 {cardType === 'default' && (
