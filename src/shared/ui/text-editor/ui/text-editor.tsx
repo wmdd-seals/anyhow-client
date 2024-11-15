@@ -26,7 +26,10 @@ import { IMAGE_TRANSFORMER, ImagePlugin } from './image-plugin'
 
 const MARKDOWN_TRANSFORMERS = [IMAGE_TRANSFORMER, ...TRANSFORMERS]
 
-type TextEditorProps = EditableTextEditorProps | ReadonlyTextEditorProps
+type TextEditorProps = { className?: string } & (
+    | EditableTextEditorProps
+    | ReadonlyTextEditorProps
+)
 
 type EditableTextEditorProps = {
     editable: true
@@ -42,7 +45,7 @@ type ReadonlyTextEditorProps = {
 }
 
 export function TextEditor(props: TextEditorProps): ReactNode {
-    const { editable } = props
+    const { editable, className } = props
 
     const config: InitialConfigType = useMemo(() => {
         return {
@@ -105,10 +108,14 @@ export function TextEditor(props: TextEditorProps): ReactNode {
     return (
         <LexicalComposer initialConfig={config}>
             <div
-                className={cn('flex flex-col ', {
-                    'border border-any-purple-400 rounded-lg focus-within:border-green-500':
-                        editable
-                })}
+                className={cn(
+                    'flex flex-col ',
+                    {
+                        'border border-any-purple-400 rounded-lg focus-within:border-green-500':
+                            editable
+                    },
+                    className
+                )}
             >
                 {editable && (
                     <ToolbarPlugin

@@ -149,6 +149,9 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                                 <span className="font-bold mb-2">Content</span>
                                 <TextEditor
                                     editable
+                                    className={cn(
+                                        progress === 100 && '!border-red-500'
+                                    )}
                                     blockEditing={progress !== 100}
                                     initialValue={data.res!.body!}
                                     onChange={body => {
