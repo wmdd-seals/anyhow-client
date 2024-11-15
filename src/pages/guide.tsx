@@ -255,15 +255,12 @@ export function GuidePage(): ReactNode {
                             <Zap className="size-5" />
                         </Button>
                     )}
-
                     <h1 className="text-5xl font-bold mb-8 text-center">
                         {data.res.title}
                     </h1>
-
                     <span className="text-center font-medium">
                         {minutes} minute{minutes === 1 ? '' : 's'} guide
                     </span>
-
                     <div className="flex items-center gap-3 font-bold mb-8">
                         <div className="flex items-center justify-center rounded-full w-10 h-10 bg-slate-200 text-slate-800 space-x-1">
                             {data.res.user!.firstName[0].toUpperCase() +
@@ -277,7 +274,6 @@ export function GuidePage(): ReactNode {
                             {guideViews} views
                         </div>
                     </div>
-
                     <div className="py-3 border-t border-b border-any-purple-100 flex items-center justify-between">
                         {!!data.res.rating && data.res.rating > 0 && (
                             <div className="flex items-center gap-2">
@@ -313,9 +309,16 @@ export function GuidePage(): ReactNode {
                             />
                         </button>
                     </div>
-
+                    <img
+                        src={`${import.meta.env.VITE_API_URL}${import.meta.env.VITE_IMAGES_ENDPOINT}/${data.res.id}`}
+                        onError={(e): void => {
+                            // if not loaded for any reason, remove it
+                            e.currentTarget.remove()
+                        }}
+                        alt="Guide Cover Thumbnail"
+                        className="w-full object-cover object-center mx-auto rounded-3xl mt-6 mb-4"
+                    />
                     <TextEditor value={data.res.body || ''} editable={false} />
-
                     {!!data.res.tags.length && (
                         <div className="flex items-center flex-wrap gap-4 my-16">
                             {(data.res.tags as string[]).map((tag, index) => {
@@ -327,9 +330,7 @@ export function GuidePage(): ReactNode {
                             })}
                         </div>
                     )}
-
                     <hr />
-
                     <div className="flex flex-col md:flex-row justify-center items-center gap-6 py-6">
                         {isAuthenticated && quizId && !showQuiz && (
                             <Button
@@ -376,7 +377,6 @@ export function GuidePage(): ReactNode {
                             </div>
                         )}
                     </div>
-
                     {quizId && showQuiz && (
                         <QuizChallenge
                             guideId={params.id}
