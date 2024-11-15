@@ -180,7 +180,7 @@ const Dashboard = (): ReactNode => {
                                 <ScoreCard title="Total learning hours">
                                     {`${totalCount(data?.res as { count: number; data: string }[]) * 30} minutes`}
                                 </ScoreCard>
-                                <ScoreCard title="Quiz taken">
+                                <ScoreCard title="Quizzes taken">
                                     {
                                         quizAnswersByUser?.quizAnswersByUser
                                             .length

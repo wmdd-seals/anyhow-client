@@ -7,7 +7,7 @@ type ScoreCardProps = {
 
 function ScoreCard({ title, children }: ScoreCardProps): ReactNode {
     return (
-        <div className="grid grid-flow-col grid-rows-2 items-start p-8 gap-8 bg-gray-100 rounded-xl grid-cols-subgrid">
+        <div className="h-full grid grid-flow-col grid-rows-2 items-start p-8 gap-8 bg-gray-100 rounded-xl grid-cols-subgrid">
             <h4 className="text-lg md:text-xl lg:text-base font-bold">
                 {title}
             </h4>
