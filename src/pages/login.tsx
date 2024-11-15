@@ -68,7 +68,7 @@ export const LoginPage = (): ReactNode => {
                         className="h-full w-full rounded-lg"
                     />
                     <div className="flex flex-col">
-                        <h1>Welcome to AnyHow</h1>
+                        <h1>Welcome to anyhow</h1>
                         <span className="text-xs">
                             Your bite-sized learning app
                         </span>
