@@ -54,15 +54,6 @@ export function DropdownMenuForDesktop({
                     </Link>
                 </MenuItem>
                 <MenuItem>
-                    <Link
-                        to={'/account'}
-                        className="text-start px-7 py-[1.175rem] justify-start items-center gap-3 hover:bg-any-gray-50 active:bg-any-gray-100 inline-flex font-normal"
-                    >
-                        <User />
-                        Account
-                    </Link>
-                </MenuItem>
-                <MenuItem>
                     <Button
                         onClick={logout}
                         className="!justify-start hover:bg-any-gray-50 active:bg-any-gray-100 !px-7 !py-[1.175rem] !font-normal"
