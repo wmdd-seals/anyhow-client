@@ -7,6 +7,9 @@ export const GET_GUIDE_QUERY = graphql(`
             title
             body
             tags
+            quiz {
+                id
+            }
         }
     }
 `)

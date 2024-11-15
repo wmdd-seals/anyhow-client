@@ -297,30 +297,34 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                         Publish
                     </Button>
 
-                    <Button
-                        onClick={form.handleSubmit(async data => {
-                            const guide = await updateGuideMutation({
-                                variables: {
-                                    input: {
-                                        id,
-                                        title: data.title,
-                                        body: data.body,
-                                        tags: data.tags,
-                                        published: true
+                    {!data.res.quiz && (
+                        <Button
+                            onClick={form.handleSubmit(async data => {
+                                const guide = await updateGuideMutation({
+                                    variables: {
+                                        input: {
+                                            id,
+                                            title: data.title,
+                                            body: data.body,
+                                            tags: data.tags,
+                                            published: true
+                                        }
                                     }
-                                }
-                            })
-                            if (!guide.data?.res) return
+                                })
+                                if (!guide.data?.res) return
 
-                            if (!id) return
-                            const result = await generateQuiz({ guideId: id })
-                            if (!result) return
+                                if (!id) return
+                                const result = await generateQuiz({
+                                    guideId: id
+                                })
+                                if (!result) return
 
-                            navigate(`/${id}/edit/quiz`)
-                        })}
-                    >
-                        Generate Quiz
-                    </Button>
+                                navigate(`/${id}/edit/quiz`)
+                            })}
+                        >
+                            Generate Quiz
+                        </Button>
+                    )}
                 </div>
                 {generateQuizLoading && (
                     <p className="text-center text-xl flex items-center gap-2 justify-center">
