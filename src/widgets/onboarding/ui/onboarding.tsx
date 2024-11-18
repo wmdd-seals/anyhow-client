@@ -1,19 +1,21 @@
 import { useState, type ReactNode } from 'react'
-import { Button } from '../../../shared/ui'
+import { Button } from '@shared/ui'
 import { useSaveFavoriteTopics } from '../api/use-save-favorite-topics'
 import { useNavigate } from 'react-router-dom'
+import { Check } from 'react-feather'
 
 const popularTags = [
-    'Art',
+    'Foreign Language',
+    'Cooking',
+    'Pet & Training',
     'Photography',
     'Data Science',
     'Software Development',
     'Accounting & Finance',
+    'Art',
     'Entrepreneurship',
     'Health & Wellness',
-    'Foreign Languages',
     'Fashion Design',
-    'Pet & Training',
     'Travel & Tourism',
     'Childcare & Early Education',
     'Psychology',
@@ -49,7 +51,7 @@ export function Onboarding(): ReactNode {
             <main className="flex flex-col gap-7 grow mx-auto md:max-w-2xl lg:max-w-4xl px-6">
                 <div className="flex flex-col gap-6 justify-center grow py-10 text-left md:text-center sticky top-16 lg:top-20 bg-white">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">
-                        Welcome to AnyHow!
+                        Welcome to anyhow!
                     </h1>
                     <p className="text-base md:text-lg lg:text-xl">
                         To personalize your experience, just choose your{' '}
@@ -60,20 +62,26 @@ export function Onboarding(): ReactNode {
                 <div className="flex flex-col justify-center grow">
                     <div className="flex flex-wrap gap-2 justify-start md:justify-center md:gap-3 lg:gap-4">
                         {popularTags.map(tag => (
-                            <div
+                            <Button
                                 key={tag}
-                                className={`flex items-center px-4 py-2 rounded-full cursor-pointer border
-                              ${selectedTags.includes(tag) ? 'bg-gray-800 text-white border-none' : 'border-gray-400 text-gray-800'}`}
+                                kind={
+                                    selectedTags.includes(tag)
+                                        ? 'primary'
+                                        : 'secondary'
+                                }
+                                size="medium"
                                 onClick={() => handleTagClick(tag)}
                             >
                                 {selectedTags.includes(tag) ? (
-                                    <span className="mr-2 text-white">✔</span>
+                                    <span className="mr-2 text-white">
+                                        <Check />
+                                    </span>
                                 ) : (
                                     <span className="mr-2">#</span>
                                 )}
 
                                 {tag}
-                            </div>
+                            </Button>
                         ))}
                     </div>
                 </div>
