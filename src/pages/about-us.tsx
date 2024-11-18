@@ -8,6 +8,7 @@ import {
     DescriptionSection,
     TeamIntroduction
 } from '@widgets/about-us'
+import { Button } from '@shared/ui'
 
 export function AboutUsPage(): ReactNode {
     return (
@@ -29,15 +30,20 @@ export function AboutUsPage(): ReactNode {
                 <TeamIntroduction />
 
                 {/* "Buy This Project" */}
-                <section className="flex flex-col gap-10 items-center py-16 px-5">
+                <section className="text-any-purple-500 flex flex-col gap-10 items-center py-20 px-5 md:px-12 md:py-28 lg:px-32 lg:py-28">
                     <h2 className=" text-3xl md:text-5xl font-bold">
-                        Buy this project
+                        Dive into Our Project Proposal
                     </h2>
-                    <p className="text-gray-600 md:w-1/2 lg:w-1/3 text-center">
-                        This project is a part of Langara College's WMDD
-                        program. If you're keen on investing in this platform,
-                        reach out to us for more details!
+                    <p className="md:w-1/2 lg:w-1/3 text-center">
+                        Curious about how this platform came to life?. Download
+                        our Project Proposal and explore every detail.
+                        <br />
+                        <span className="font-bold">
+                            Who knows, it might just spark your next big
+                            investment idea! 😉
+                        </span>
                     </p>
+                    <Button size="large">Download the Blueprint</Button>
                 </section>
             </main>
             <Footer />
