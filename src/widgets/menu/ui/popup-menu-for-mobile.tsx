@@ -166,7 +166,7 @@ export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
                                     to={'/aboutus'}
                                     className="text-slate-700"
                                 >
-                                    About AnyHow
+                                    About anyhow
                                 </Link>
                             </div>
                         </div>
