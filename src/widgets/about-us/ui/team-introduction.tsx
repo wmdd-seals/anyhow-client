@@ -24,7 +24,7 @@ export function TeamIntroduction(): ReactNode {
             role1: 'UI/UI Designer',
             role2: 'Project Manager',
             linkedIn: 'lhttps://www.linkedin.com/in/ziruo-zhang/',
-            website: 'linkedin.com/in/ziruo-zhang'
+            website: ''
         },
         {
             name: 'Tomoki Kaneko',
