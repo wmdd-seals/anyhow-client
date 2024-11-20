@@ -17,6 +17,7 @@ import { ArrowRight, Bookmark, Zap } from 'react-feather'
 import { ThumbsUp, ThumbsDown } from 'react-feather'
 import { useAuth } from '@shared/lib'
 import { Loading } from '@widgets/loading'
+import Toast from '@shared/ui/toast'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -100,6 +101,11 @@ export function GuidePage(): ReactNode {
     const guideViews = guideViewsData?.res.count || 0
 
     const [sidebar, setSidebar] = useState<boolean>(false)
+
+    const [toast, setToast] = useState<{ visible: boolean; message: string }>({
+        visible: false,
+        message: ''
+    })
 
     const { data: guideCompletedList } = useQuery(GET_GUIDE_COMPLETED_LIST)
 
@@ -203,12 +209,20 @@ export function GuidePage(): ReactNode {
         item => item.guideId === params.id
     )
 
-    const handleCompleted = (guideId: string): void => {
+    const handleCompletedGuide = (guideId: string): void => {
         void storeGuideCompletedMutation({
             variables: {
                 input: { guideId }
             },
             refetchQueries: [GET_GUIDE_COMPLETED_LIST]
+        })
+    }
+
+    const handleCompletedQuiz = (): void => {
+        setShowQuiz(false)
+        setToast({
+            visible: true,
+            message: 'Quiz is completed!'
         })
     }
 
@@ -241,6 +255,7 @@ export function GuidePage(): ReactNode {
 
     return (
         <div className="flex flex-col min-h-screen">
+            <Toast toast={toast} setToast={setToast} />
             <Header />
 
             <main className="grow p-6">
@@ -332,20 +347,36 @@ export function GuidePage(): ReactNode {
                     )}
                     <hr />
                     <div className="flex flex-col md:flex-row justify-center items-center gap-6 py-6">
-                        {isAuthenticated && quizId && !showQuiz && (
-                            <Button
-                                onClick={() => setShowQuiz(true)}
-                                kind="secondary"
-                            >
-                                Test your learning
-                                <ArrowRight />
-                            </Button>
-                        )}
+                        {isAuthenticated &&
+                            quizId &&
+                            !showQuiz &&
+                            isGuideCompleted && (
+                                <Button
+                                    onClick={() => setShowQuiz(true)}
+                                    kind="secondary"
+                                >
+                                    Try Quiz Again
+                                    <ArrowRight />
+                                </Button>
+                            )}
+
+                        {isAuthenticated &&
+                            quizId &&
+                            !showQuiz &&
+                            !isGuideCompleted && (
+                                <Button
+                                    onClick={() => setShowQuiz(true)}
+                                    kind="secondary"
+                                >
+                                    Test your learning
+                                    <ArrowRight />
+                                </Button>
+                            )}
 
                         {isAuthenticated && !showQuiz && !isGuideCompleted && (
                             <Button
                                 onClick={() =>
-                                    handleCompleted(params.id as string)
+                                    handleCompletedGuide(params.id as string)
                                 }
                             >
                                 Mark as completed
@@ -381,10 +412,11 @@ export function GuidePage(): ReactNode {
                         <QuizChallenge
                             guideId={params.id}
                             quizId={quizId}
-                            handleCompleted={() =>
-                                handleCompleted(params.id as string)
+                            handleCompletedGuide={() =>
+                                handleCompletedGuide(params.id as string)
                             }
                             isGuideCompleted={isGuideCompleted as boolean}
+                            handleCompletedQuiz={handleCompletedQuiz}
                         />
                     )}
                 </article>
