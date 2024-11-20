@@ -43,6 +43,7 @@ export function AboutUsPage(): ReactNode {
                             investment idea! 😉
                         </span>
                     </p>
+                    {/* Todo: add the PDF file so that a user will be able to download it by clicking the following button once the proposal is ready */}
                     <Button size="large">Download the Blueprint</Button>
                 </section>
             </main>
