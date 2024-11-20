@@ -112,6 +112,7 @@ export function CardStrip({ guide, refetch }: CardStripProps): ReactNode {
             <div className="flex justify-start md:justify-end gap-2 md:gap-4 w-full md:w-fit">
                 <div className="flex items-center justify-start md:justify-end text-sm md:text-base w-15 md:w-20 gap-2">
                     {rating ?? '-'}
+                    {rating && '%'}
                     <ThumbsUp width={16} height={16} />
                 </div>
                 <div className="flex items-center justify-start md:justify-end text-sm md:text-base w-15 md:w-20 gap-2">
