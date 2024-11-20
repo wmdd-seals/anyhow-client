@@ -123,7 +123,7 @@ export function TeamIntroduction(): ReactNode {
                                     target="_blank"
                                     className="p-2"
                                 >
-                                    <Linkedin className=" text-any-purple-400 hover:text-any-purple-500 w-6 h-6" />
+                                    <Linkedin className="text-any-purple-400 hover:text-any-purple-500 w-6 h-6" />
                                 </a>
                                 {member.role1.includes('Developer') ? (
                                     <a
