@@ -5,22 +5,21 @@ import { useNavigate } from 'react-router-dom'
 import { Check } from 'react-feather'
 
 const popularTags = [
-    'Foreign Language',
     'Cooking',
+    'Language Learning',
+    'Self Improvement',
+    'Accounting & Finance',
     'Pet & Training',
     'Photography',
+    'Fixing Things At Home',
     'Data Science',
     'Software Development',
-    'Accounting & Finance',
     'Art',
-    'Entrepreneurship',
     'Health & Wellness',
     'Fashion Design',
     'Travel & Tourism',
     'Childcare & Early Education',
-    'Psychology',
-    'Yoga & Meditation',
-    'Makeup & Skincare'
+    'Yoga & Meditation'
 ]
 
 export function Onboarding(): ReactNode {
