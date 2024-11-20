@@ -10,12 +10,19 @@ import { SmallLoading } from '@widgets/loading'
 interface QuizChallengeProp {
     guideId: string
     quizId: string
-    handleCompleted: () => void
+    handleCompletedGuide: () => void
     isGuideCompleted: boolean
+    handleCompletedQuiz: () => void
 }
 
 export function QuizChallenge(props: QuizChallengeProp): ReactNode {
-    const { guideId, quizId, handleCompleted, isGuideCompleted } = props
+    const {
+        guideId,
+        quizId,
+        handleCompletedGuide,
+        isGuideCompleted,
+        handleCompletedQuiz
+    } = props
 
     const { data: quizInfo, loading: quizLoading } = useQuery(GET_QUIZ_QUERY, {
         fetchPolicy: 'cache-and-network',
@@ -101,7 +108,7 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
     return (
         <>
             {quizId && (
-                <div className="p-4 flex flex-col gap-3">
+                <div className="p-4 flex flex-col gap-3 text-any-purple-500">
                     <h1 className="text-3xl font-bold">Test your learning</h1>
                     <ul className="flex flex-col gap-5">
                         {quizLoading && (
@@ -126,7 +133,7 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
                                                     className="flex gap-2"
                                                 >
                                                     <input
-                                                        id="option"
+                                                        id={`question-${questionIndex}-option-${selectedOptionIndex}`}
                                                         type="radio"
                                                         name={`question-${questionIndex}`}
                                                         value={
@@ -144,10 +151,10 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
                                                             ] ===
                                                             selectedOptionIndex
                                                         }
-                                                        className="form-radio text-slate-800 accent-green-500"
+                                                        className="form-radio text-any-gray-500 accent-green-500"
                                                     />
                                                     <label
-                                                        htmlFor="option"
+                                                        htmlFor={`question-${questionIndex}-option-${selectedOptionIndex}`}
                                                         className="flex items-center gap-2"
                                                     >
                                                         {option}
@@ -173,8 +180,9 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
                             questions={formattedQuizData}
                             setShowModal={setShowModal}
                             selectedOptions={selectedOptions}
-                            handleCompleted={handleCompleted}
+                            handleCompletedGuide={handleCompletedGuide}
                             isGuideCompleted={isGuideCompleted}
+                            handleCompletedQuiz={handleCompletedQuiz}
                         />
                     )}
                 </div>
