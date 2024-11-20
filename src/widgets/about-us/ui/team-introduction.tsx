@@ -3,13 +3,14 @@ import { Linkedin, GitHub } from 'react-feather'
 import { Globe } from 'react-feather'
 
 export function TeamIntroduction(): ReactNode {
+    // to do: add website URL once designers have their own websites
     const members = [
         {
             name: 'Luis Perez',
             role1: 'UI/UI Designer',
             role2: 'Lead Designer',
             linkedIn: 'https://www.linkedin.com/in/is-luisperez/',
-            website: ''
+            website: 'https://www.luisperez.co'
         },
         {
             name: 'Rasul Omarov',
@@ -23,12 +24,12 @@ export function TeamIntroduction(): ReactNode {
             role1: 'UI/UI Designer',
             role2: 'Project Manager',
             linkedIn: 'lhttps://www.linkedin.com/in/ziruo-zhang/',
-            website: ''
+            website: 'linkedin.com/in/ziruo-zhang'
         },
         {
             name: 'Tomoki Kaneko',
             role1: 'Full Stack Developer',
-            linkedin: 'https://www.linkedin.com/in/tomoki-kaneko/',
+            linkedIn: 'https://www.linkedin.com/in/tomoki-kaneko/',
             gitHub: 'https://github.com/tom555-555'
         },
         {
@@ -52,8 +53,7 @@ export function TeamIntroduction(): ReactNode {
         {
             name: 'Uma Voleti',
             role1: 'Backend Developer',
-            linkedIn:
-                'https://www.linkedin.com/in/uma-maheswara-rao-voleti-053729b5/',
+            linkedIn: 'https://www.linkedin.com/in/umavoleti/',
             gitHub: 'https://github.com/uvoleti00'
         },
         {
