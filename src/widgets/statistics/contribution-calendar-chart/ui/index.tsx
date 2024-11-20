@@ -63,7 +63,7 @@ function CalendarChart({ from, to, data }: CalendarChartProps): ReactNode {
                     // dayBorderColor="#dedede"
                     square={true}
                     minValue={0}
-                    maxValue={8}
+                    maxValue={5}
                     dayRadius={5}
                     daySpacing={4}
                     colors={[
