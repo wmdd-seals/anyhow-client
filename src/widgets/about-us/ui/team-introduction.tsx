@@ -23,7 +23,7 @@ export function TeamIntroduction(): ReactNode {
             name: 'Ziruo Zhang',
             role1: 'UI/UI Designer',
             role2: 'Project Manager',
-            linkedIn: 'lhttps://www.linkedin.com/in/ziruo-zhang/',
+            linkedIn: 'https://www.linkedin.com/in/ziruo-zhang/',
             website: ''
         },
         {
@@ -123,7 +123,7 @@ export function TeamIntroduction(): ReactNode {
                                     target="_blank"
                                     className="p-2"
                                 >
-                                    <Linkedin className=" text-any-purple-400 hover:text-any-purple-500 w-6 h-6" />
+                                    <Linkedin className="text-any-purple-400 hover:text-any-purple-500 w-6 h-6" />
                                 </a>
                                 {member.role1.includes('Developer') ? (
                                     <a
@@ -131,16 +131,18 @@ export function TeamIntroduction(): ReactNode {
                                         target="_blank"
                                         className="p-2"
                                     >
-                                        <GitHub className=" text-any-purple-400 hover:text-any-purple-500 w-6 h-6" />
+                                        <GitHub className="text-any-purple-400 hover:text-any-purple-500 w-6 h-6" />
                                     </a>
                                 ) : (
-                                    <a
-                                        href={member.website}
-                                        target="_blank"
-                                        className="p-2"
-                                    >
-                                        <Globe className=" text-any-purple-400 hover:text-any-purple-500 w-6 h-6" />
-                                    </a>
+                                    member.website && (
+                                        <a
+                                            href={member.website}
+                                            target="_blank"
+                                            className="p-2"
+                                        >
+                                            <Globe className="text-any-purple-400 hover:text-any-purple-500 w-6 h-6" />
+                                        </a>
+                                    )
                                 )}
                             </div>
                         </div>
