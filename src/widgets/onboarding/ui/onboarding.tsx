@@ -37,8 +37,8 @@ export function Onboarding(): ReactNode {
 
     const isButtonEnabled = selectedTags.length >= 3
 
-    const handleOnClick = (): void => {
-        save({
+    const handleOnClick = async (): Promise<void> => {
+        await save({
             favoriteTopics: selectedTags
         })
 
