@@ -17,7 +17,6 @@ import { ArrowRight, Bookmark, Zap } from 'react-feather'
 import { ThumbsUp, ThumbsDown } from 'react-feather'
 import { useAuth } from '@shared/lib'
 import { Loading } from '@widgets/loading'
-import Toast from '@shared/ui/toast'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -101,11 +100,6 @@ export function GuidePage(): ReactNode {
     const guideViews = guideViewsData?.res.count || 0
 
     const [sidebar, setSidebar] = useState<boolean>(false)
-
-    const [toast, setToast] = useState<{ visible: boolean; message: string }>({
-        visible: false,
-        message: ''
-    })
 
     const { data: guideCompletedList } = useQuery(GET_GUIDE_COMPLETED_LIST)
 
@@ -258,7 +252,6 @@ export function GuidePage(): ReactNode {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Toast toast={toast} setToast={setToast} />
             <Header />
 
             <main className="grow p-6">
