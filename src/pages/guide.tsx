@@ -17,7 +17,6 @@ import { ArrowRight, Bookmark, Zap } from 'react-feather'
 import { ThumbsUp, ThumbsDown } from 'react-feather'
 import { useAuth } from '@shared/lib'
 import { Loading } from '@widgets/loading'
-import Toast from '@shared/ui/toast'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -83,7 +82,7 @@ const STORE_GUIDE_VIEW_MUTATION = graphql(`
 `)
 
 export function GuidePage(): ReactNode {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, setToast } = useAuth()
     const params = useParams<{ id: string }>()
     const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
     const [storeGuideViewMutation] = useMutation(STORE_GUIDE_VIEW_MUTATION)
@@ -101,11 +100,6 @@ export function GuidePage(): ReactNode {
     const guideViews = guideViewsData?.res.count || 0
 
     const [sidebar, setSidebar] = useState<boolean>(false)
-
-    const [toast, setToast] = useState<{ visible: boolean; message: string }>({
-        visible: false,
-        message: ''
-    })
 
     const { data: guideCompletedList } = useQuery(GET_GUIDE_COMPLETED_LIST)
 
@@ -209,6 +203,8 @@ export function GuidePage(): ReactNode {
         item => item.guideId === params.id
     )
 
+    const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false)
+
     const handleCompletedGuide = (guideId: string): void => {
         void storeGuideCompletedMutation({
             variables: {
@@ -220,6 +216,7 @@ export function GuidePage(): ReactNode {
 
     const handleCompletedQuiz = (): void => {
         setShowQuiz(false)
+        setIsQuizCompleted(true)
         setToast({
             visible: true,
             message: 'Quiz is completed!'
@@ -255,7 +252,6 @@ export function GuidePage(): ReactNode {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Toast toast={toast} setToast={setToast} />
             <Header />
 
             <main className="grow p-6">
@@ -350,7 +346,7 @@ export function GuidePage(): ReactNode {
                         {isAuthenticated &&
                             quizId &&
                             !showQuiz &&
-                            isGuideCompleted && (
+                            isQuizCompleted && (
                                 <Button
                                     onClick={() => setShowQuiz(true)}
                                     kind="secondary"
@@ -363,7 +359,7 @@ export function GuidePage(): ReactNode {
                         {isAuthenticated &&
                             quizId &&
                             !showQuiz &&
-                            !isGuideCompleted && (
+                            !isQuizCompleted && (
                                 <Button
                                     onClick={() => setShowQuiz(true)}
                                     kind="secondary"
@@ -415,8 +411,8 @@ export function GuidePage(): ReactNode {
                             handleCompletedGuide={() =>
                                 handleCompletedGuide(params.id as string)
                             }
-                            isGuideCompleted={isGuideCompleted as boolean}
                             handleCompletedQuiz={handleCompletedQuiz}
+                            isQuizCompleted={isQuizCompleted}
                         />
                     )}
                 </article>
