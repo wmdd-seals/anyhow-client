@@ -5,7 +5,7 @@ import type { Maybe } from '@shared/types'
 import type { InputMaybe } from '@gqlgen/graphql'
 
 interface UseSaveFavoriteTopics {
-    save(payload: InputMaybe<UserProfile>): void
+    save(payload: InputMaybe<UserProfile>): Promise<void>
     data: Maybe<SaveFavoriteTopicsMutation['res']>
     loading: boolean
 }
@@ -17,8 +17,8 @@ export function useSaveFavoriteTopics(): UseSaveFavoriteTopics {
     >(SAVE_FAVORITE_TOPICS)
 
     return {
-        save: (payload): void => {
-            void mutation({ variables: { input: payload } })
+        save: async (payload): Promise<void> => {
+            await mutation({ variables: { input: payload } })
         },
         data: data?.res,
         loading
