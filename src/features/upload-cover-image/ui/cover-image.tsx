@@ -68,7 +68,7 @@ export function CoverImage(props: CoverImageProp): ReactNode {
                 className="max-w-[1300px] w-full max-sm:h-[480px] max-h-[520px] object-cover object-center mx-auto rounded-3xl"
             />
 
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-14 flex items-center gap-2 z-10">
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-14 flex items-center gap-2">
                 <Button kind="inverse" onClick={selectCoverAndUpload}>
                     Add Cover Image <Edit className="size-4" />
                 </Button>
