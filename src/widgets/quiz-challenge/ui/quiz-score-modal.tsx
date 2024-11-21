@@ -11,8 +11,8 @@ interface ModalProps {
     selectedOptions: number[]
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
     handleCompletedGuide: () => void
-    isGuideCompleted: boolean
     handleCompletedQuiz: () => void
+    isQuizCompleted: boolean
 }
 
 export const QuizScoreModal: React.FC<ModalProps> = ({
@@ -21,8 +21,8 @@ export const QuizScoreModal: React.FC<ModalProps> = ({
     setShowModal,
     selectedOptions,
     handleCompletedGuide,
-    isGuideCompleted,
-    handleCompletedQuiz
+    handleCompletedQuiz,
+    isQuizCompleted
 }) => {
     const correctAnswers = Correctness.filter(
         result => result === 'Correct'
@@ -88,7 +88,7 @@ export const QuizScoreModal: React.FC<ModalProps> = ({
                         >
                             Try again
                         </Button>
-                        {!isGuideCompleted && (
+                        {!isQuizCompleted && (
                             <Button
                                 onClick={() => {
                                     handleCompletedGuide()

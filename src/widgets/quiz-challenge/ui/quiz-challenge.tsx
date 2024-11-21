@@ -11,8 +11,8 @@ interface QuizChallengeProp {
     guideId: string
     quizId: string
     handleCompletedGuide: () => void
-    isGuideCompleted: boolean
     handleCompletedQuiz: () => void
+    isQuizCompleted: boolean
 }
 
 export function QuizChallenge(props: QuizChallengeProp): ReactNode {
@@ -20,8 +20,8 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
         guideId,
         quizId,
         handleCompletedGuide,
-        isGuideCompleted,
-        handleCompletedQuiz
+        handleCompletedQuiz,
+        isQuizCompleted
     } = props
 
     const { data: quizInfo, loading: quizLoading } = useQuery(GET_QUIZ_QUERY, {
@@ -181,8 +181,8 @@ export function QuizChallenge(props: QuizChallengeProp): ReactNode {
                             setShowModal={setShowModal}
                             selectedOptions={selectedOptions}
                             handleCompletedGuide={handleCompletedGuide}
-                            isGuideCompleted={isGuideCompleted}
                             handleCompletedQuiz={handleCompletedQuiz}
+                            isQuizCompleted={isQuizCompleted}
                         />
                     )}
                 </div>
