@@ -223,13 +223,11 @@ export function GuidePage(): ReactNode {
         })
     }
 
-    // 今かいてる
     const { data: quizCompletedInfo } = useQuery(GET_QUIZ_ANSWERS, {
         variables: { quizId },
         skip: !quizId
     })
 
-    console.log(quizCompletedInfo)
     const isQuizCompleted = quizCompletedInfo?.res[0]?.iscompleted ?? false
 
     const handleCompletedQuiz = async (): Promise<void> => {
