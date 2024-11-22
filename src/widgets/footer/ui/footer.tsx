@@ -15,7 +15,7 @@ export function Footer(): ReactNode {
                         className="w-80 h-full"
                     />
                 </div>
-                <div className="flex flex-col sm:flex-row w-full sm:w-1/2 sm:justify-end sm:pr-12 gap-4">
+                <div className="flex flex-col sm:flex-row w-full sm:w-1/2 sm:justify-end sm:pr-12 gap-4 items-center">
                     <Link
                         to="/aboutus"
                         className="underline flex items-center font-semibold    "
@@ -23,7 +23,7 @@ export function Footer(): ReactNode {
                         About Us
                     </Link>
                     {!isAuthenticated && (
-                        <div className="flex gap-4 items-center font-semibold">
+                        <div className="flex flex-col sm:flex-row gap-4 items-center font-semibold">
                             <Button
                                 kind="destructive"
                                 onClick={() => navigate('/login')}
