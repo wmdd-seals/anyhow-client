@@ -21,7 +21,7 @@ export const TextInput = forwardRef<HTMLInputElement, InputProps>(
                     <Input
                         ref={ref}
                         className={
-                            'border border-any-purple-400 rounded-xl p-2 pr-24 hover:shadow focus:outline-none focus:border-any-green-600 disabled:bg-gray-100 w-full'
+                            'border border-any-purple-400 rounded-xl p-2 pr-6 hover:shadow focus:outline-none focus:border-any-green-600 disabled:bg-gray-100 w-full'
                         }
                         disabled={disabled}
                         {...rest}

@@ -87,7 +87,7 @@ export function GuideChat(props: GuideChatProps): ReactNode {
                                 <div
                                     key={i}
                                     className={cn(
-                                        'w-[80%] rounded-xl p-4 bg-[#F2F2F3]',
+                                        'max-w-[80%] rounded-xl p-4 bg-white',
                                         role === 'user'
                                             ? 'self-end'
                                             : 'self-start'
