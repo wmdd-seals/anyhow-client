@@ -49,8 +49,8 @@ const documents = {
     "\n    query SlideGuides {\n        res: guides(published: true) {\n            body\n            description\n            id\n            title\n            bookmark\n            liked\n            rating\n            tags\n            user {\n                firstName\n                lastName\n            }\n        }\n    }\n": types.SlideGuidesDocument,
     "\n    mutation saveFavoriteTopics($input: UserProfile) {\n        res: updateUserProfile(input: $input) {\n            id\n        }\n    }\n": types.SaveFavoriteTopicsDocument,
     "\n    query GetGuideCompletedList {\n        res: guideCompletedList {\n            guideId\n        }\n    }\n": types.GetGuideCompletedListDocument,
-    "\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n": types.GetQuizAnswersDocument,
-    "\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n": types.SaveQuizAnswersDocument,
+    "\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n            iscompleted\n        }\n    }\n": types.GetQuizAnswersDocument,
+    "\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n            iscompleted\n        }\n    }\n": types.SaveQuizAnswersDocument,
     "\n    mutation GenerateQuiz($input: GenerateQuizInput!) {\n        res: generateQuiz(input: $input) {\n            id\n            body {\n                quiz {\n                    questions {\n                        questionTitle\n                        options\n                        correctAnswerIndex\n                    }\n                }\n            }\n        }\n    }\n": types.GenerateQuizDocument,
     "\n    mutation PublishGuide($input: UpdateGuideInput!) {\n        res: updateGuide(input: $input) {\n            id\n        }\n    }\n": types.PublishGuideDocument,
     "\n    mutation PublishQuiz($input: UpdateQuizInput!) {\n        res: updateQuiz(input: $input) {\n            id\n        }\n    }\n": types.PublishQuizDocument,
@@ -215,11 +215,11 @@ export function graphql(source: "\n    query GetGuideCompletedList {\n        re
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n"): (typeof documents)["\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n        }\n    }\n"];
+export function graphql(source: "\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n            iscompleted\n        }\n    }\n"): (typeof documents)["\n    query GetQuizAnswers($quizId: String) {\n        res: quizAnswers(quizId: $quizId) {\n            answers\n            iscompleted\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n"): (typeof documents)["\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n        }\n    }\n"];
+export function graphql(source: "\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n            iscompleted\n        }\n    }\n"): (typeof documents)["\n    mutation SaveQuizAnswers($input: SaveQuizAnswersInput) {\n        res: saveQuizAnswers(input: $input) {\n            id\n            answers\n            iscompleted\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

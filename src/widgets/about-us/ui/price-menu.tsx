@@ -9,16 +9,16 @@ export function PriceMenu(): ReactNode {
 
     return (
         <section className="flex flex-col gap-6 max-w-5xl mx-auto px-5">
-            <h2 className="text-center text-3xl md:text-5xl font-bold">
+            <h2 className="text-center text-3xl md:text-5xl font-bold text-any-purple-600">
                 Choose a plan
             </h2>
 
             {/* Toggle Button for Monthly and Annually */}
-            <div className="flex gap-3 justify-center bg-indigo-950 rounded-full p-2 max-w-64 mx-auto">
+            <div className="flex gap-3 justify-center bg-any-purple-600 rounded-full p-2 max-w-64 mx-auto">
                 <Button
                     kind={!isAnnual ? 'primary' : 'neutral'}
                     size="medium"
-                    className=" px-6 py-2"
+                    className="px-6 py-2"
                     onClick={() => setIsAnnual(false)}
                 >
                     Monthly
@@ -33,48 +33,57 @@ export function PriceMenu(): ReactNode {
                 </Button>
             </div>
 
-            <p className="text-center text-gray-600">
+            <p className="text-center text-any-purple-500">
                 Save up to 30% with our annual plans
             </p>
 
             {/* Pricing Cards */}
-            <div className="flex flex-col lg:flex-row justify-center gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-[auto_auto_1fr_auto] gap-8 text-any-purple-500 max-w-5xl mx-auto">
                 {/* Free Plan */}
-                <div className="flex flex-col gap-5 justify-around items-start bg-gray-100 shadow-lg rounded-lg p-8 w-full lg:w-1/3">
+                <div className="grid gap-y-6 bg-slate-100 shadow-lg rounded-lg p-8 w-full h-full row-span-4 grid-rows-subgrid">
                     <h3 className="text-3xl font-bold">Free</h3>
                     <p className="text-5xl font-bold">$0</p>
-                    <ul className="text-gray-600 space-y-2">
-                        <li className="flex gap-2">
-                            <Check /> 3 selected guides per month
+                    <ul className="space-y-2 flex flex-col justify-start">
+                        <li className="flex items-center gap-2">
+                            <Check />3 selected guides per month
                         </li>
-                        <li className="flex gap-2">
-                            <Check /> Access to all available categories
+                        <li className="flex items-center gap-2">
+                            <Check />
+                            Access to all available categories
                         </li>
                     </ul>
+                    <p></p>
                 </div>
 
                 {/* Basic Plan */}
-                <div className="flex flex-col gap-5 justify-around items-start bg-gray-100  shadow-lg rounded-lg p-8 w-full lg:w-1/3">
-                    <h3 className="text-3xl font-bold">Basic</h3>
-                    <span className="text-sm">Recommended</span>
+                <div className="grid gap-y-6 bg-slate-100 shadow-lg rounded-lg p-8 w-full h-full row-span-4 grid-rows-subgrid">
+                    <h3 className="text-3xl font-bold">
+                        Basic
+                        <span className="text-sm block">Recommended</span>
+                    </h3>
+
                     <p className="text-5xl font-bold">
                         {isAnnual ? '$90' : '$9'}
                     </p>
-                    <ul className="text-gray-600 space-y-2">
-                        <li className="flex gap-2">
+                    <ul className="space-y-2 flex-grow">
+                        <li className="flex items-center gap-2">
                             <Check /> Access to all guides and categories
                         </li>
-                        <li className="flex gap-2">
-                            <Check /> Create and monetize content
+                        <li className="flex items-center gap-2">
+                            <Check />
+                            Create and monetize content
                         </li>
-                        <li className="flex gap-2">
-                            <Check /> Limited AI features
+                        <li className="flex items-center gap-2">
+                            <Check />
+                            Limited AI features
                         </li>
-                        <li className="flex gap-2">
-                            <Check /> Save and track your progress
+                        <li className="flex items-center gap-2">
+                            <Check />
+                            Save and track your progress
                         </li>
-                        <li className="flex gap-2">
-                            <Check /> Fork content*
+                        <li className="flex items-center gap-2">
+                            <Check />
+                            Fork content*
                         </li>
                     </ul>
                     <Button
@@ -88,23 +97,26 @@ export function PriceMenu(): ReactNode {
                 </div>
 
                 {/* Advanced Plan */}
-                <div className="flex flex-col gap-5 justify-around items-start bg-gray-100  shadow-lg rounded-lg p-8 w-full lg:w-1/3">
+                <div className="grid gap-y-6 bg-slate-100 shadow-lg rounded-lg p-8 w-full h-full row-span-4 grid-rows-subgrid">
                     <h3 className="text-3xl font-bold">Advanced</h3>
                     <p className="text-5xl font-bold">
                         {isAnnual ? '$900' : '$99'}
                     </p>
-                    <ul className="text-gray-600 space-y-2">
-                        <li className="flex gap-2">
-                            All the starter plan features, plus:
+                    <ul className="space-y-2 flex-grow">
+                        <li className="flex items-center gap-2 ">
+                            <span>All the starter plan features, plus:</span>
                         </li>
-                        <li className="flex gap-2">
-                            <Check /> AI Q&A and highlighted text
+                        <li className="flex items-center gap-2">
+                            <Check />
+                            AI Q&A and highlighted text
                         </li>
-                        <li className="flex gap-2">
-                            <Check /> AI assistant for content creators
+                        <li className="flex items-center gap-2">
+                            <Check />
+                            AI assistant for content creators
                         </li>
-                        <li className="flex gap-2">
-                            <Check /> Limit forking of your content
+                        <li className="flex items-center gap-2">
+                            <Check />
+                            Limit forking of your content
                         </li>
                     </ul>
                     <Button
@@ -117,7 +129,8 @@ export function PriceMenu(): ReactNode {
                     </Button>
                 </div>
             </div>
-            <p className="text-center text-lg text-gray-600">
+
+            <p className="text-center text-lg text-any-purple-500">
                 *Only on the public content
             </p>
         </section>

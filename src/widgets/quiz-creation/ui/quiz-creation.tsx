@@ -17,7 +17,8 @@ export function QuizCreation(props: QuizCreationProps): ReactNode {
     const { className, guideId } = props
 
     const { data, loading } = useQuery(GET_QUIZ_QUERY, {
-        variables: { guideId: guideId }
+        variables: { guideId: guideId },
+        fetchPolicy: 'cache-and-network'
     })
     const quizId = data?.res?.quiz?.id
 

@@ -6,9 +6,16 @@ import type {
 } from '@gqlgen/graphql'
 import type { Maybe } from '@shared/types'
 import type { InputMaybe } from '@gqlgen/graphql'
+import type { MutationFunctionOptions } from '@apollo/client'
 
 interface UseSaveQuizAnswer {
-    save(payload: InputMaybe<SaveQuizAnswersInput>): Promise<Maybe<string>>
+    save(
+        payload: InputMaybe<SaveQuizAnswersInput>,
+        options?: MutationFunctionOptions<
+            SaveQuizAnswersMutation,
+            { input: InputMaybe<SaveQuizAnswersInput> }
+        >
+    ): Promise<Maybe<string>>
     data: Maybe<SaveQuizAnswersMutation['res']>
 }
 
@@ -19,8 +26,17 @@ export function useSaveQuizAnswer(): UseSaveQuizAnswer {
     >(SAVE_QUIZ_ANSWERS)
 
     return {
-        save: async (payload): Promise<Maybe<string>> => {
-            const res = await mutation({ variables: { input: payload } })
+        save: async (
+            payload: InputMaybe<SaveQuizAnswersInput>,
+            options?: MutationFunctionOptions<
+                SaveQuizAnswersMutation,
+                { input: InputMaybe<SaveQuizAnswersInput> }
+            >
+        ): Promise<Maybe<string>> => {
+            const res = await mutation({
+                variables: { input: payload },
+                ...options // Spread options like refetchQueries
+            })
 
             return res.data?.res.id
         },

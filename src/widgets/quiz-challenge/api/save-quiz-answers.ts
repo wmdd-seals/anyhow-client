@@ -5,6 +5,7 @@ export const SAVE_QUIZ_ANSWERS = graphql(`
         res: saveQuizAnswers(input: $input) {
             id
             answers
+            iscompleted
         }
     }
 `)

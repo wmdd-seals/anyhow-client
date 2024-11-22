@@ -32,7 +32,7 @@ function Header(): ReactNode {
     if (loading) return <Loading />
 
     return (
-        <header className="bg-white/90 text-white p-4 sticky top-0 z-[1]">
+        <header className="bg-white/90 text-white p-4 sticky top-0 z-[1] shadow-md">
             <div className="container box-border mx-auto w-full flex justify-between items-center">
                 <div className="flex items-center">
                     <Link to={'/'} className="block md:hidden">
