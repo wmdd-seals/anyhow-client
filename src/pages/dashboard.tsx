@@ -219,7 +219,9 @@ const Dashboard = (): ReactNode => {
                     </div>
                 </section>
                 <section className="flex flex-col gap-4">
-                    <h3 className="text-3xl font-bold">My learning history</h3>
+                    <h3 className="text-3xl font-bold">
+                        {isCreator ? 'My study guides' : 'My learning history'}
+                    </h3>
                     {isCreator ? (
                         <div className="flex flex-col gap-y-3 md:gap-y-0">
                             {guidesCreated?.res?.map((h, index) => (
