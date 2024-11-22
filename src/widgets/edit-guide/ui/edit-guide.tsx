@@ -319,7 +319,7 @@ export function EditGuide(props: EditGuideProps): ReactNode {
                                 })
                                 if (!result) return
 
-                                navigate(`/${id}/edit/quiz`)
+                                window.location.href = `/${id}/edit/quiz`
                             })}
                         >
                             Generate Quiz
