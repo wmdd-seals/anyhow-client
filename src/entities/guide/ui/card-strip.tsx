@@ -59,6 +59,7 @@ export function CardStrip({ guide, refetch }: CardStripProps): ReactNode {
                         className="object-cover w-full h-full opacity-50 absolute inset-0"
                     />
                     <img
+                        key={guide.id}
                         loading="lazy"
                         src={`${import.meta.env.VITE_API_URL}${import.meta.env.VITE_IMAGES_ENDPOINT}/${guide.id}`}
                         onError={e => {
