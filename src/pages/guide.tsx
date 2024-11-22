@@ -17,6 +17,8 @@ import { ArrowRight, Bookmark, Zap } from 'react-feather'
 import { ThumbsUp, ThumbsDown } from 'react-feather'
 import { useAuth } from '@shared/lib'
 import { Loading } from '@widgets/loading'
+import { useSaveQuizAnswer } from '@widgets/quiz-challenge/api/use-save-answers.ts'
+import { GET_QUIZ_ANSWERS } from '@widgets/quiz-challenge/api/get-quiz-answers'
 
 const GUIDE_QUERY = graphql(`
     query Guide($id: ID!) {
@@ -86,6 +88,7 @@ export function GuidePage(): ReactNode {
     const params = useParams<{ id: string }>()
     const [storeGuideCompletedMutation] = useMutation(STORE_GUIDE_COMPLETED)
     const [storeGuideViewMutation] = useMutation(STORE_GUIDE_VIEW_MUTATION)
+    const { save: storeQuizCompleted } = useSaveQuizAnswer()
 
     const { data, loading, error } = useQuery(GUIDE_QUERY, {
         variables: { id: params.id! },
@@ -203,7 +206,13 @@ export function GuidePage(): ReactNode {
         item => item.guideId === params.id
     )
 
-    const [isQuizCompleted, setIsQuizCompleted] = useState<boolean>(false)
+    const { data: quizInfo } = useQuery(GET_QUIZ_ID_QUERY, {
+        variables: {
+            guideId: params.id!
+        },
+        skip: !params
+    })
+    const quizId = quizInfo?.res?.quiz?.id
 
     const handleCompletedGuide = (guideId: string): void => {
         void storeGuideCompletedMutation({
@@ -214,21 +223,35 @@ export function GuidePage(): ReactNode {
         })
     }
 
-    const handleCompletedQuiz = (): void => {
+    // 今かいてる
+    const { data: quizCompletedInfo } = useQuery(GET_QUIZ_ANSWERS, {
+        variables: { quizId },
+        skip: !quizId
+    })
+
+    console.log(quizCompletedInfo)
+    const isQuizCompleted = quizCompletedInfo?.res[0]?.iscompleted ?? false
+
+    const handleCompletedQuiz = async (): Promise<void> => {
         setShowQuiz(false)
         setToast({
             visible: true,
             message: 'Quiz is completed!'
         })
-    }
 
-    const { data: quizInfo } = useQuery(GET_QUIZ_ID_QUERY, {
-        variables: {
-            guideId: params.id!
-        },
-        skip: !params
-    })
-    const quizId = quizInfo?.res?.quiz?.id
+        await storeQuizCompleted(
+            {
+                quizid: quizId as string,
+                iscompleted: true
+            },
+            {
+                refetchQueries: [
+                    { query: GET_QUIZ_ANSWERS, variables: { quizId } }
+                ],
+                awaitRefetchQueries: true
+            }
+        )
+    }
 
     const [showQuiz, setShowQuiz] = useState<boolean>(false)
 
