@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
         localStorage.getItem('authToken')
     )
 
-    const { data, loading } = useQuery(FETCH_USER, {
+    const { data, loading, refetch } = useQuery(FETCH_USER, {
         fetchPolicy: 'cache-and-network',
         onCompleted: data => {
             if (!data.user.id) {
@@ -56,7 +56,12 @@ export const AuthProvider = ({ children }: Props): React.ReactNode => {
     const loginUser = (token: string): void => {
         localStorage.setItem('authToken', token)
         setToken(token)
-        location.href = '/'
+        refetch()
+            .then(response => {
+                if (response.data.user.favoriteTopics) location.href = '/'
+                else location.href = '/onboarding'
+            })
+            .catch(error => console.log(error))
     }
 
     const logout = (): void => {
