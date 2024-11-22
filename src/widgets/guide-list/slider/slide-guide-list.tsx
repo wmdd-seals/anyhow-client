@@ -26,7 +26,9 @@ const GET_GUIDES_WITH_USER = graphql(`
 `)
 
 export function SliderGuideList(): ReactNode {
-    const { data, loading, error } = useQuery(GET_GUIDES_WITH_USER)
+    const { data, loading, error } = useQuery(GET_GUIDES_WITH_USER, {
+        fetchPolicy: 'cache-and-network'
+    })
 
     if (loading)
         return (
