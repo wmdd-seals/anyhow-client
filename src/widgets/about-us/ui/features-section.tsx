@@ -5,7 +5,7 @@ export function FeaturesSection(): ReactNode {
         <section
             className=" bg-any-purple-500 text-white flex flex-col gap-10 items-center py-16 px-5"
             style={{
-                backgroundImage: `linear-gradient(rgba(30, 22, 71, 0.8), rgba(30,22, 71, 0.8)), url('/features-bg-pattern.webp')`
+                backgroundImage: `url('/features-bg-pattern.png')`
             }}
         >
             <h2 className="text-center text-3xl md:text-5xl font-bold">
@@ -55,7 +55,7 @@ export function FeaturesSection(): ReactNode {
                     <img
                         src="/feature2.webp"
                         alt="user photo"
-                        className="h-auto object-cover rounded-lg clip-path-bottom-right lg:clip-path-top-right lg:w-1/2"
+                        className="h-auto object-cover rounded-lg clip-path-bottom-right lg:clip-path-bottom-left lg:w-1/2"
                     />
                 </div>
 
@@ -99,7 +99,7 @@ export function FeaturesSection(): ReactNode {
                     <img
                         src="/feature4.webp"
                         alt="user photo"
-                        className="lg:w-1/2 h-auto object-cover rounded-lg clip-path-bottom-right lg:clip-path-top-right"
+                        className="lg:w-1/2 h-auto object-cover rounded-lg clip-path-bottom-right lg:clip-path-bottom-left"
                     />
                 </div>
             </div>
