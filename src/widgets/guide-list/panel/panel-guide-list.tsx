@@ -151,7 +151,7 @@ export function PanelGuideList({
                         <div className={'flex justify-end'}>
                             <span className="relative">
                                 <select
-                                    className="border border-black rounded-3xl px-7 py-2 appearance-none cursor-pointer text-center"
+                                    className="border border-black rounded-3xl px-7 py-2 appearance-none cursor-pointer text-left"
                                     value={sortOption}
                                     onChange={e =>
                                         setSortOption(e.target.value)
