@@ -17,7 +17,7 @@ export function HomePage(): ReactNode {
         <div>
             <Header />
             {!location.state?.search ? (
-                <section className="mx-auto md:px-0">
+                <section className="mx-auto md:px-0 pt-6">
                     <HeroSlider />
                     <section className="flex flex-col my-16 mx-auto gap-y-16">
                         {!location.state?.onboarding && (
