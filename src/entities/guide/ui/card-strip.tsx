@@ -51,7 +51,7 @@ export function CardStrip({ guide, refetch }: CardStripProps): ReactNode {
     const minutes = Math.ceil((progress * 60) / 100)
 
     return (
-        <div className="flex flex-col lg:flex-row items-center justify-between w-full border-b-0 lg:border-b rounded-lg lg:rounded-none border-any-gray-200 gap-y-3 lg:gap-y-0 p-4 lg:py-4 lg:px-0 shadow-xl lg:shadow-none">
+        <div className="flex flex-col lg:flex-row items-center justify-between w-full border-b-0 lg:border-b rounded-lg lg:rounded-none border-any-gray-200 gap-y-5 lg:gap-y-0 p-4 lg:py-4 lg:px-0 shadow-xl lg:shadow-none">
             <div className="h-16 w-full lg:w-1/3 flex items-center gap-4 overflow-hidden">
                 <div className="flex justify-center items-center h-full aspect-[1/0.64] rounded-md overflow-hidden relative bg-any-purple-600">
                     <img
