@@ -30,7 +30,7 @@ const carouselItems = [
 
 export function HeroSlider(): ReactNode {
     return (
-        <div className="container mx-auto px-6 md:px-0">
+        <div className="container mx-auto px-6 pt-6 md:px-0">
             <Slider>
                 {carouselItems.map((item, index) => (
                     <div
