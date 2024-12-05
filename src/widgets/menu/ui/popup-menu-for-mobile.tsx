@@ -42,7 +42,7 @@ export function PopupMenuForMobile({ user }: { user: User }): ReactNode {
                 className="z-50 relative"
             >
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-black/50 flex justify-center items-center">
-                    <DialogPanel className="relative z-50 flex flex-col rounded-lg shadow-lg overflow-hidden py-3 w-[95vw] h-[95vh] bg-white ">
+                    <DialogPanel className="relative z-50 flex flex-col rounded-lg shadow-lg overflow-hidden py-3 w-[95vw] h-[95dvh] bg-white ">
                         <div className="flex w-full justify-end px-8 mt-4">
                             <Button onClick={() => setOpen(false)}>
                                 <X className="w-6 h-6 text-slate-700" />
